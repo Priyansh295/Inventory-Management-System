@@ -1,53 +1,49 @@
 import streamlit as st
 import sqlite3
+from database import create_product_table,add_product,get_products_from_database
 
-# Function to create the product table
-def create_product_table():
-    conn = sqlite3.connect('products.db')
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS products (
-                id INTEGER PRIMARY KEY,
-                name TEXT,
-                price REAL,
-                description TEXT)''')
-    conn.commit()
-    conn.close()
 
-# Function to insert data into the product table
-def add_product(name, price, description):
-    conn = sqlite3.connect('products.db')
-    c = conn.cursor()
-    c.execute('''INSERT INTO products (name, price, description) VALUES (?, ?, ?)''', (name, price, description))
-    conn.commit()
-    conn.close()
+def product():
+    # Create the product table
+    create_product_table()
 
-# Create the product table
-create_product_table()
+    # Streamlit app
+    st.title('Product Data Entry Form')
 
-# Streamlit app
-st.title('Product Data Entry Form')
+    # Input form for product details
+    product_id = st.text_input('Enter Product ID')
+    product_name = st.text_input('Enter Product Name')
+    product_description = st.text_area('Enter Product Description')
+    category = st.text_input('Enter Product Category')
+    price = st.number_input('Enter Product Price', value=0.0)
+    image_url = st.text_input('Enter Image URL')
 
-# Input form for product details
-name = st.text_input('Enter Product Name')
-price = st.number_input('Enter Product Price', value=0.0)
-description = st.text_area('Enter Product Description')
+    # Input form for product image upload
+    uploaded_image = st.file_uploader("Upload an image for the product", type=["jpg", "jpeg", "png"])
 
-if st.button('Add Product'):
-    if name and price and description:
-        add_product(name, price, description)
-        st.success('Product added successfully!')
+    if st.button('Add Product'):
+        if product_id and product_name and product_description and category and price:
+            add_product(product_id, product_name, product_description, category, price, image_url)
+            st.success('Product added successfully!')
+    if st.checkbox('Show Products'):
+        show_products()
 
-# Optionally, display the current products in the table
-if st.checkbox('Show Products'):
-    conn = sqlite3.connect('products.db')
-    c = conn.cursor()
-    c.execute('''SELECT * FROM products''')
-    products = c.fetchall()
-    conn.close()
-
+def show_products():
+    # Optionally, display the current products in the table
+    products = get_products_from_database()
     if products:
         st.write("Current Products:")
         for product in products:
-            st.write(product)
+            st.write(f"Product ID: {product[0]}")
+            st.write(f"Product Name: {product[1]}")
+            st.write(f"Product Description: {product[2]}")
+            st.write(f"Category: {product[3]}")
+            st.write(f"Price: {product[4]}")
+            if product[5]:
+                st.image(product[5], caption=product[1], use_column_width=True)
     else:
         st.write("No products found.")
+
+
+if __name__ == "__main__":
+    product()
