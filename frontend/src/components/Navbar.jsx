@@ -1,39 +1,18 @@
-import React, { useContext } from 'react'
-import { AuthContext } from '../context/authContext';
 import { Link } from 'react-router-dom';
 import "./Navbar.scss"
 
 const Navbar = () => {
-  const { currentUser, logout } = useContext(AuthContext);
   return (
     <div className="navbar">
+      <h3>INVENTORY MANAGEMENT SYSTEM</h3>
       <div className="container">
         <div className="links">
-          <Link className="link" to="/?cat=art">
-            <h6>ART</h6>
+          <Link className="link" to="/login">
+            Login
           </Link>
-          <Link className="link" to="/?cat=science">
-            <h6>SCIENCE</h6>
+          <Link className="link" to="/register">
+            New Client
           </Link>
-          <Link className="link" to="/?cat=technology">
-            <h6>TECHNOLOGY</h6>
-          </Link>
-          <Link className="link" to="/?cat=cinema">
-            <h6>CINEMA</h6>
-          </Link>
-          <Link className="link" to="/?cat=design">
-            <h6>DESIGN</h6>
-          </Link>
-          <Link className="link" to="/?cat=food">
-            <h6>FOOD</h6>
-          </Link>
-          <span>{currentUser?.username}</span>
-          {currentUser ? (<span onClick={logout}>Logout</span>
-            ) : (
-            <Link className="link" to="/login">
-              Login
-            </Link>
-          )}
         </div>
       </div>
     </div>
