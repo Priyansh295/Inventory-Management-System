@@ -1,19 +1,52 @@
+/* Navbar.scss */
+
 .navbar {
+  background-color: rgba(0, 123, 255, 0.9); /* Blue color with some transparency */
+  color: #fff;
+  backdrop-filter: blur(10px); /* Adjust the blur intensity as needed */
   .container {
-      padding: 10px 0px;
+    padding: 10px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      margin: 0;
+    }
+    .links {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      .links {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        h6 {
-          font-size: 16px;
-          font-weight: 300;
-        }
-        span {
-          cursor: pointer;
+      gap: 20px;
+      h6 {
+        font-size: 16px;
+        font-weight: 300;
+        color: #fff;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
         }
       }
-    }}
+      span {
+        cursor: pointer;
+        color: #fff;
+        font-weight: bold;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      .logout {
+        background-color: #fff;
+        color: #007bff; /* Blue color for Logout link */
+        padding: 8px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        &:hover {
+          background-color: #007bff;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

@@ -1,35 +1,38 @@
-import React, { useContext } from 'react'
+// Navbar.jsx
+
+import React, { useContext } from 'react';
 import { AuthContext } from '../context/authContext';
 import { Link } from 'react-router-dom';
-import "./Navbar.scss"
+import './Navbar.scss';
 
 const Navbar = () => {
   const { currentUser, logout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    // Perform logout logic if needed
+    logout();
+
+    // Redirect to the login page
+    window.location.href = '/login';
+  };
+
   return (
     <div className="navbar">
       <div className="container">
+        <h1>Inventory Management System</h1>
         <div className="links">
-          <Link className="link" to="/?cat=art">
-            <h6>ART</h6>
+          <Link className="link" to="/products">
+            <h6>Products</h6>
           </Link>
-          <Link className="link" to="/?cat=science">
-            <h6>SCIENCE</h6>
-          </Link>
-          <Link className="link" to="/?cat=technology">
-            <h6>TECHNOLOGY</h6>
-          </Link>
-          <Link className="link" to="/?cat=cinema">
-            <h6>CINEMA</h6>
-          </Link>
-          <Link className="link" to="/?cat=design">
-            <h6>DESIGN</h6>
-          </Link>
-          <Link className="link" to="/?cat=food">
-            <h6>FOOD</h6>
+          <Link className="link" to="/products/cart">
+            <h6>Cart</h6>
           </Link>
           <span>{currentUser?.username}</span>
-          {currentUser ? (<span onClick={logout}>Logout</span>
-            ) : (
+          {currentUser ? (
+            <span onClick={handleLogout} className="link">
+              Logout
+            </span>
+          ) : (
             <Link className="link" to="/login">
               Login
             </Link>
@@ -37,7 +40,7 @@ const Navbar = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

@@ -2,9 +2,32 @@
 
 .title {
   text-align: center;
-  color: #333; /* Dark text color */
-  font-size: 2rem; /* Larger font size */
-  margin-bottom: 20px; /* Add some space below the title */
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.product-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+}
+
+.search-bar {
+  width: 50%; /* Set a fixed width for the search bar */
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  order: 2; /* Change the order to 2 to place it on the right */
+}
+
+.select-box {
+  width: 50%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  order: 1; /* Change the order to 1 to place it on the left */
 }
 
 .products-container {
@@ -22,12 +45,12 @@
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
-  transition: transform 0.3s ease-in-out; /* Add a subtle hover effect */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
 }
 
 .product:hover {
-  transform: scale(1.05); /* Zoom in on hover */
+  transform: scale(1.05);
 }
 
 .product-image {
@@ -53,11 +76,10 @@
 }
 
 .product-details p.price {
-  color: #e44d26; /* Set a vibrant color for price */
+  color: #e44d26;
   font-weight: bold;
 }
 
-/* Add a button-like style to the product container */
 .product-details button {
   background-color: #4caf50;
   color: white;
@@ -75,7 +97,6 @@
 .product-details button:hover {
   background-color: #45a049;
 }
-
 
 .cart-button {
   background-color: #4caf50;
@@ -96,4 +117,18 @@
   background-color: white;
   color: black;
   border: 1px solid #4caf50;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .product-container {
+    flex-direction: column;
+  }
+
+  .search-bar,
+  .select-box {
+    width: 100%;
+    margin: 0 0 20px 0;
+    order: 0; /* Reset the order for smaller screens */
+  }
 }
