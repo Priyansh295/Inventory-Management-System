@@ -17,15 +17,12 @@ CREATE TABLE Client(
 );
 
 CREATE TABLE Orders(
-    Order_ID VARCHAR(5),
+    Order_ID int auto_increment,
     Client_ID VARCHAR(5),
     Total_Payment DECIMAL(10, 2),
     Due_Date DATE,
-    Transaction_ID INT,
-    Transaction_Timestamp Timestamp,
     Order_Placement_Date DATE,
     Status ENUM("In Progress", "Shipped", "Complete", "Cancelled"),
-    Shipment_date DATE,
     PRIMARY KEY(Order_ID)
 );
 
@@ -127,8 +124,8 @@ REFERENCES Part(Part_ID);
 -- Insert 10 rows into the Product table with car brand names and prices in INR
 INSERT INTO Product (Product_ID, Product_Name, Product_Description, Category, Price,Image)
 VALUES
-    ('P0001', 'Toyota Camry', 'The Toyota Camry, a renowned car model, is the perfect blend of style and performance. This car offers a comfortable and efficient driving experience for those seeking both luxury and reliability.', 'Car', 1825000.00,'/Users/moumithar.s/Desktop/Inventory-Management-System-1/frontend/images/toyato-camry.jpeg'),
-	('P0002', 'Ford F-150', 'The Ford F-150, is built to handle tough tasks with ease. Its robust build and powerful performance make it the ideal choice for work and adventure enthusiasts who require a dependable and rugged vehicle.', 'Truck', 2555000.00,'/Users/moumithar.s/Desktop/Inventory-Management-System-1/frontend/images/ford-150.jpeg');
+    ('P0001', 'Toyota Camry', 'The Toyota Camry, a renowned car model, is the perfect blend of style and performance. This car offers a comfortable and efficient driving experience for those seeking both luxury and reliability.', 'Car', 1825000.00,'toyota-camry.jpeg'),
+	('P0002', 'Ford F-150', 'The Ford F-150, is built to handle tough tasks with ease. Its robust build and powerful performance make it the ideal choice for work and adventure enthusiasts who require a dependable and rugged vehicle.', 'Truck', 2555000.00,'ford-150.jpeg');
 --     ('P0003', 'Honda Civic', 'The Honda Civic, a classic car model, is synonymous with reliability and efficiency.Known for its fuel economy and sleek design, this car is a top pick for those who value practicality and style on the road.', 'Car', 1460000.00), 
 --     ('P0004', 'Chevrolet Silverado', 'The Chevrolet Silverado, a versatile truck model, is designed to tackle heavy-duty jobs with finesse.With its strong performance and spacious interior, this truck is perfect for individuals who demand power and comfort.', 'Truck', 2190000.00),
 --     ('P0005', 'BMW 3 Series', 'The BMW 3 Series, a luxury car model, exemplifies sophistication and performance.Featuring cutting-edge technology and a refined interior, this car caters to drivers who seek a premium driving experience with a touch of elegance.', 'Car', 2920000.00),
@@ -204,7 +201,9 @@ VALUES
 ('C0009', 'James Johnson', 'james.johnson@email.com', 8889990000, 'Jaipur', 302001, 'BCA Residency', 1, 'password9'),
 ('C0010', 'Elizabeth Thomas', 'elizabeth.thomas@email.com', 9990001111, 'Kanpur', 208001, 'ABB Apartments', 3, 'password10');
 
+create table cart( user_id varchar(20), product_id varchar(5));
 
+alter table cart add foreign key(product_id) references product(product_id);
 
 
 
