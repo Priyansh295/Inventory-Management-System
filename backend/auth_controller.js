@@ -61,8 +61,25 @@ export const logout_client = (req, res) => {
     ).status(200).json("User has been logged out.")
 }
 export const login_admin = (req, res) => {
-
+    const query = "SELECT * FROM Admin WHERE \
+     Admin_ID = ?"
+    console.log(req.body)
+    db.query(query, [req.body.Admin_ID], (err, data) => {
+        if (err) return res.json(err);
+        console.log(data)
+        if(data.length === 0) return res.status(404).json("User not found!");
+        const isPasswordCorrect = bcrypt.compareSync(req.body.password, data[0].password);
+        if(!isPasswordCorrect) return res.status(400).json("Wrong ID or Password")
+        const token = jwt.sign({id:data[0].id}, "jwtkey");
+        const {password, ...other} = data[0]
+        res.cookie("access_token_admin", token, {
+            httpOnly: true
+        }).status(200).json(other);
+    })
 }
 export const logout_admin = (req, res) => {
-
+    res.clearCookie("access_token_admin", {
+        sameSite: "none",
+        secure: true}
+    ).status(200).json("Admin has been logged out.")
 }
