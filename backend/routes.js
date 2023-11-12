@@ -138,6 +138,58 @@ router.put('/products/:id', (req, res) => {
     });
 });
 
+// Add a product to the cart
+router.post('/products/cart/add', (req, res) => {
+  const { user_id, product_id} = req.body;
+  if (!user_id || !product_id) {
+    return res.status(400).json({ error: 'Invalid input data' });
+  }
+
+  const add_to_cart_query = 'INSERT INTO Cart (User_ID, Product_ID) VALUES (?, ?)';
+  const add_to_cart_values = [user_id, product_id];
+
+  db.query(add_to_cart_query, add_to_cart_values, (err, result) => {
+    if (err) {
+      console.error('Error adding product to the cart:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    console.log('Product added to the cart successfully');
+    res.status(200).json({ success: true });
+  });
+});
+
+// Get cart contents
+router.get('/products/cart/:user_id', (req, res) => {
+  const user_id = req.params.user_id;
+  // console.log(req.body)
+  const get_cart_contents_query = 'select * from cart natural join product where user_id=?';
+
+  db.query(get_cart_contents_query, [user_id], (err, data) => {
+    if (err) 
+      return res.send(err);
+    res.send(data);
+  });
+});
+
+// Remove item from the cart
+router.delete('/products/cart/:user_id/:product_id', (req, res) => {
+  const user_id = req.params.user_id;
+  const product_id = req.params.product_id;
+
+  const remove_from_cart_query = 'DELETE FROM Cart WHERE User_ID = ? AND Product_ID = ?';
+
+  db.query(remove_from_cart_query, [user_id, product_id], (err, result) => {
+    if (err) {
+      console.error('Error removing item from the cart:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    console.log('Item removed from the cart successfully');
+    res.json({ success: true });
+  });
+});
+
 router.post("/register", register)
 router.post("/login_client", login_client)
 router.post("/login_admin", login_admin)
