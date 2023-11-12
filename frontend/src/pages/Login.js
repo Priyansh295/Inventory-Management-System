@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import './LoginPage.css';
-import axios from "axios"
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 
@@ -21,7 +20,7 @@ const LoginPage = () => {
   const navigate = useNavigate()
 
 
-  const {login} = useContext(AuthContext);
+  const {login, login_admin} = useContext(AuthContext);
   // console.log(login)
   const {currentUser} = useContext(AuthContext);
   console.log(currentUser);
@@ -46,8 +45,8 @@ const LoginPage = () => {
     console.log(admin)
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8800/login_admin", admin);
-      navigate("/login");
+      await login_admin(admin);
+      navigate("/admin");
     } catch (err) {
       setError(err.response.data);
     }
@@ -67,8 +66,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      <h1>INVENTORY MANAGEMENT SYSTEM</h1>
-      <div className="container">
+      <div className="container_login">
         <div className="panel" onClick={handleClickClient} style={{ width: clientPanelWidth }}>
           <h2>Login as Client</h2>
           <div className={isClient ? 'form' : 'admin-form'}>
