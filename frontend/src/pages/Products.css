@@ -1,10 +1,10 @@
-/* Products.css */
+/* Products.css
 
 .title {
   text-align: center;
-  color: #333; /* Dark text color */
-  font-size: 2rem; /* Larger font size */
-  margin-bottom: 20px; /* Add some space below the title */
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .products-container {
@@ -96,4 +96,4 @@
   background-color: white;
   color: black;
   border: 1px solid #4caf50;
-}
+} */

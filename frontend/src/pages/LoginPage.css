@@ -1,74 +1,67 @@
 /* LoginPage.css */
 
-body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+.container_login {
+  display: flex;
+  height: 75vh;
+  .panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease-in-out;
   }
-  
-.container {
-  display: flex;
-  height: 100vh;
-}
 
-.panel {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: width 0.3s ease-in-out;
-}
+  .panel:hover {
+    cursor: pointer;
+  }
 
-.panel:hover {
-  cursor: pointer;
-}
+  .panel h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
 
-.panel h1 {
-  margin-bottom: 20px;
-  color: #333;
-}
+  .form,
+  .admin-form {
+    display: block;
+  }
 
-.form,
-.admin-form {
-  display: block;
-}
+  .admin-form {
+    display: none;
+  }
 
-.admin-form {
-  display: none;
-}
+  .panel h2 {
+    cursor: pointer;
+    color: #3498db;
+  }
 
-.panel h2 {
-  cursor: pointer;
-  color: #3498db;
-}
+  .form label,
+  .admin-form label {
+    display: block;
+    margin-bottom: 10px;
+  }
 
-.form label,
-.admin-form label {
-  display: block;
-  margin-bottom: 10px;
-}
+  .form input,
+  .admin-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
 
-.form input,
-.admin-form input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.form button,
-.admin-form button {
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
+  .form button,
+  .admin-form button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 }
