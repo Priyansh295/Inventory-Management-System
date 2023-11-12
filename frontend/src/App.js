@@ -19,6 +19,10 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Client from "./pages/Client";
 import Order from "./pages/OrderConfirmation"
+import Admin from "./pages/Admin";
+import NavbarAdmin from "./components/NavbarAdmin";
+import NavbarClient from "./components/NavbarClient";
+import "./App.scss"
 
 const Layout = () => {
   return (
@@ -28,23 +32,6 @@ const Layout = () => {
       <Footer />
     </>
   );
-};
-
-const PrivateRoute = ({ path, roles, element }) => {
-  const { currentUser } = useContext(AuthContext);
-
-  if (!currentUser) {
-    // Redirect to login if the user is not logged in
-    return <Navigate to="/login" />;
-  }
-
-  if (roles && !roles.includes(currentUser.role)) {
-    // Redirect to unauthorized page if the user doesn't have the required role
-    return <Navigate to="/unauthorized" />;
-  }
-
-  // Render the protected route if the user is logged in and has the required role
-  return <Route path={path} element={element} />;
 };
 
 const router = createBrowserRouter([
@@ -83,19 +70,31 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/login",
-    element: <LoginPage />,
+    path: "/client",
+    element: <>
+              <NavbarClient/>
+              <Client/>
+              <Footer/>
+            </>
+  },
+  {
+    path: "/admin",
+    element: <>
+              <NavbarAdmin/>
+              <Admin/>
+              <Footer/>
+            </>
   },
   {
     path: "/register",
     element: <RegisterPage />,
   },
-  // Add routes for unauthorized access or any other pages
   {
-    path: "/unauthorized",
-    element: <div>Unauthorized Access</div>,
-  },
-]);
+    path:"/login",
+    element:<LoginPage/>
+  }
+])
+
 
 function App() {
   return (

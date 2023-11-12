@@ -1,0 +1,57 @@
+/* NavbarAdmin.scss */
+
+.navbarclient {
+    background-color: #3498db; /* Calm background color */
+    padding: 20px 0; /* Increase top and bottom padding for more height */
+    line-height: 1.5; /* Adjust line height to vertically center content */
+    position: relative;
+    width: 100%;
+    top: 0;
+    z-index: 1000; /* Ensure the navbar is on top of other elements */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow for depth */
+  
+    .container {
+      margin: 0 auto;
+      max-width: 1200px; /* Adjust as needed */
+      width: 90%;
+    }
+  
+    h1 {
+      color: #fff; /* Text color */
+      margin: 0;
+      font-size: 1.5rem; /* Adjust as needed */
+    }
+  
+    .links {
+      display: flex;
+      align-items: center;
+      margin-left: auto; /* Push links to the right */
+  
+      span {
+        margin-right: 30px; /* Adjust as needed */
+        color: #fff; /* Text color */
+        font-weight: bold;
+      }
+  
+      a, .logout {
+        text-decoration: none;
+        color: #fff; /* Text color */
+        padding: 8px 15px; /* Adjust as needed */
+        border-radius: 5px; /* Optional: Add rounded corners */
+        background-color: #2ecc71; /* Button background color */
+        transition: background-color 0.3s ease; /* Smooth transition effect */
+  
+        &:hover {
+          background-color: #27ae60; /* Hover background color */
+        }
+      }
+  
+      .logout {
+        margin-left: 15px; /* Add margin between the links */
+      }
+    }
+  }
+  

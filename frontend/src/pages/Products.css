@@ -1,34 +1,5 @@
-/* Products.css */
-
-.title {
-  text-align: center;
-  color: #333;
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-.product-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px;
-}
-
-.search-bar {
-  width: 50%; /* Set a fixed width for the search bar */
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  order: 2; /* Change the order to 2 to place it on the right */
-}
-
-.select-box {
-  width: 50%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  order: 1; /* Change the order to 1 to place it on the left */
-}
+/* Products.css
+*/
 
 .products-container {
   display: flex;
