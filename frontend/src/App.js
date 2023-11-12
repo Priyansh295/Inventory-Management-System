@@ -4,7 +4,7 @@ import {
   Outlet
 } from "react-router-dom"
 
-import Products from "./pages/Products"
+// import Products from "./pages/Products"
 // import Update from "./pages/Update";
 // import Add from "./pages/Add";
 import LoginPage from "./pages/Login";
@@ -13,7 +13,10 @@ import RegisterPage from "./pages/RegisterPage";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Client from "./pages/Client";
-
+import Admin from "./pages/Admin";
+import NavbarAdmin from "./components/NavbarAdmin";
+import NavbarClient from "./components/NavbarClient";
+import "./App.scss"
 
 const Layout = () => {
   return (
@@ -35,22 +38,38 @@ const router = createBrowserRouter([
           element: <Home/>
         },
         {
-          path: "/products",
-          element: <Products/>
+          path: "/login",
+          element: <LoginPage/>
         },
         {
-          path: "/client",
-          element: <Client/>
+          path: "/register",
+          element: <RegisterPage/>
         }
     ]
   },
   {
-    path: "/login",
-    element: <LoginPage/>
+    path: "/admin",
+    element: <>
+              <NavbarAdmin/>
+              <Admin/>
+              <Footer/>
+            </>
   },
   {
-    path: "/register",
-    element: <RegisterPage/>
+    path: "/client",
+    element: <>
+              <NavbarClient/>
+              <Client/>
+              <Footer/>
+            </>
+  },
+  {
+    path: "/admin",
+    element: <>
+              <NavbarAdmin/>
+              <Admin/>
+              <Footer/>
+            </>
   }
 ])
 function App() {
