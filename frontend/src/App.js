@@ -1,24 +1,62 @@
 import {
-  BrowserRouter,
-  Routes,
-  Route,
+  createBrowserRouter,
+  RouterProvider,
+  Outlet
 } from "react-router-dom"
 
 import Products from "./pages/Products"
-import Update from "./pages/Update";
-import Add from "./pages/Add";
+// import Update from "./pages/Update";
+// import Add from "./pages/Add";
+import LoginPage from "./pages/Login";
+import Home from "./pages/Home";
+import RegisterPage from "./pages/RegisterPage";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Client from "./pages/Client";
 
+
+const Layout = () => {
+  return (
+    <>
+      <Navbar/>
+      <Outlet/>
+      <Footer/>
+    </>
+  )
+}
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout/>,
+    children: [
+        {
+          path: "/",
+          element: <Home/>
+        },
+        {
+          path: "/products",
+          element: <Products/>
+        },
+        {
+          path: "/client",
+          element: <Client/>
+        }
+    ]
+  },
+  {
+    path: "/login",
+    element: <LoginPage/>
+  },
+  {
+    path: "/register",
+    element: <RegisterPage/>
+  }
+])
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          {/* <Route path = "/" /> */}
-          <Route path = "/products" element={<Products/>}/>
-          <Route path = "/products/update" element={<Update/>}/>
-          <Route path = "/products/add" element={<Add/>}/>
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router = {router}/>
     </div>
   );
 }

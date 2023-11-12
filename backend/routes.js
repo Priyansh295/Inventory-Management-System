@@ -1,5 +1,6 @@
 import express from "express";
 import db from "./db.js";
+import { login_admin, login_client, logout_admin, logout_client, register } from "./auth_controller.js";
 
 const router = express.Router();
 
@@ -51,5 +52,11 @@ router.post("/products", (req, res) => {
         return res.json(data);
     });
 });
+
+router.post("/register", register)
+router.post("/login_client", login_client)
+router.post("/login_admin", login_admin)
+router.post("/logout_client", logout_client)
+router.post("/logout_admin", logout_admin)
 
 export default router;
