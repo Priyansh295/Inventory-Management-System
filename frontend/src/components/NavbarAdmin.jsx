@@ -17,6 +17,15 @@ const NavbarAdmin = () => {
               Login
             </Link>
           )}
+          <Link className="link" to="/viewproducts">
+              Products
+          </Link>
+          <Link className="link" to="/products/add">
+              Add Product
+          </Link>
+          <Link className="link" to="/products/update">
+              Update Product
+          </Link>
         </div>
       </div>
     </div>

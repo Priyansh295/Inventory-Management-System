@@ -1,12 +1,11 @@
-import React, { useContext } from "react";
+// import React, { useContext } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
-  Route,
-  Navigate,
+  // Route,
+  // Navigate,
 } from "react-router-dom";
-import { AuthContext } from "./context/authContext"; // Import your authentication context
 
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
@@ -23,6 +22,7 @@ import Admin from "./pages/Admin";
 import NavbarAdmin from "./components/NavbarAdmin";
 import NavbarClient from "./components/NavbarClient";
 import "./App.scss"
+import { ProtectedRouteAdmin, ProtectedRouteClient } from "./pages/ProtectedRoute";
 
 const Layout = () => {
   return (
@@ -34,65 +34,89 @@ const Layout = () => {
   );
 };
 
+const LayoutClient = () => {
+  return (
+      <ProtectedRouteClient>
+        <NavbarClient/>
+        <Outlet />
+        <Footer />
+      </ProtectedRouteClient>
+  );
+};
+
+const LayoutAdmin = () => {
+  return (
+      <ProtectedRouteAdmin>
+        <NavbarAdmin/>
+        <Outlet />
+        <Footer />
+      </ProtectedRouteAdmin>
+  );
+};
+
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/products",
-        element: <Products />,
-      },
-      {
-        path: "/client",
-        element: <Client />,
-      },
-      {
-        path: "/products/add",
-        element:<Add/>
-      },
-      {
-        path: "/products/update",
-        element:<Update/>
-      },
-      {
-        path: "/products/cart",
-        element:<Cart/>
-      },
-      {
-        path: "products/order",
-        element:<Order/>
-      }
-    ],
-  },
-  {
-    path: "/client",
-    element: <>
-              <NavbarClient/>
-              <Client/>
-              <Footer/>
-            </>
-  },
-  {
-    path: "/admin",
-    element: <>
-              <NavbarAdmin/>
-              <Admin/>
-              <Footer/>
-            </>
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
-  },
-  {
-    path:"/login",
-    element:<LoginPage/>
-  }
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        {
+          path: "/",
+          element: <Home />,
+        },
+        {
+          path: "/login",
+          element:<LoginPage/>
+        },
+        {
+          path: "/register",
+          element:<RegisterPage/>
+        }
+      ],
+    },
+    {
+      path: "/",
+      element: <LayoutClient/>,
+      children: [
+          {
+            path: "/products",
+            element: <Products />,
+          },
+          {
+            path: "/products/cart",
+            element:<Cart/>
+          },
+          {
+            path: "products/order",
+            element:<Order/>
+          },
+          {
+            path: "/client",
+            element:<Client/>
+          }
+        ]
+    },
+    {
+      path: "/",
+      element: <LayoutAdmin/>,
+      children: [
+          {
+            path: "/viewproducts",
+            element: <Products />,
+          },
+          {
+            path: "/products/add",
+            element:<Add/>
+          },
+          {
+            path: "/products/update",
+            element:<Update/>
+          },
+          {
+            path: "/admin",
+            element:<Admin/>
+          }
+        ]
+    },
 ])
 
 
