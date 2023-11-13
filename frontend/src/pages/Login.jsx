@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './LoginPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
@@ -20,7 +20,11 @@ const LoginPage = () => {
   const navigate = useNavigate()
 
 
-  const {login, login_admin} = useContext(AuthContext);
+  const {login, login_admin, logout_admin, logout} = useContext(AuthContext);
+  useEffect(() => {
+    logout_admin()
+    logout()
+  }, [])
   // console.log(login)
   const {currentUser} = useContext(AuthContext);
   console.log(currentUser);

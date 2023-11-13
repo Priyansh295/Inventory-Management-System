@@ -1,16 +1,20 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../context/authContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "./NavbarAdmin.scss"
 
 const NavbarAdmin = () => {
   const { admin, logout_admin} = useContext(AuthContext);
+  const navigate = useNavigate()
+  function handleClick(e) {
+    navigate("/admin")
+  }
   return (
     <div className="navbaradmin">
-      <h1>Manage Inventory</h1>
+      <h1 onClick={handleClick}>Manage Inventory</h1>
       <div className="container">
         <div className="links">
-          <span>{admin?.Admin_ID}</span>
+          <span>{admin.Admin_ID}</span>
           {admin ? (<span className = "logout" onClick={logout_admin}>Logout</span>
             ) : (
             <Link className="link" to="/login">
