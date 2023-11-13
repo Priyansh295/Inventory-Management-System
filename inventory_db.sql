@@ -17,7 +17,7 @@ CREATE TABLE Client(
 );
 
 CREATE TABLE Orders(
-    Order_ID int auto_increment,
+    Order_ID varchar(20),
     Client_ID VARCHAR(5),
     Total_Payment DECIMAL(10, 2),
     Due_Date DATE,
