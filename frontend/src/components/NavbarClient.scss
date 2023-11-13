@@ -43,6 +43,8 @@
         border-radius: 5px; /* Optional: Add rounded corners */
         background-color: #2ecc71; /* Button background color */
         transition: background-color 0.3s ease; /* Smooth transition effect */
+        margin-left: 10px;
+        margin-right: 10px;
   
         &:hover {
           background-color: #27ae60; /* Hover background color */
