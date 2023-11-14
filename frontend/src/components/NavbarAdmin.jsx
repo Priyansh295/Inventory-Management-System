@@ -13,24 +13,26 @@ const NavbarAdmin = () => {
     <div className="navbaradmin">
       <h1 onClick={handleClick}>Manage Inventory</h1>
       <div className="container">
-        <div className="links">
-          <span>{admin.Admin_ID}</span>
-          {admin ? (<span className = "logout" onClick={logout_admin}>Logout</span>
-            ) : (
-            <Link className="link" to="/login">
-              Login
-            </Link>
-          )}
-          <Link className="link" to="/viewproducts">
-              Products
-          </Link>
-          <Link className="link" to="/products/add">
-              Add Product
-          </Link>
-          <Link className="link" to="/products/update">
-              Update Product
-          </Link>
-        </div>
+          <div className="links">
+            <span className="link" onClick={() => navigate('/admin')}>
+                Inventory
+            </span>
+            <span className="link" onClick={() => navigate('/stats')}>
+                Statistics
+            </span>
+            <span className="link" onClick={() => navigate('/admin_orders')}>
+                Orders
+            </span>
+          </div>
+          <div className='session_details'>
+            <span className='admin_name'>{admin.Admin_ID}</span>
+            {admin ? (<span className = "logout" onClick={logout_admin}>Logout</span>
+              ) : (
+              <Link className="link" to="/login">
+                Login
+              </Link>
+            )}
+          </div>
       </div>
     </div>
   )
