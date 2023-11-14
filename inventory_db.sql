@@ -182,6 +182,7 @@ VALUES
 
 
 
+
 INSERT INTO RESTOCK_DETAILS (Store_Id, Supplier_Id, Restock_time, Price)
 VALUES
    ('S1', 'S0001', 1, 100.00),
@@ -194,6 +195,8 @@ VALUES
    ('S8', 'S0008', 5, 300.00),
    ('S9', 'S0009', 2, 160.75),
    ('S10', 'S0010', 1, 110.50);
+
+
 
 
 INSERT INTO EMPLOYEE (Employee_Id, Employee_Name, Phone_no, Email, Address)
@@ -215,7 +218,7 @@ VALUES
 
 INSERT INTO CLIENT (Client_ID, Client_Name, Email, phone_no, City, PINCODE, Building, Floor_no, password_client)
 VALUES
-('C3100', 'John Smith', 'john.smith@email.com', 1234567890, 'Bangalore', 560016, 'ABC Apartments', 2, 'Moumitha'),
+('C0001', 'John Smith', 'john.smith@email.com', 1234567890, 'Bangalore', 560016, 'ABC Apartments', 2, '$2a$10$6fwjJFmzl/M8ZiJchrvUJurlyTbFZBqAeL8ENA5L5DuF79zSCXYMG'),
 ('C0002', 'Jane Doe', 'jane.doe@email.com', 9807654321, 'Mumbai', 400001, 'XYZ Towers', 5, '$2a$10$YdIOafYEWQUHi9VGmjtM8Ot21QpPe4PjB45ITHcjKvsbGfg1HJawy'),
 ('C0003', 'Peter Jones', 'peter.jones@email.com', 3334445555, 'Chennai', 600001, 'PQR Residency', 3, '$2a$10$9hdpZ2K.ROjqCNN4ikwkHeVhstoulv4dHtX.JInHdiWLVEUkRt8Q6'),
 ('C0004', 'Mary Brown', 'mary.brown@email.com', 2225556666, 'Delhi', 110001, 'LMN Apartments', 1, '$2a$10$NFvZc/nrC.sPzqrnexM/3uf3XVoJ86fPYzyA24BEUa1me8oILT56C'),
@@ -228,6 +231,9 @@ VALUES
 
 
 create table cart( user_id varchar(20), product_id varchar(5));
+
+alter table cart add primary key(user_id,product_id);
+
 
 CREATE TABLE SUPPLIER_ORDERS(
    Store_id VARCHAR(5),
@@ -325,35 +331,29 @@ ALTER TABLE cart
 ADD CONSTRAINT fk_product_cart FOREIGN KEY(product_id) REFERENCES product(product_id) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT fk_client_cart FOREIGN KEY(user_id) REFERENCES client(client_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- ALTER TABLE Orders
+ALTER TABLE Orders
+ADD CONSTRAINT fk_order_client
+FOREIGN KEY(Client_ID) REFERENCES Client(Client_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ALTER TABLE Order_Line
+ALTER TABLE Order_Line
+ADD CONSTRAINT fk_ol_order
+FOREIGN KEY(Order_ID) REFERENCES Orders(Order_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT fk_ol_product FOREIGN KEY(Product_ID) REFERENCES Product(Product_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ALTER TABLE Assembled_By
+ALTER TABLE Assembled_By
+-- ADD CONSTRAINT fk_as_emp FOREIGN KEY(Employee_ID) REFERENCES Employee(Employee_ID),
+ADD CONSTRAINT fk_as_product FOREIGN KEY(Product_ID) REFERENCES Product(Product_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT fk_as_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ALTER TABLE Restock_Details
+ALTER TABLE Restock_Details
+-- ADD CONSTRAINT fk_re_emp FOREIGN KEY(Employee_ID) REFERENCES Employee(Employee_ID),
+ADD CONSTRAINT fk_re_supplier FOREIGN KEY(Supplier_ID) REFERENCES Supplier(Supplier_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT fk_as_store FOREIGN KEY(Store_ID) REFERENCES Storage(Store_ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ALTER TABLE Storage
 ALTER TABLE Storage
-ADD CONSTRAINT fk_store_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
-
-
-
-ALTER TABLE Orders ADD CONSTRAINT fk_order_client
-FOREIGN KEY(Client_ID) REFERENCES Client(Client_ID);
-
-
-ALTER TABLE Order_Line ADD CONSTRAINT fk_ol_order
-FOREIGN KEY(Order_ID) REFERENCES Orders(Order_ID),
-ADD CONSTRAINT fk_ol_product FOREIGN KEY(Product_ID)
-REFERENCES Product(Product_ID);
-
-
-ALTER TABLE Assembled_By
--- ADD CONSTRAINT fk_as_emp FOREIGN KEY(Employee_ID) REFERENCES Employee(Employee_ID),
-ADD CONSTRAINT fk_as_product FOREIGN KEY(Product_ID)
-REFERENCES Product(Product_ID),
-ADD CONSTRAINT fk_as_part FOREIGN KEY(Part_ID)
-REFERENCES Part(Part_ID);
-
-
-ALTER TABLE Restock_Details
--- ADD CONSTRAINT fk_re_emp FOREIGN KEY(Employee_ID) REFERENCES Employee(Employee_ID),
-ADD CONSTRAINT fk_re_supplier FOREIGN KEY(Supplier_ID)
-REFERENCES Supplier(Supplier_ID),
-ADD CONSTRAINT fk_as_store FOREIGN KEY(Store_ID)
-REFERENCES Storage(Store_ID);
-
+ADD CONSTRAINT fk_store_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
