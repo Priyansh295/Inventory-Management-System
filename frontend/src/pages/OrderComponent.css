@@ -1,0 +1,60 @@
+/* OrderComponent.css */
+
+.orders-container {
+    width: 80%;
+    margin: auto;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .order-item {
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .order-info {
+    flex: 1;
+  }
+  
+  .order-info p {
+    margin: 0;
+    font-weight: bold;
+    color: #333; /* Dark text color */
+  }
+  
+  .order-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .order-buttons button {
+    padding: 10px;
+    background-color: #4CAF50; /* Green button color */
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .order-details {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+  }
+  
+  .order-details h2 {
+    margin-bottom: 10px;
+    color: #333; /* Dark text color */
+  }
+  
+  .order-details ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .order-details li {
+    margin-bottom: 10px;
+    color: #333; /* Dark text color */
+  }
+  

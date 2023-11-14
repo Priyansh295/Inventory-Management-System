@@ -19,7 +19,7 @@ CREATE TABLE Client(
 
 
 CREATE TABLE Orders(
-   Order_ID varchar(20),
+   Order_ID varchar(50),
    Client_ID VARCHAR(5),
    Total_Payment DECIMAL(10, 2),
    Shipment_Date timestamp,
@@ -30,7 +30,7 @@ CREATE TABLE Orders(
 
 
 CREATE TABLE Order_Line(
-   Order_ID VARCHAR(5),
+   Order_ID VARCHAR(50),
    Product_ID VARCHAR(5),
    Status ENUM("In progress", "Done"),
    Quantity INT,
@@ -122,8 +122,8 @@ VALUES
 --     ('P0008', 'GMC Sierra', 'The GMC Sierra, a dependable truck model, is engineered for heavy lifting and durability.Its spacious cabin and innovative technology cater to those who need a reliable work companion and an elevated driving experience.', 'Truck', 2263000.00),
 --     ('P0009', 'Audi A4', 'The Audi A4, a luxury car model, defines opulence and performance.With its premium materials and cutting-edge features, this car caters to discerning drivers who demand the best in both aesthetics and technology.', 'Car', 3066000.00),
 --     ('P0010', 'Jeep Wrangler', 'The Jeep Wrangler, an iconic SUV model, is designed for off-road adventures and exploration.With its rugged build and open-air driving experience, this SUV is the top choice for outdoor enthusiasts and nature lovers.', 'SUV', 2117000.00);
-
-
+  
+  
 INSERT INTO PART (Part_id, Part_name, Weight) VALUES
    ('P1', 'Engine', 300.0),
    ('P2', 'Transmission', 150.0),
@@ -182,7 +182,6 @@ VALUES
 
 
 
-
 INSERT INTO RESTOCK_DETAILS (Store_Id, Supplier_Id, Restock_time, Price)
 VALUES
    ('S1', 'S0001', 1, 100.00),
@@ -195,8 +194,6 @@ VALUES
    ('S8', 'S0008', 5, 300.00),
    ('S9', 'S0009', 2, 160.75),
    ('S10', 'S0010', 1, 110.50);
-
-
 
 
 INSERT INTO EMPLOYEE (Employee_Id, Employee_Name, Phone_no, Email, Address)
@@ -218,7 +215,7 @@ VALUES
 
 INSERT INTO CLIENT (Client_ID, Client_Name, Email, phone_no, City, PINCODE, Building, Floor_no, password_client)
 VALUES
-('C0001', 'John Smith', 'john.smith@email.com', 1234567890, 'Bangalore', 560016, 'ABC Apartments', 2, '$2a$10$6fwjJFmzl/M8ZiJchrvUJurlyTbFZBqAeL8ENA5L5DuF79zSCXYMG'),
+('C3100', 'John Smith', 'john.smith@email.com', 1234567890, 'Bangalore', 560016, 'ABC Apartments', 2, 'Moumitha'),
 ('C0002', 'Jane Doe', 'jane.doe@email.com', 9807654321, 'Mumbai', 400001, 'XYZ Towers', 5, '$2a$10$YdIOafYEWQUHi9VGmjtM8Ot21QpPe4PjB45ITHcjKvsbGfg1HJawy'),
 ('C0003', 'Peter Jones', 'peter.jones@email.com', 3334445555, 'Chennai', 600001, 'PQR Residency', 3, '$2a$10$9hdpZ2K.ROjqCNN4ikwkHeVhstoulv4dHtX.JInHdiWLVEUkRt8Q6'),
 ('C0004', 'Mary Brown', 'mary.brown@email.com', 2225556666, 'Delhi', 110001, 'LMN Apartments', 1, '$2a$10$NFvZc/nrC.sPzqrnexM/3uf3XVoJ86fPYzyA24BEUa1me8oILT56C'),
@@ -239,6 +236,80 @@ CREATE TABLE SUPPLIER_ORDERS(
    Status ENUM("In Progress","Shipped", "Complete", "Cancelled")
 );
 
+DELIMITER //
+
+CREATE PROCEDURE ProcessRestock(
+    orderId VARCHAR(50)
+)
+BEGIN
+    DECLARE maxRestockTime INT;
+
+    -- Create temporary table to store aggregated restock times
+    CREATE TEMPORARY TABLE IF NOT EXISTS tmpRestockTime (
+        PartId VARCHAR(5) PRIMARY KEY,
+        AggregatedRestockTime INT
+    );
+
+    -- Insert or update the aggregated restock time in the temporary table
+    INSERT INTO tmpRestockTime (PartId, AggregatedRestockTime)
+    SELECT
+        ab.Part_id,
+        SUM(r.Restock_time) AS AggregatedRestockTime
+    FROM
+        Order_Line ol
+    JOIN
+        Assembled_By ab ON ol.Product_ID = ab.Product_ID
+    JOIN
+        Storage s ON ab.Part_id = s.Part_id
+    JOIN
+        Restock_Details r ON s.Store_id = r.Store_Id
+    WHERE
+        ol.Order_ID = orderId
+    GROUP BY
+        ab.Part_id
+    HAVING
+        SUM(s.Quantity - (ol.quantity * ab.Number_of_Parts)) < MIN(s.Threshold);
+
+    -- Check if the condition is met and insert into SUPPLIER_ORDERS
+    INSERT INTO SUPPLIER_ORDERS (Store_id, Supplier_id, date_time, Status)
+    SELECT
+        s.Store_id,
+        r.Supplier_id,
+        CURRENT_TIMESTAMP() + INTERVAL MAX(t.AggregatedRestockTime) DAY,
+        'In Progress'
+    FROM
+        tmpRestockTime t
+    JOIN
+        Storage s ON t.PartId = s.Part_id
+    JOIN
+        Restock_Details r ON s.Store_id = r.Store_Id
+    GROUP BY
+        s.Store_id, r.Supplier_id;
+
+    -- Update the storage quantities, subtracting no_of_parts * quantity and ensuring it doesn't go below 0
+    UPDATE Storage s
+    JOIN tmpRestockTime t ON s.Part_id = t.PartId
+    JOIN Assembled_By ab ON t.PartId = ab.Part_id
+    JOIN Order_Line ol ON ab.Product_ID = ol.Product_ID
+    SET s.Quantity = s.Quantity - (ab.Number_of_Parts * ol.Quantity);
+
+    -- Drop the temporary table
+    DROP TEMPORARY TABLE IF EXISTS tmpRestockTime;
+END //
+
+DELIMITER ;
+
+INSERT INTO Product (Product_ID, Product_Name, Product_Description, Category, Price, Image, Assembling_time)
+VALUES
+   ('P0005', 'BMW S1000RR', 'The BMW S1000RR is a high-performance sportbike that combines cutting-edge technology with thrilling speed. With its aerodynamic design and powerful engine, its the ultimate choice for motorcycle enthusiasts.', 'Motorcycle', 1500000.00, 'bmw-s1000rr.jpeg', 1),
+   ('P0006', 'Tesla Model 3', 'The Tesla Model 3 is an electric car that redefines sustainability and style. With its sleek design and advanced autopilot features, it offers a futuristic driving experience for eco-conscious individuals.', 'Electric', 4500000.00, 'tesla-model-3.jpeg', 2),
+   ('P0007', 'Yamaha YZF R6', 'The Yamaha YZF R6 is a sporty and agile motorcycle designed for adrenaline junkies. Its compact size and powerful engine make it perfect for both city commuting and track racing.', 'Motorcycle', 900000.00, 'yamaha-yzf-r6.jpeg', 1),
+    ('P0008', 'Honda Accord', 'The Honda Accord is a reliable and stylish sedan known for its fuel efficiency and comfortable ride. With advanced safety features and modern design, its a top choice for those seeking a dependable daily driver.', 'Auto', 2600000.00, 'honda-accord.jpeg', 2),
+   ('P0009', 'Ducati Multistrada V4', 'The Ducati Multistrada V4 is an adventure motorcycle built for versatility and performance. With its powerful engine and rugged design, its the perfect option for riders who enjoy both on and off-road journeys.', 'Auto', 2200000.00, 'ducati-multistrada-v4.jpeg', 1),
+   ('P0010', 'Toyota Prius', 'The Toyota Prius is a hybrid car that sets the standard for fuel efficiency. With its eco-friendly features and practical design, its a great choice for environmentally conscious drivers.', 'Hybrid Car', 2500000.00, 'toyota-prius.jpeg', 2);
+
+
+
 
 CREATE TABLE Admin(Admin_ID VARCHAR(5) PRIMARY KEY, password VARCHAR(100));
 INSERT INTO Admin VALUES('admin', '$2a$10$ajLYr46aHBjWhpcBV/Ng4O/2n/Anx0H2QPH09cPjPCGNqxHOEQanC');
@@ -254,29 +325,35 @@ ALTER TABLE cart
 ADD CONSTRAINT fk_product_cart FOREIGN KEY(product_id) REFERENCES product(product_id) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT fk_client_cart FOREIGN KEY(user_id) REFERENCES client(client_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- ALTER TABLE Orders
-ALTER TABLE Orders
-ADD CONSTRAINT fk_order_client
-FOREIGN KEY(Client_ID) REFERENCES Client(Client_ID) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ALTER TABLE Order_Line
-ALTER TABLE Order_Line
-ADD CONSTRAINT fk_ol_order
-FOREIGN KEY(Order_ID) REFERENCES Orders(Order_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_ol_product FOREIGN KEY(Product_ID) REFERENCES Product(Product_ID) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ALTER TABLE Assembled_By
-ALTER TABLE Assembled_By
--- ADD CONSTRAINT fk_as_emp FOREIGN KEY(Employee_ID) REFERENCES Employee(Employee_ID),
-ADD CONSTRAINT fk_as_product FOREIGN KEY(Product_ID) REFERENCES Product(Product_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_as_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ALTER TABLE Restock_Details
-ALTER TABLE Restock_Details
--- ADD CONSTRAINT fk_re_emp FOREIGN KEY(Employee_ID) REFERENCES Employee(Employee_ID),
-ADD CONSTRAINT fk_re_supplier FOREIGN KEY(Supplier_ID) REFERENCES Supplier(Supplier_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_as_store FOREIGN KEY(Store_ID) REFERENCES Storage(Store_ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ALTER TABLE Storage
 ALTER TABLE Storage
 ADD CONSTRAINT fk_store_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+ALTER TABLE Orders ADD CONSTRAINT fk_order_client
+FOREIGN KEY(Client_ID) REFERENCES Client(Client_ID);
+
+
+ALTER TABLE Order_Line ADD CONSTRAINT fk_ol_order
+FOREIGN KEY(Order_ID) REFERENCES Orders(Order_ID),
+ADD CONSTRAINT fk_ol_product FOREIGN KEY(Product_ID)
+REFERENCES Product(Product_ID);
+
+
+ALTER TABLE Assembled_By
+-- ADD CONSTRAINT fk_as_emp FOREIGN KEY(Employee_ID) REFERENCES Employee(Employee_ID),
+ADD CONSTRAINT fk_as_product FOREIGN KEY(Product_ID)
+REFERENCES Product(Product_ID),
+ADD CONSTRAINT fk_as_part FOREIGN KEY(Part_ID)
+REFERENCES Part(Part_ID);
+
+
+ALTER TABLE Restock_Details
+-- ADD CONSTRAINT fk_re_emp FOREIGN KEY(Employee_ID) REFERENCES Employee(Employee_ID),
+ADD CONSTRAINT fk_re_supplier FOREIGN KEY(Supplier_ID)
+REFERENCES Supplier(Supplier_ID),
+ADD CONSTRAINT fk_as_store FOREIGN KEY(Store_ID)
+REFERENCES Storage(Store_ID);
+
