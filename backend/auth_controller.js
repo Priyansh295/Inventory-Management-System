@@ -47,7 +47,7 @@ export const login_client = (req, res) => {
         if(data.length === 0) return res.status(404).json("User not found!");
         const isPasswordCorrect = bcrypt.compareSync(req.body.password, data[0].Password_client);
         if(!isPasswordCorrect) return res.status(400).json("Wrong ID or Password")
-        const token = jwt.sign({id:data[0].id}, "jwtkey");
+        const token = jwt.sign({id:data[0].Client_ID}, "jwtkey");
         const {password, ...other} = data[0]
         res.cookie("access_token", token, {
             httpOnly: true
@@ -70,7 +70,7 @@ export const login_admin = (req, res) => {
         if(data.length === 0) return res.status(404).json("User not found!");
         const isPasswordCorrect = bcrypt.compareSync(req.body.password, data[0].password);
         if(!isPasswordCorrect) return res.status(400).json("Wrong ID or Password")
-        const token = jwt.sign({id:data[0].id}, "jwtkey");
+        const token = jwt.sign({id:data[0].Admin_ID}, "jwtkey");
         const {password, ...other} = data[0]
         res.cookie("access_token_admin", token, {
             httpOnly: true

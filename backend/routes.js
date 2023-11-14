@@ -3,6 +3,9 @@ import db from './db.js';
 import fileUpload from 'express-fileupload';
 import path from 'path';
 import { login_admin, login_client, logout_admin, logout_client, register } from "./auth_controller.js";
+import { add_part, delete_part, fetch_parts, update_part } from './parts_crud.js';
+import { add_supplier, delete_supplier, fetch_suppliers, update_supplier } from './supplier_crud.js';
+import { add_employee, delete_employee, fetch_employees, update_employee } from './employees_crud.js';
 
 const router = express.Router();
 
@@ -29,7 +32,7 @@ router.get('/orders', (req, res) => {
 });
 
 router.get('/parts', (req, res) => {
-  const query = 'SELECT * FROM parts';
+  const query = 'SELECT * FROM part';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -103,7 +106,7 @@ router.put('/products/:id', (req, res) => {
       WHERE Product_ID=?
     `;
     const values = [Product_Name, Product_Description, Category, Price, image.name, productId];
-  
+
     db.query(query, values, (err, result) => {
         if (err) {
           console.error('Error adding product to the database:', err);
@@ -195,5 +198,45 @@ router.post("/login_client", login_client)
 router.post("/login_admin", login_admin)
 router.post("/logout_client", logout_client)
 router.post("/logout_admin", logout_admin)
+
+// Fetch suppliers
+router.get('/suppliers', fetch_suppliers);
+
+// Delete supplier
+router.delete('/suppliers/:id', delete_supplier);
+
+// Add a new supplier
+router.post('/suppliers/add', add_supplier);
+
+// update supplier
+router.put('/suppliers/:id', update_supplier);
+
+
+
+// Fetch parts
+router.get('/parts', fetch_parts);
+
+// Delete part
+router.delete('/parts/:id', delete_part);
+
+// Add a new part
+router.post('/parts/add', add_part);
+
+// update part
+router.put('/parts/:id', update_part);
+
+
+
+// Fetch employees
+router.get('/employees', fetch_employees);
+
+// Delete employee
+router.delete('/employees/:id', delete_employee);
+
+// Add a new employee
+router.post('/employees/add', add_employee);
+
+// update employee
+router.put('/employees/:id', update_employee);
 
 export default router;

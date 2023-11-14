@@ -11,7 +11,8 @@ const v = [
     hash
 ]
 console.log(v)
-db.query(q, [v], (err, data) => {
-    if(err) return console.log(err)
-    return console.log("Admin Added.");
-})
+console.log(hash)
+// db.query(q, [v], (err, data) => {
+//     if(err) return console.log(err)
+//     return console.log("Admin Added.");
+// })
