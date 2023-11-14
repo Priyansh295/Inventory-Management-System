@@ -4,6 +4,10 @@ import { AuthContext } from '../context/authContext';
 import "./Admin.scss"
 import Orders from './Orders';
 import Products from './Products';
+import Suppliers from './Suppliers';
+import Employees from './Employees';
+import Storage from './Storage';
+import Parts from './Parts';
 
 const Admin = () => {
     const {admin} = useContext(AuthContext);
@@ -18,6 +22,14 @@ const Admin = () => {
           return <Orders/>;
         case 'Products':
           return <Products/>;
+        case 'Suppliers':
+          return <Suppliers/>;
+        case 'Employees':
+          return <Employees/>;
+        case 'Storage':
+          return <Storage/>;
+        case 'Parts':
+          return <Parts/>;
         // Add other cases for different components
         default:
           return null;
@@ -30,10 +42,11 @@ const Admin = () => {
           <div className='options'>
             <div className='buttons'>
               <button name = "Orders" onClick={handleClick}>Orders</button>
-              <button name = "Suppliers" onClick={handleClick}>Suppliers</button>
               <button name = "Products" onClick={handleClick}>Products</button>
+              <button name = "Parts" onClick={handleClick}>Parts</button>
               <button name = "Storage" onClick={handleClick}>Storage</button>
-              <button name = "Employee" onClick={handleClick}>Employees</button>
+              <button name = "Suppliers" onClick={handleClick}>Suppliers</button>
+              <button name = "Employees" onClick={handleClick}>Employees</button>
             </div>
             <div className='populate'>
             {renderSelectedComponent()}

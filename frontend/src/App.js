@@ -23,6 +23,10 @@ import NavbarAdmin from "./components/NavbarAdmin";
 import NavbarClient from "./components/NavbarClient";
 import "./App.scss"
 import { ProtectedRouteAdmin, ProtectedRouteClient } from "./pages/ProtectedRoute";
+import Statistics from "./pages/Statistics";
+import AdminOrders from "./pages/AdminOrders";
+import ProductParts from "./pages/ProductParts";
+import SelectParts from "./pages/SelectParts";
 
 const Layout = () => {
   return (
@@ -70,8 +74,16 @@ const router = createBrowserRouter([
         {
           path: "/register",
           element:<RegisterPage/>
-        }
+        },
       ],
+    },
+    {
+      path: "/prodparts",
+      element: <ProductParts/>
+    },
+    {
+      path: "/select",
+      element: <SelectParts/>
     },
     {
       path: "/",
@@ -114,6 +126,14 @@ const router = createBrowserRouter([
           {
             path: "/admin",
             element:<Admin/>
+          },
+          {
+            path: "/stats",
+            element:<Statistics/>
+          },
+          {
+            path: "/admin_orders",
+            element:<AdminOrders/>
           }
         ]
     },
