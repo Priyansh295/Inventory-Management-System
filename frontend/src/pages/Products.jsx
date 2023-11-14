@@ -9,6 +9,7 @@ const Products = () => {
   const [searchInput, setSearchInput] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const {currentUser} = useContext(AuthContext);
+  const {admin} = useContext(AuthContext);
   // console.log(currentUser.Client_ID);
   useEffect(() => {
     const fetchAllProducts = async () => {
@@ -52,9 +53,9 @@ const Products = () => {
 
   const allCategories = ['', ...new Set(products.map((prod) => prod.Category))]; 
   return (
-    <div>
+    <div className='products_page'>
       <h1 className="title">Products</h1>
-      <div id='search-bar'>
+      <div className='search-bar'>
         <input
           type="text"
           placeholder="Search for a product..."
@@ -62,7 +63,7 @@ const Products = () => {
           onChange={handleSearchInputChange}
         />
       </div>
-      <div id='select-bar'>
+      <div className='select-bar'>
         <label htmlFor="category">Select Category:</label>
         <select id="category" value={selectedCategory} onChange={handleCategoryChange}>
           {allCategories.map((category) => (
