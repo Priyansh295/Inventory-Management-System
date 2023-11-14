@@ -1,94 +1,97 @@
-import React, { useState } from 'react';
+// OrdersComponent.js
+
+import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../context/authContext';
+import './OrderComponent.css';
 
-const OrderConfirmation = ({ location }) => {
-// const cartContents = location.state.cartContents || []
-console.log(location)
-//   const [paymentDetails, setPaymentDetails] = useState({
-//     creditCardNumber: '',
-//     expirationDate: '',
-//     cvv: '',
-//   });
+const OrdersComponent = () => {
+  const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [filterStatus, setFilterStatus] = useState(''); // State to store the selected status
+  const { currentUser } = useContext(AuthContext);
 
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setPaymentDetails((prevDetails) => ({ ...prevDetails, [name]: value }));
-//   };
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8800/products/orders/${currentUser.Client_ID}`);
+        setOrders(response.data);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
 
-//   const handleCompleteOrder = async () => {
-//     try {
-//       // Make a request to create the order with payment details
-//       await axios.post('http://localhost:8800/orders', {
-//         clientID: 'yourClientId', // replace with actual client ID
-//         totalPayment: calculateTotalPayment(cartContents),
-//         paymentDetails,
-//       });
+    fetchOrders();
+  }, [currentUser.Client_ID]); // Add currentUser.Client_ID as a dependency
 
-//       // You can add additional logic or UI updates here if needed
+  const showOrderDetails = async (orderId) => {
+    try {
+      const response = await axios.get(`http://localhost:8800/order-details/${orderId}`);
+      setSelectedOrder(response.data);
+    } catch (error) {
+      console.error('Error fetching order details:', error);
+    }
+  };
 
-//     } catch (error) {
-//       console.error('Error completing order:', error);
-//     }
-//   };
+  const hideOrderDetails = () => {
+    setSelectedOrder(null);
+  };
 
-//   const calculateTotalPayment = (cartItems) => {
-//     return cartItems.reduce((total, item) => total + item.Price * item.quantity, 0);
-//   };
+  const filterOrders = (status) => {
+    setFilterStatus(status);
+  };
 
-//   return (
-//     <div>
-//       <h1>Order Confirmation</h1>
-//       {cartContents && cartContents.length > 0 ? (
-//         <div className="products-container">
-//           {cartContents.map((product) => (
-//             <div className="product" key={product.product_id}>
-//               <img
-//                 src={`${process.env.PUBLIC_URL}/images/${product.Image}`}
-//                 alt={`Product ${product.Product_ID}`}
-//                 className="product-image"
-//               />
-//               <div className="product-details">
-//                 <h2>{product.Product_Name}</h2>
-//                 <p>{product.Product_Description}</p>
-//                 <p>Category: {product.Category}</p>
-//                 <p className="price">Price: ${product.Price * product.quantity}</p>
-//                 <p>Quantity: {product.quantity}</p>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       ) : (
-//         <p>No items in the cart.</p>
-//       )}
+  const filteredOrders = filterStatus ? orders.filter(order => order.Status === filterStatus) : orders;
 
-//       <h2>Payment Details</h2>
-//       <form>
-//         <label>
-//           Credit Card Number:
-//           <input
-//             type="text"
-//             name="creditCardNumber"
-//             value={paymentDetails.creditCardNumber}
-//             onChange={handleInputChange}
-//           />
-//         </label>
-//         <label>
-//           Expiration Date:
-//           <input
-//             type="text"
-//             name="expirationDate"
-//             value={paymentDetails.expirationDate}
-//             onChange={handleInputChange}
-//           />
-//         </label>
-//         <label>
-//           CVV:
-//           <input type="text" name="cvv" value={paymentDetails.cvv} onChange={handleInputChange} />
-//         </label>
-//       </form>
-//       <button onClick={handleCompleteOrder}>Complete Order</button>
-//     </div>
-//   );
+  return (
+    <div className="orders-container">
+      <h1>Your Orders</h1>
+      <div className="order-history-buttons">
+        <div className="filter-status">
+          <label htmlFor="statusFilter">Filter by Status:</label>
+          <select
+            id="statusFilter"
+            onChange={(e) => filterOrders(e.target.value)}
+            value={filterStatus}
+          >
+            <option value="">All</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Delivered">Delivered</option>
+          </select>
+        </div>
+      </div>
+      <ul>
+        {filteredOrders.map((order) => (
+          <li key={order.Order_ID} className="order-item">
+            <div className="order-info">
+              <p>Order ID: {order.Order_ID}</p>
+              <p>Status: {order.Status}</p>
+              <p>Total Price: ${order.Total_Payment}</p>
+            </div>
+            <div className="order-buttons">
+              <button onClick={() => showOrderDetails(order.Order_ID)}>Show Details</button>
+              <button onClick={hideOrderDetails}>Hide Details</button>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {selectedOrder && (
+        <div className="order-details">
+          <h2>Order Details</h2>
+          <p>Order ID: {selectedOrder[0].orderLine.Order_ID}</p>
+          <ul>
+            {selectedOrder.map((item) => (
+              <li key={item.product.Product_ID}>
+                Product Name: {item.product[0].Product_Name}, Quantity: {item.orderLine.Quantity}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
 };
 
-export default OrderConfirmation;
+export default OrdersComponent;

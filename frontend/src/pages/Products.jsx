@@ -42,6 +42,7 @@ const Products = () => {
       window.location.href = '/products/cart';
     } catch (error) {
       console.error('Error adding item to cart:', error);
+      window.location.href = '/products/cart';
     }
   };
   const filteredProducts = products.filter(
