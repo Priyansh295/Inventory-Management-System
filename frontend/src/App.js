@@ -25,8 +25,6 @@ import "./App.scss"
 import { ProtectedRouteAdmin, ProtectedRouteClient } from "./pages/ProtectedRoute";
 import Statistics from "./pages/Statistics";
 import AdminOrders from "./pages/AdminOrders";
-import ProductParts from "./pages/ProductParts";
-import SelectParts from "./pages/SelectParts";
 
 const Layout = () => {
   return (
@@ -76,14 +74,6 @@ const router = createBrowserRouter([
           element:<RegisterPage/>
         },
       ],
-    },
-    {
-      path: "/prodparts",
-      element: <ProductParts/>
-    },
-    {
-      path: "/select",
-      element: <SelectParts/>
     },
     {
       path: "/",
