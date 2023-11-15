@@ -11,7 +11,7 @@ import { add_store, delete_store, fetch_stores, update_store} from './storage_cr
 import { fetch_orders,fetch_order_line } from './orders.js';
 import {fetch_restock,update_restock,delete_restock,add_restock} from './restock.js'
 import {fetch_storage} from './storage_crud.js'
-
+import { fetch_stats_category,fetch_stats_client_order,fetch_stats_client_product,fetch_stats_products_date } from './statistic.js';
 const router = express.Router();
 
 router.use(fileUpload());
@@ -465,4 +465,10 @@ router.put('/restock/:id/:s_id',update_restock);
 router.delete('/restock/:id/:s_id',delete_restock);
 router.post('/restock',add_restock);
 router.get('/storage',fetch_storage);
+
+//Statistic
+router.get('/products/categories',fetch_stats_category);
+router.get('/orders/clients',fetch_stats_client_order);
+router.get('/products/clients',fetch_stats_client_product);
+router.get('/products/date',fetch_stats_products_date);
 export default router;
