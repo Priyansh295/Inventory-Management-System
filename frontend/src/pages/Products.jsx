@@ -1,6 +1,6 @@
 import React, { useContext,useEffect, useState } from 'react';
 import axios from 'axios';
-import './Products.css';
+import './Products.scss';
 import { AuthContext } from '../context/authContext';
 
 const Products = () => {
@@ -28,7 +28,6 @@ const Products = () => {
 
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
-    
   };
 
   const addToCart = async (productId) => {
@@ -53,25 +52,25 @@ const Products = () => {
 
   const allCategories = ['', ...new Set(products.map((prod) => prod.Category))]; 
   return (
-    <div className='products_page'>
+    <div className='products_page_client'>
       <h1 className="title">Products</h1>
-      <div className='search-bar'>
+      <div className='select-options'>
         <input
           type="text"
           placeholder="Search for a product..."
           value={searchInput}
           onChange={handleSearchInputChange}
         />
-      </div>
-      <div className='select-bar'>
-        <label htmlFor="category">Select Category:</label>
-        <select id="category" value={selectedCategory} onChange={handleCategoryChange}>
-          {allCategories.map((category) => (
-            <option key={category} value={category}>
-              {category === '' ? 'All Categories' : category}
-            </option>
-          ))}
-        </select>
+        <div className='select-bar'>
+          <label htmlFor="category">Select Category:</label>
+          <select id="category" value={selectedCategory} onChange={handleCategoryChange}>
+            {allCategories.map((category) => (
+              <option key={category} value={category}>
+                {category === '' ? 'All Categories' : category}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="product-container">
         <div className="products-container">

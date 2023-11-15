@@ -45,6 +45,7 @@ const AdminOrders = () => {
                 <th>Total Payment</th>
                 <th>Order Placement Date</th>
                 <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -63,7 +64,7 @@ const AdminOrders = () => {
                       Accept
                     </button>
                     <button className="view-button" onClick={() => openViewModal(order.Order_ID)}>
-                      View
+                      View Order Lines
                     </button>
                   </td>
                 </tr>
@@ -75,7 +76,6 @@ const AdminOrders = () => {
           {isViewModalOpen && (
             <ViewModal isOpen={isViewModalOpen} onClose={closeModal} Order_ID={selectedOrder} />
           )}
-          
         </div>
       </div>
     );

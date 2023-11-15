@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/authContext';
-import './Products.css';
+import './Cart.scss';
 
 const Cart = () => {
   const [cartContents, setCartContents] = useState([]);
@@ -45,7 +45,6 @@ const Cart = () => {
     );
     setCartContents(updatedCart);
   };
-  
 
   const calculateTotalPrice = () => {
     // Use Object.values to get an array of products from the object
@@ -103,10 +102,10 @@ const Cart = () => {
   };
 
   return (
-    <div>
-      <h1>Shopping Cart</h1>
+    <div className='cart-page'>
+      <span className='cart-h'>Shopping Cart</span>
       {cartContents.length > 0 ? (
-        <div className="products-container">
+        <div className="carts-container">
           {cartContents.map((product, index) => (
             <div className="product" key={product.product_id}>
               <img
@@ -128,7 +127,7 @@ const Cart = () => {
                     onChange={(e) => updateQuantity(product.product_id, parseInt(e.target.value, 10))}
                   />
                 </p>
-                <button onClick={() => removeFromCart(product.product_id)}>Remove from Cart</button>
+                <button className = 'rem-cart' onClick={() => removeFromCart(product.product_id)}>Remove from Cart</button>
               </div>
             </div>
           ))}
@@ -142,5 +141,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
-
