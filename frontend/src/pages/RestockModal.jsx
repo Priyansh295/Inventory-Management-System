@@ -1,7 +1,4 @@
-// SupplierModal.jsx
-
 import React, { useEffect,useState } from 'react';
-import "./RestockModal.scss"
 import axios from 'axios';
 
 export const RestockModal = ({ isOpen, onClose, restock }) => {

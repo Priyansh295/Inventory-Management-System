@@ -52,38 +52,38 @@
             padding: 10px 10px 10px 10px;
             align-items: center;
             margin: auto;
-        }
-        .restock-button {
-            background-color: #40e0d0;
-            color: white;
-            border-radius: 7px;
-            align-items: center;
-            margin-left: 10px;
-            margin-right: 10px;
-            margin-top: auto;
-            margin-bottom: auto;
-            padding: 10px 10px 10px 10px;
-            cursor: pointer;
-            &:hover {
-                background-color: #40e0c0;
-                color: black;
+            .update-button {
+                background-color: #40e0d0;
+                color: white;
+                border-radius: 7px;
+                align-items: center;
+                margin-left: 10px;
+                margin-right: 10px;
+                margin-top: auto;
+                margin-bottom: auto;
+                padding: 10px 10px 10px 10px;
+                cursor: pointer;
+                &:hover {
+                    background-color: #40e0c0;
+                    color: black;
+                }
             }
-        }
-        .delete-button {
-            padding: 10px 10px 10px 10px;
-            background-color: #cd821f;
-            color: white;
-            border: none;
-            align-items: center;
-            margin-left: 10px;
-            margin-right: 10px;
-            margin-top: auto;
-            margin-bottom: auto;
-            border-radius: 7px;
-            cursor: pointer;
-            &:hover {
-                background-color: #df0000;
-                color: black;
+            .delete-button {
+                padding: 10px 10px 10px 10px;
+                background-color: #cd821f;
+                color: white;
+                border: none;
+                align-items: center;
+                margin-left: 10px;
+                margin-right: 10px;
+                margin-top: auto;
+                margin-bottom: auto;
+                border-radius: 7px;
+                cursor: pointer;
+                &:hover {
+                    background-color: #df0000;
+                    color: black;
+                }
             }
         }
     }

@@ -78,6 +78,7 @@ const Restock = () => {
                 <th>Supplier ID</th>
                 <th>Restock Time</th>
                 <th>Price</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>

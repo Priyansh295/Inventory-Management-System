@@ -465,4 +465,5 @@ router.put('/restock/:id/:s_id',update_restock);
 router.delete('/restock/:id/:s_id',delete_restock);
 router.post('/restock',add_restock);
 router.get('/storage',fetch_storage);
+
 export default router;
