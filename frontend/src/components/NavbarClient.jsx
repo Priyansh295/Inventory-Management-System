@@ -1,30 +1,36 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../context/authContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "./NavbarClient.scss"
 
 const NavbarClient = () => {
   const { currentUser, logout} = useContext(AuthContext);
   console.log(currentUser)
+  const navigate = useNavigate()
+  function handleClick(e) {
+    navigate("/client")
+  }
   if(currentUser) {
   return (
     <div className="navbarclient">
-      <h1> Inventpry Management System</h1>
+      <h1 onClick={handleClick}> AutoMart </h1>
       <div className="container">
         <div className="links">
-        <span>{currentUser?.Client_ID}</span>
-          <Link className="link" to="/client">
+          <span className="link" onClick = {()=> navigate("/client")}>
             <h6>Home</h6>
-          </Link>
-          <Link className="link" to="/products">
+          </span>
+          <span className="link" onClick = {()=> navigate("/products")}>
             <h6>Products</h6>
-          </Link>
-          <Link className="link" to="/products/cart">
+          </span>
+          <span className="link" onClick = {()=> navigate("/products/cart")}>
             <h6>Cart</h6>
-          </Link>
-          <Link className="link" to="/products/order">
+          </span>
+          <span className="link"  onClick = {()=> navigate("/products/order")}>
             <h6>Orders</h6>
-          </Link>
+          </span>
+        </div>
+        <div className='session_details'>
+          <span>{currentUser?.Client_ID}</span>
           <span className = "logout" onClick={logout}>Logout</span>
         </div>
       </div>
