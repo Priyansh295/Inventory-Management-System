@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { AuthContext } from '../context/authContext';
 // import { Link } from 'react-router-dom';
 import "./Admin.scss"
-import Orders from './Orders';
+import Restock from './Restock';
 import Products from './Products';
 import Suppliers from './Suppliers';
 import Employees from './Employees';
@@ -18,8 +18,6 @@ const Admin = () => {
     }
     const renderSelectedComponent = () => {
       switch (selectedOption) {
-        case 'Orders':
-          return <Orders/>;
         case 'Products':
           return <Products/>;
         case 'Suppliers':
@@ -30,6 +28,8 @@ const Admin = () => {
           return <Storage/>;
         case 'Parts':
           return <Parts/>;
+        case 'Restock':
+            return <Restock/>;
         // Add other cases for different components
         default:
           return null;
@@ -41,12 +41,12 @@ const Admin = () => {
           <h1>Admin</h1>
           <div className='options'>
             <div className='buttons'>
-              <button name = "Orders" onClick={handleClick}>Orders</button>
               <button name = "Products" onClick={handleClick}>Products</button>
               <button name = "Parts" onClick={handleClick}>Parts</button>
               <button name = "Storage" onClick={handleClick}>Storage</button>
               <button name = "Suppliers" onClick={handleClick}>Suppliers</button>
               <button name = "Employees" onClick={handleClick}>Employees</button>
+              <button name = "Restock" onClick={handleClick}>Restock</button>
             </div>
             <div className='populate'>
             {renderSelectedComponent()}

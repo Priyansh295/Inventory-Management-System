@@ -6,6 +6,9 @@ import { login_admin, login_client, logout_admin, logout_client, register } from
 import { add_part, delete_part, fetch_parts, update_part } from './parts_crud.js';
 import { add_supplier, delete_supplier, fetch_suppliers, update_supplier } from './supplier_crud.js';
 import { add_employee, delete_employee, fetch_employees, update_employee } from './employees_crud.js';
+import { fetch_orders,fetch_order_line } from './orders.js';
+import {fetch_restock,update_restock,delete_restock,add_restock} from './restock.js'
+import {fetch_storage} from './storage_crud.js'
 
 const router = express.Router();
 
@@ -359,9 +362,9 @@ router.post('/products/order', (req, res) => {
 });
 
 router.get('/products/orders/:clientID', (req, res) => {
-  console.log("HELLO")
+  // console.log("HELLO")
   const clientID = req.params.clientID;
-  console.log(clientID)
+  // console.log(clientID)
   const query = 'SELECT * FROM Orders WHERE Client_ID = ?';
   db.query(query, [clientID], (err, data) => {
     if (err) {
@@ -427,4 +430,13 @@ router.get('/order-history/:orderId', (req, res) => {
     });
   });
 });
+
+//Fetch Orders
+router.get('/orders',fetch_orders);
+router.get('/order_line/:id',fetch_order_line);
+router.get('/restock',fetch_restock);
+router.put('/restock/:id/:s_id',update_restock);
+router.delete('/restock/:id/:s_id',delete_restock);
+router.post('/restock',add_restock);
+router.get('/storage',fetch_storage);
 export default router;
