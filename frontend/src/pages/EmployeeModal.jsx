@@ -1,7 +1,7 @@
 // EmployeeModal.jsx
 
 import React, { useState } from 'react';
-import "./EmployeeModal.scss"
+import "./SupplierModal.scss"
 import axios from 'axios';
 
 export const EmployeeModal = ({ isOpen, onClose, employee }) => {
