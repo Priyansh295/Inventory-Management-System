@@ -9,7 +9,6 @@ const Products = () => {
   const [searchInput, setSearchInput] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const {currentUser} = useContext(AuthContext);
-  const {admin} = useContext(AuthContext);
   // console.log(currentUser.Client_ID);
   useEffect(() => {
     const fetchAllProducts = async () => {

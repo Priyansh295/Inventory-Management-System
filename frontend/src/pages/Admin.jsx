@@ -3,11 +3,11 @@ import { AuthContext } from '../context/authContext';
 // import { Link } from 'react-router-dom';
 import "./Admin.scss"
 import Orders from './Orders';
-import Products from './Products';
 import Suppliers from './Suppliers';
 import Employees from './Employees';
 import Storage from './Storage';
 import Parts from './Parts';
+import ProductsAdmin from './ProductsAdmin';
 
 const Admin = () => {
     const {admin} = useContext(AuthContext);
@@ -21,7 +21,7 @@ const Admin = () => {
         case 'Orders':
           return <Orders/>;
         case 'Products':
-          return <Products/>;
+          return <ProductsAdmin/>;
         case 'Suppliers':
           return <Suppliers/>;
         case 'Employees':
