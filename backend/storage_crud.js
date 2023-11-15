@@ -96,3 +96,4 @@ export const fetch_storage = (req, res) => {
 
     res.json(data);
   });
+}
