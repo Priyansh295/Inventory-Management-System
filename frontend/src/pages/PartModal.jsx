@@ -1,7 +1,7 @@
 // PartModal.jsx
 
 import React, { useState } from 'react';
-import "./PartModal.scss"
+import "./SupplierModal.scss"
 import axios from 'axios';
 
 export const PartModal = ({ isOpen, onClose, part }) => {

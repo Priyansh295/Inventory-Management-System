@@ -6,6 +6,7 @@ const SelectParts = ({ onSelectedPartsChange }) => {
   const [selectedParts, setSelectedParts] = useState({
     selectedOption: '',
     quantity: '',
+    selectedId: '',
   });
 
   useEffect(() => {
@@ -24,17 +25,17 @@ const SelectParts = ({ onSelectedPartsChange }) => {
   }, []);
 
   const handleSelectChange = (e) => {
-    setSelectedParts({ ...selectedParts, selectedOption: e.target.value });
+    const selectedPart = parts.find((part) => part.value === e.target.value);
+
+    setSelectedParts({
+      ...selectedParts,
+      selectedOption: e.target.value,
+      selectedId: selectedPart ? selectedPart.id : '',
+    });
   };
 
   const handleQuantityChange = (e) => {
     setSelectedParts({ ...selectedParts, quantity: e.target.value });
-  };
-
-  const handleRemove = (index) => {
-    const updatedParts = [...selectedParts];
-    updatedParts.splice(index, 1);
-    setSelectedParts(updatedParts);
   };
 
   const handleAddPart = () => {
@@ -43,28 +44,28 @@ const SelectParts = ({ onSelectedPartsChange }) => {
         label: selectedParts.selectedOption,
         value: selectedParts.selectedOption,
         quantity: parseInt(selectedParts.quantity, 10),
+        id: selectedParts.selectedId,
       };
 
       onSelectedPartsChange(newSelectedOption);
 
-      setSelectedParts({ selectedOption: '', quantity: '' });
+      setSelectedParts({ selectedOption: '', quantity: '', selectedId: '' });
     }
   };
 
   return (
     <div>
       <div className="select-parts-form" id="select-parts-form">
-          <h2>Product Composition</h2>
+        <h2>Product Composition</h2>
         <label>
           <span>Select a part</span>
-          <select
+          <select required
             value={selectedParts.selectedOption}
             onChange={handleSelectChange}
             className="select-option"
-            id="select-option"
+            id={selectedParts.selectedId}
           >
-          <option value="" disabled>
-            </option>
+            <option value="" disabled></option>
             {parts.map((part) => (
               <option key={part.value} value={part.value}>
                 {part.label}
@@ -75,7 +76,7 @@ const SelectParts = ({ onSelectedPartsChange }) => {
         <br />
         <label>
           <span>Quantity:</span>
-          <input
+          <input required
             type="number"
             value={selectedParts.quantity}
             onChange={handleQuantityChange}
@@ -85,7 +86,12 @@ const SelectParts = ({ onSelectedPartsChange }) => {
           />
         </label>
         <br />
-        <button type="button" onClick={handleAddPart} className="add-part-button" id="add-part-button">
+        <button
+          type="button"
+          onClick={handleAddPart}
+          className="add-part-button"
+          id="add-part-button"
+        >
           Add Part
         </button>
       </div>
