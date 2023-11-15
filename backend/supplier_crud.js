@@ -61,7 +61,6 @@ export const add_supplier = (req, res) => {
 
 export const fetch_suppliers = (req, res) => {
     const get_suppliers = 'SELECT * from Supplier';
-  
     db.query(get_suppliers, [], (err, data) => {
       if (err)
         return res.json(err);

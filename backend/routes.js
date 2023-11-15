@@ -6,6 +6,8 @@ import { login_admin, login_client, logout_admin, logout_client, register } from
 import { add_part, delete_part, fetch_parts, update_part } from './parts_crud.js';
 import { add_supplier, delete_supplier, fetch_suppliers, update_supplier } from './supplier_crud.js';
 import { add_employee, delete_employee, fetch_employees, update_employee } from './employees_crud.js';
+import { add_product, delete_product, get_product_parts } from './products_crud.js';
+import { add_store, delete_store, fetch_stores, update_store } from './storage_crud.js';
 
 const router = express.Router();
 
@@ -57,40 +59,62 @@ router.post('/products', (req, res) => {
 });
 
 //Add a product
-router.post('/products/add', (req, res) => {
-  const {Product_ID,Product_Name,Product_Description,Category,Price,} = req.body;
+// router.post('/products/add', (req, res) => {
+//     console.log(req.body.product)
+//     console.log(req.body.parts)
+//     console.log(req.body)
+//     const {Product_ID, Product_Name, Product_Description, Category, Price, parts} = req.body;
+//     console.log({Product_ID, Product_Name, Product_Description, Category, Price})
+//     const image = req.files && req.files.Image;
 
-  const image = req.files && req.files.Image;
+//     if (!Product_ID || !Product_Name || !Product_Description || !Category || !Price || !image) {
+//       return res.status(400).json({ error: 'Invalid input data' });
+//     }
 
-  if (!Product_ID || !Product_Name || !Product_Description || !Category || !Price || !image) {
-    return res.status(400).json({ error: 'Invalid input data' });
-  }
+//     const sql = `
+//       INSERT INTO Product (Product_ID, Product_Name, Product_Description, Category, Price, Image)
+//       VALUES (?, ?, ?, ?, ?, ?)
+//     `;
+//     const values = [Product_ID, Product_Name, Product_Description, Category, Price, image.name];
 
-  const sql = `
-    INSERT INTO Product (Product_ID, Product_Name, Product_Description, Category, Price, Image)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `;
-  const values = [Product_ID, Product_Name, Product_Description, Category, Price, image.name];
+//     db.query(sql, values, (err, result) => {
+//       if (err) {
+//         console.error('Error adding product to the database:', err);
+//         return res.status(500).json({ error: 'Internal server error' });
+//       }
+//       const __filename = new URL(import.meta.url).pathname;
+//       const __dirname = path.dirname(__filename);
+//       const frontendPublicPath = path.join(__dirname, '..', 'frontend', 'public');
+//       const uploadPath = path.join(frontendPublicPath, 'images', image.name);
+//       image.mv(uploadPath, (err) => {
+//         if (err) {
+//           console.error('Error saving image:', err);
+//           return res.status(500).json({ error: 'Internal server error' });
+//         }
+//         console.log('Product added successfully with image');
+//         // res.status(200).json({ success: true });
+//       });
+//     });
+//     console.log("here")
+//     const sqlPart = `
+//       INSERT INTO assembled_by (Product_ID, Part_id, Number_of_Parts)
+//       VALUES (?, ?, ?)
+//     `;
 
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error('Error adding product to the database:', err);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-    const __filename = new URL(import.meta.url).pathname;
-    const __dirname = path.dirname(__filename);
-    const frontendPublicPath = path.join(__dirname, '..', 'frontend', 'public');
-    const uploadPath = path.join(frontendPublicPath, 'images', image.name);
-    image.mv(uploadPath, (err) => {
-      if (err) {
-        console.error('Error saving image:', err);
-        return res.status(500).json({ error: 'Internal server error' });
-      }
-      console.log('Product added successfully with image');
-      res.status(200).json({ success: true });
-    });
-  });
-});
+//     parts.forEach((part) => {
+//       const valuesPart = [Product_ID, part.Part_id, part.Quantity];
+
+//       db.query(sqlPart, valuesPart, (err, result) => {
+//         if (err) {
+//           console.error('Error adding part to the database:', err);
+//           return res.status(500).json({ error: 'Internal server error' });
+//         }
+//       });
+//     });
+//     return res.json("Product Added Successfully");
+// });
+
+router.post('/products/add', add_product);
 
 // Update a product
 router.put('/products/:id', (req, res) => {
@@ -126,20 +150,10 @@ router.put('/products/:id', (req, res) => {
         });
       });
   });
-  
-  // Delete a product
-  router.delete('/products/:id', (req, res) => {
-    const productId = req.params.id;
-    const query = 'DELETE FROM Product WHERE Product_ID=?';
-    const values = [productId];
-    db.query(query, values, (err, data) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
-      }
-      res.json({ message: 'Product deleted successfully' });
-    });
-});
+
+// Delete a product
+router.delete('/products/:id', delete_product);
+router.get('/products/parts/:id', get_product_parts);
 
 // Add a product to the cart
 router.post('/products/cart/add', (req, res) => {
@@ -169,7 +183,7 @@ router.get('/products/cart/:user_id', (req, res) => {
   const get_cart_contents_query = 'select * from cart natural join product where user_id=?';
 
   db.query(get_cart_contents_query, [user_id], (err, data) => {
-    if (err) 
+    if (err)
       return res.send(err);
     res.send(data);
   });
@@ -264,6 +278,18 @@ router.post('/parts/add', add_part);
 
 // update part
 router.put('/parts/:id', update_part);
+
+// Fetch storage
+router.get('/stores', fetch_stores);
+
+// Delete store
+router.delete('/stores/:id', delete_store);
+
+// Add a new store
+router.post('/stores/add', add_store);
+
+// update store
+router.put('/stores/:id', update_store);
 
 
 // Fetch employees
