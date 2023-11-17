@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from 'axios';
-import './Storage.scss'; // Import your SCSS file
+import '../styles/Storage.scss'; // Import your SCSS file
 import {StoreModal, StoreAddModal} from './StorageModal'; // Import the StoreModal component
 
 const Storage = () => {

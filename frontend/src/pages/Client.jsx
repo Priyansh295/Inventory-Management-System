@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './styles.css'
+import '../styles/styles.css'
 const Home = () => {
   return (
     <div className="home-container">
@@ -10,7 +10,6 @@ const Home = () => {
         <h1>Welcome to AutoMart</h1>
         <p>Your one-stop shop for quality vehicles</p>
       </header>
-      
       <section className="featured-products">
         <h2>Featured Vehicles</h2>
         <div className="product-list">

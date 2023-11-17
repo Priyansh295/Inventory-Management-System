@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from 'axios';
-import './Restock.scss'; // Import your SCSS file
+import '../styles/Restock.scss'; // Import your SCSS file
 import {RestockModal, RestockAddModal} from './RestockModal'; // Import the SupplierModal component
 
 const Restock = () => {

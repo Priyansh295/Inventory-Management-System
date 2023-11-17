@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/authContext';
 // import { Link } from 'react-router-dom';
-import "./Admin.scss"
+import "../styles/Admin.scss"
 import Restock from './Restock';
 import Suppliers from './Suppliers';
 import Employees from './Employees';
@@ -16,6 +16,8 @@ const Admin = () => {
       const buttonName = e.target.name;
       setSelectedOption(buttonName);
     }
+    useEffect( () => {setSelectedOption('Products');}, [])
+
     const renderSelectedComponent = () => {
       switch (selectedOption) {
         case 'Products':
@@ -38,7 +40,6 @@ const Admin = () => {
     if (admin) {
     return (
       <div className='admin_container'>
-          <h1>Admin</h1>
           <div className='options'>
             <div className='buttons'>
               <button name = "Products" onClick={handleClick}>Products</button>

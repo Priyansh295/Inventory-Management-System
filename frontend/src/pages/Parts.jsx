@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from 'axios';
-import './Parts.scss';
+import '../styles/Parts.scss';
 import {PartModal, PartAddModal} from './PartModal';
 
 const Parts = () => {

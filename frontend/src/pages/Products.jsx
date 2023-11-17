@@ -1,6 +1,6 @@
 import React, { useContext,useEffect, useState } from 'react';
 import axios from 'axios';
-import './Products.scss';
+import '../styles/Products.scss';
 import { AuthContext } from '../context/authContext';
 
 const Products = () => {
