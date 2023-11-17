@@ -13,6 +13,7 @@ import {fetch_restock,update_restock,delete_restock,add_restock} from './restock
 import {fetch_storage} from './storage_crud.js'
 import { fetch_supplier_orders, update_supplier_order_status } from './supplier_orders.js';
 
+import { fetch_stats_category,fetch_stats_client_order,fetch_stats_client_product,fetch_stats_products_date } from './statistic.js';
 const router = express.Router();
 
 router.use(fileUpload());
@@ -485,6 +486,30 @@ router.get('/timestamp', (req, res) => {
   });
 });
 
+router.get('/supplier-orders', fetch_supplier_orders);
+router.put('/supplier-orders/update-status/:id', update_supplier_order_status);
+
+
+router.get('/timestamp', (req, res) => {
+  const query = 'SELECT CONVERT_TZ(CURRENT_TIMESTAMP(), \'+00:00\', \'+05:30\') AS local_timestamp;';
+  // Replace '+00:00' and '+05:30' with the UTC offset and local offset of your timezone
+
+  db.query(query, [], (err, data) => {
+    if (err) {
+      console.error('Error fetching Timestamp:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    // console.log(data);
+    return res.json(data[0]['local_timestamp']);
+  });
+});
+
+
+//Statistic
+router.get('/products/categories',fetch_stats_category);
+router.get('/orders/clients',fetch_stats_client_order);
+router.get('/products/clients',fetch_stats_client_product);
+router.get('/products/date',fetch_stats_products_date);
 export default router;
 
 
