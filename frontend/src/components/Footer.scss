@@ -3,19 +3,16 @@ footer {
   color: white;
   padding: 10px;
   text-align: center;
-  width: 100%;
-  // position: fixed;
-  // position:relative;
-  margin-top: auto;
-  flex: 0 0 50px;
   bottom: 0;
   font-family: 'Impact', sans-serif;
+  z-index: 1000;
 }
+
 .footerspan {
   display: block;
   margin-bottom: 10px;
 }
+
 .anchor {
   font-family: serif;
-
 }
