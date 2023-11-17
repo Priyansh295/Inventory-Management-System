@@ -24,7 +24,7 @@ import NavbarClient from "./components/NavbarClient";
 import "./App.scss"
 import { ProtectedRouteAdmin, ProtectedRouteClient } from "./pages/ProtectedRoute";
 import Statistics from "./pages/Statistics";
-import AdminOrders from "./pages/AdminOrders";
+import AdminOrdersPage from "./pages/AdminOrdersPage";
 
 const Layout = () => {
   return (
@@ -123,7 +123,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/admin_orders",
-            element:<AdminOrders/>
+            element:<AdminOrdersPage/>
           }
         ]
     },
