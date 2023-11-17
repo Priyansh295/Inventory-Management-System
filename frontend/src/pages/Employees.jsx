@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from 'axios';
-import './Employees.scss';
+import '../styles/Employees.scss';
 import {EmployeeModal, EmployeeAddModal} from './EmployeeModal';
 
 const Employees = () => {

@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/authContext';
-import './OrderComponent.scss';
+import '../styles/OrderComponent.css';
 
 const OrdersComponent = () => {
   const [orders, setOrders] = useState([]);

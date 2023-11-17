@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react';
 import axios from 'axios';
-import './ProductsAdmin.scss';
+import '../styles/ProductsAdmin.scss';
 import {ProductPartsModal, ProductPartsUpdateModal, ProductPartsViewModal} from './ProductParts';
 
 const ProductsAdmin = () => {
@@ -79,7 +79,7 @@ const ProductsAdmin = () => {
   const allCategories = ['', ...new Set(products.map((prod) => prod.Category))]; 
   return (
     <div className='products_page'>
-      <h2 className="title">Products</h2>
+      <h1 className="title">Products</h1>
       <div className='select-options'>
         <input
             type="text"
@@ -118,7 +118,7 @@ const ProductsAdmin = () => {
                 />
                 <div className="product-details">
                   <h2>{prod.Product_Name}</h2>
-                  <p>{prod.Product_Description}</p>
+                  <p className = "description">{prod.Product_Description}</p>
                   <p>Category: {prod.Category}</p>
                   <p className="price">Price: ${prod.Price}</p>
                 </div>

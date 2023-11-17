@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from 'axios';
-import './AdminOrders.scss';
+import '../styles/AdminOrders.scss';
 import {ViewModal} from './AdminOrdersModal';
 
 const AdminOrders = () => {
@@ -34,8 +34,8 @@ const AdminOrders = () => {
 
   if (admin) {
     return (
-      <div className='order_container'>
-        <h1>Orders</h1>
+      <div className='client_orders_container'>
+        <h1>Client Orders</h1>
         <div className="order-table">
           <table>
             <thead>
@@ -60,7 +60,11 @@ const AdminOrders = () => {
                     {/* {<button className="update-button" onClick={() => openUpdateModal(supplier)}>
                       Update
                     </button> */}
-                    <button className="status-button">
+                    <button
+                      className="status-button"
+                      disabled={order.Status !== 'Complete'}
+                      onClick={() => console.log('Accept Clicked')}
+                    >
                       Accept
                     </button>
                     <button className="view-button" onClick={() => openViewModal(order.Order_ID)}>

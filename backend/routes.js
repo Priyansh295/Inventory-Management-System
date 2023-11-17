@@ -11,6 +11,8 @@ import { add_store, delete_store, fetch_stores, update_store} from './storage_cr
 import { fetch_orders,fetch_order_line } from './orders.js';
 import {fetch_restock,update_restock,delete_restock,add_restock} from './restock.js'
 import {fetch_storage} from './storage_crud.js'
+import { fetch_supplier_orders, update_supplier_order_status } from './supplier_orders.js';
+
 import { fetch_stats_category,fetch_stats_client_order,fetch_stats_client_product,fetch_stats_products_date } from './statistic.js';
 import { fetch_client, update_client,update_password, fetch_admin, update_admin_password,add_admin} from './client_crud.js';
 const router = express.Router();
@@ -347,20 +349,20 @@ router.post('/products/order_lines', async (req, res) => {
   }
 });
 
-router.post('/procedure',(req,res)=>{
-        const{Order_ID}=req.body;
-        const callStoredProcedureQuery = 'CALL ProcessRestock(?)';
-        const orderIdParameter = [Order_ID];
-        console.log(orderIdParameter)
-        db.query(callStoredProcedureQuery, orderIdParameter, (err, result) => {
-        console.log("IN procedure")
-        if (err) {
-          console.error('Error calling stored procedure:', err);
-          return res.status(500).json({ error: 'Internal server error' });
-        }
-        console.log('Stored procedure called successfully');
-      })
-})
+// router.post('/procedure',(req,res)=>{
+//         const{Order_ID}=req.body;
+//         const callStoredProcedureQuery = 'CALL ProcessRestock(?)';
+//         const orderIdParameter = [Order_ID];
+//         console.log(orderIdParameter)
+//         db.query(callStoredProcedureQuery, orderIdParameter, (err, result) => {
+//         console.log("IN procedure")
+//         if (err) {
+//           console.error('Error calling stored procedure:', err);
+//           return res.status(500).json({ error: 'Internal server error' });
+//         }
+//         console.log('Stored procedure called successfully');
+//       })
+// })
 
 router.post('/products/order', (req, res) => {
   const {Order_id,
@@ -369,7 +371,7 @@ router.post('/products/order', (req, res) => {
     Status
   } = req.body;
   const insertOrderQuery =
-    'INSERT INTO Orders (Order_ID, Client_ID, Total_Payment,Status) VALUES (?, ?, ?, ?)';
+    'INSERT INTO Orders (Order_ID, Client_ID, Total_Payment,Status, Order_Placement_Date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP())';
 
   const orderValues = [
     Order_id,
@@ -451,7 +453,7 @@ router.get('/order-history/:orderId', (req, res) => {
         productDetails.push({ orderLine, product });
         if (productDetails.length === orderLines.length) {
           // Send the response once all product details are fetched
-          res.json(productDetails);
+          res.status(200).json(productDetails);
         }
       });
     });
@@ -467,6 +469,43 @@ router.delete('/restock/:id/:s_id',delete_restock);
 router.post('/restock',add_restock);
 router.get('/storage',fetch_storage);
 
+router.get('/supplier-orders', fetch_supplier_orders);
+router.put('/supplier-orders/update-status/:id', update_supplier_order_status);
+
+
+router.get('/timestamp', (req, res) => {
+  const query = 'SELECT CONVERT_TZ(CURRENT_TIMESTAMP(), \'+00:00\', \'+05:30\') AS local_timestamp;';
+  // Replace '+00:00' and '+05:30' with the UTC offset and local offset of your timezone
+
+  db.query(query, [], (err, data) => {
+    if (err) {
+      console.error('Error fetching Timestamp:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    // console.log(data);
+    return res.json(data[0]['local_timestamp']);
+  });
+});
+
+router.get('/supplier-orders', fetch_supplier_orders);
+router.put('/supplier-orders/update-status/:id', update_supplier_order_status);
+
+
+router.get('/timestamp', (req, res) => {
+  const query = 'SELECT CONVERT_TZ(CURRENT_TIMESTAMP(), \'+00:00\', \'+05:30\') AS local_timestamp;';
+  // Replace '+00:00' and '+05:30' with the UTC offset and local offset of your timezone
+
+  db.query(query, [], (err, data) => {
+    if (err) {
+      console.error('Error fetching Timestamp:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    // console.log(data);
+    return res.json(data[0]['local_timestamp']);
+  });
+});
+
+
 // Client and Admin Details
 router.get('/client/:id',fetch_client);
 router.put('/client/update/:id',update_client);
@@ -481,3 +520,5 @@ router.get('/orders/clients',fetch_stats_client_order);
 router.get('/products/clients',fetch_stats_client_product);
 router.get('/products/date',fetch_stats_products_date);
 export default router;
+
+

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SelectParts from './SelectParts';
-import './ProductParts.scss';
+import '../styles/ProductParts.scss';
 import axios from 'axios';
 
 export const ProductPartsModal = ({ isOpen, onClose }) => {

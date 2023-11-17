@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './SelectParts.scss';
+import '../styles/SelectParts.scss';
 
 const SelectParts = ({ onSelectedPartsChange }) => {
   const [parts, setParts] = useState([]);

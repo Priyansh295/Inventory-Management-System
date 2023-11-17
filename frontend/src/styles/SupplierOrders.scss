@@ -1,4 +1,4 @@
-.order_container {
+.supplier_orders_container {
     width: 96%;
     margin: auto;
     align-items: center;
@@ -31,19 +31,10 @@
                 }
             }
         }
-        .view-button {
-            background-color: #04fcca;
-            color: white;
-            border-radius: 7px;
-            align-items: center;
+        .time-remaining {
+            color: rgb(255, 149, 0);
+            font-weight: bolder;
             margin-top: 10px;
-            margin-bottom: 20px;
-            padding: 10px 10px 10px 10px;
-            cursor: pointer;
-            &:hover {
-                background-color: #40e0c0;
-                color: black;
-            }
         }
         .status-button {
             background-color: rgb(0, 170, 255);
@@ -57,6 +48,14 @@
             &:hover {
                 background-color: rgb(97, 202, 255);
                 color: black;
+            }
+            &:disabled {
+                background-color: #ccc; /* Grey background color */
+                color: #666; /* Darker grey text color */
+                cursor: not-allowed; /* Change cursor to not-allowed */
+                &:hover {
+                    background-color: #000000;
+                }
             }
         }
         .order-buttons {

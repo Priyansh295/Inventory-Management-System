@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from 'axios';
-import './Suppliers.scss'; // Import your SCSS file
+import '../styles/Suppliers.scss'; // Import your SCSS file
 import {SupplierModal, SupplierAddModal} from './SupplierModal'; // Import the SupplierModal component
 
 const Suppliers = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import "./SupplierModal.scss"
+import "../styles/SupplierModal.scss"
 import axios from 'axios';
 import { AuthContext } from '../context/authContext';
 

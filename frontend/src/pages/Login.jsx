@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import './LoginPage.css';
+import '../styles/LoginPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 
@@ -20,7 +20,8 @@ const LoginPage = () => {
   const navigate = useNavigate()
 
 
-  const {login, login_admin, logout_admin, logout} = useContext(AuthContext);
+  const {login, login_admin} = useContext(AuthContext);
+  const {logout_admin, logout} = useContext(AuthContext);
   useEffect(() => {
     logout_admin()
     logout()

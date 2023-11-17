@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/authContext';
-import './Cart.scss';
+import '../styles/Cart.scss';
 
 const Cart = () => {
   const [cartContents, setCartContents] = useState([]);
@@ -13,6 +13,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchCartContents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchCartContents = async () => {
@@ -63,7 +64,9 @@ const Cart = () => {
       // console.log(cartContents)
       const total_price=calculateTotalPrice()
       console.log(total_price)
-      const OrderDate = currentDate.toISOString();
+      const res = await axios.get('http://localhost:8800/timestamp');
+      const OrderDate = res.data;
+      console.log(OrderDate)
 
       const formData = new FormData();
       formData.append('Order_id',`${currentUser.Client_ID}_${OrderDate}`)
@@ -91,10 +94,7 @@ const Cart = () => {
         await axios.post('http://localhost:8800/products/order_lines', formData);
         // window.location.href = '/products/order';
       }));
-      const data = {
-        'Order_ID': `${currentUser.Client_ID}_${OrderDate}`,
-      };  
-      axios.post('http://localhost:8800/procedure', data)
+      // axios.post('http://localhost:8800/procedure', data)
       window.location.href = '/products/order';
     } catch (error) {
       console.error('Error adding item to order:', error);
