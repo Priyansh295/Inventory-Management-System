@@ -9,7 +9,7 @@ export const fetch_parts = (req, res) => {
         res.json(data);
     });
 }
-
+ 
 export const delete_part = (req, res) => {
     const del_part = 'DELETE FROM Part WHERE Part_id = ?';
     const part_id = req.params.id

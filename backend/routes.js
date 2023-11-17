@@ -12,6 +12,7 @@ import { fetch_orders,fetch_order_line } from './orders.js';
 import {fetch_restock,update_restock,delete_restock,add_restock} from './restock.js'
 import {fetch_storage} from './storage_crud.js'
 import { fetch_stats_category,fetch_stats_client_order,fetch_stats_client_product,fetch_stats_products_date } from './statistic.js';
+import { fetch_client, update_client,update_password, fetch_admin, update_admin_password,add_admin} from './client_crud.js';
 const router = express.Router();
 
 router.use(fileUpload());
@@ -465,6 +466,14 @@ router.put('/restock/:id/:s_id',update_restock);
 router.delete('/restock/:id/:s_id',delete_restock);
 router.post('/restock',add_restock);
 router.get('/storage',fetch_storage);
+
+// Client and Admin Details
+router.get('/client/:id',fetch_client);
+router.put('/client/update/:id',update_client);
+router.post('/client/change-password',update_password);
+router.get('/admin/:id',fetch_admin);
+router.post('/admin/change-password',update_admin_password);
+router.post('/admin/add',add_admin);
 
 //Statistic
 router.get('/products/categories',fetch_stats_category);

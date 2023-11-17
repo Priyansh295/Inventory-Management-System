@@ -53,7 +53,6 @@ const Admin = () => {
             </div>
           </div>
       </div>
-
     )
     } else {
       return (

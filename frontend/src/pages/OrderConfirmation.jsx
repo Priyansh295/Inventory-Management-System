@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/authContext';
-import './OrderComponent.css';
+import './OrderComponent.scss';
 
 const OrdersComponent = () => {
   const [orders, setOrders] = useState([]);
@@ -94,3 +94,4 @@ const OrdersComponent = () => {
 };
 
 export default OrdersComponent;
+

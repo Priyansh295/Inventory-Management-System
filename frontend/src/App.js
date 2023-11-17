@@ -25,6 +25,8 @@ import "./App.scss"
 import { ProtectedRouteAdmin, ProtectedRouteClient } from "./pages/ProtectedRoute";
 import Statistics from "./pages/Statistics";
 import AdminOrders from "./pages/AdminOrders";
+import ClientUpdate from "./pages/ClientUpdate"
+import AddAdmin from "./pages/AddAdmin";
 
 const Layout = () => {
   return (
@@ -94,6 +96,10 @@ const router = createBrowserRouter([
           {
             path: "/client",
             element:<Client/>
+          },
+          {
+            path: "/client-details",
+            element:<ClientUpdate/>
           }
         ]
     },
@@ -124,6 +130,10 @@ const router = createBrowserRouter([
           {
             path: "/admin_orders",
             element:<AdminOrders/>
+          },
+          {
+            path: "/admin-details",
+            element:<AddAdmin/>
           }
         ]
     },

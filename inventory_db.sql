@@ -357,3 +357,14 @@ ADD CONSTRAINT fk_as_store FOREIGN KEY(Store_ID) REFERENCES Storage(Store_ID) ON
 -- ALTER TABLE Storage
 ALTER TABLE Storage
 ADD CONSTRAINT fk_store_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- to delete from carts when ordered
+DELIMITER //
+CREATE TRIGGER delete_carts_after_insert
+AFTER INSERT ON orders
+FOR EACH ROW
+BEGIN
+  DELETE FROM cart WHERE user_id = NEW.client_id;
+END;
+//
+DELIMITER ;

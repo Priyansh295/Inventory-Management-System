@@ -1,0 +1,36 @@
+// ClientUpdate.scss
+.client-container {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px;
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .client-container h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .client-container div {
+    margin-top: 15px;
+  }
+  
+  .client-container p {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  
+  .client-container strong {
+    font-weight: bold;
+  }
+  
+  .client-container p:first-child {
+    font-size: 18px;
+  }
+  
+  // Add more styles as needed
+  

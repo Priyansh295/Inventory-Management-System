@@ -1,6 +1,6 @@
 /* OrderComponent.css */
 
-.orders-container {
+ .orders-container {
     width: 80%;
     margin: auto;
     font-family: 'Arial', sans-serif;
@@ -21,17 +21,17 @@
   .order-info p {
     margin: 0;
     font-weight: bold;
-    color: #333; /* Dark text color */
+    color: #333;
   }
   
-  .order-buttons {
+   .order-buttons {
     display: flex;
     gap: 10px;
   }
   
   .order-buttons button {
     padding: 10px;
-    background-color: #4CAF50; /* Green button color */
+    background-color: #4CAF50; 
     color: white;
     border: none;
     cursor: pointer;
@@ -45,7 +45,7 @@
   
   .order-details h2 {
     margin-bottom: 10px;
-    color: #333; /* Dark text color */
+    color: #333;
   }
   
   .order-details ul {
@@ -55,6 +55,6 @@
   
   .order-details li {
     margin-bottom: 10px;
-    color: #333; /* Dark text color */
-  }
+    color: #333; 
+  } 
   
