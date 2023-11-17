@@ -19,7 +19,7 @@ CREATE TABLE Client(
 
 
 CREATE TABLE Orders(
-   Order_ID varchar(50),
+   Order_ID varchar(100),
    Client_ID VARCHAR(5),
    Total_Payment DECIMAL(10, 2),
    Shipment_Date timestamp,
@@ -30,7 +30,7 @@ CREATE TABLE Orders(
 
 
 CREATE TABLE Order_Line(
-   Order_ID VARCHAR(50),
+   Order_ID VARCHAR(100),
    Product_ID VARCHAR(5),
    Status ENUM("In progress", "Done"),
    Quantity INT,
@@ -67,9 +67,6 @@ CREATE TABLE ASSEMBLED_BY(
    PRIMARY KEY(Product_Id,Part_id)
 );
 
-
-
-
 CREATE TABLE PART(
    Part_id VARCHAR(5),
    Part_name VARCHAR(25),
@@ -77,26 +74,18 @@ CREATE TABLE PART(
    PRIMARY KEY(Part_id)
 );
 
-
-CREATE TABLE RESTOCK_DETAILS(
-   Store_Id VARCHAR(5),
-   Supplier_Id VARCHAR(5),
-   Restock_time INT,
-   Price decimal(10,2),
-   PRIMARY KEY(Store_id,Supplier_id)
-);
-
-
 CREATE TABLE SUPPLIER(
    Supplier_id VARCHAR(5),
+   Part_id VARCHAR(5),
    Supplier_name VARCHAR(25),
-   Quantity INT,
    Email TEXT,
    Phone_no DECIMAL(10,0),
    Address VARCHAR(50),
+   Quantity INT,
+   Price decimal(10,2),
+   Restock_time INT,
    PRIMARY KEY(Supplier_id)
 );
-
 
 CREATE TABLE STORAGE(
    Store_id VARCHAR(5),
@@ -108,6 +97,25 @@ CREATE TABLE STORAGE(
    PRIMARY KEY(Store_id)
 );
 
+CREATE TABLE Admin (
+    Admin_ID VARCHAR(5) PRIMARY KEY,
+    password VARCHAR(100)
+);
+
+CREATE TABLE cart (
+    user_id VARCHAR(20),
+    product_id VARCHAR(5),
+    PRIMARY KEY(user_id,product_id)
+);
+
+
+CREATE TABLE SUPPLIER_ORDERS(
+   Supplier_id VARCHAR(5),
+   date_time timestamp,
+   Status ENUM("In Progress","Shipped", "Complete", "Cancelled"),
+   Quantity INT,
+   PRIMARY KEY (Supplier_id, date_time)
+);
 
 -- Insert 10 rows into the Product table with car brand names and prices in INR
 INSERT INTO Product (Product_ID, Product_Name, Product_Description, Category, Price,Image,Assembling_time)
@@ -115,15 +123,15 @@ VALUES
    ('P0001', 'Toyota Camry', 'The Toyota Camry, a renowned car model, is the perfect blend of style and performance. This car offers a comfortable and efficient driving experience for those seeking both luxury and reliability.', 'Car', 1825000.00,'toyota-camry.jpeg',2),
    ('P0002', 'Ford F-150', 'The Ford F-150, is built to handle tough tasks with ease. Its robust build and powerful performance make it the ideal choice for work and adventure enthusiasts who require a dependable and rugged vehicle.', 'Truck', 2555000.00,'ford-150.jpeg',1),
    ('P0003', 'Honda Civic', 'The Honda Civic, a classic car model, is synonymous with reliability and efficiency.Known for its fuel economy and sleek design, this car is a top pick for those who value practicality and style on the road.', 'Car', 1460000.00,'Honda_civic.jpeg',1),
-   ('P0004', 'Chevrolet Silverado', 'The Chevrolet Silverado, a versatile truck model, is designed to tackle heavy-duty jobs with finesse.With its strong performance and spacious interior, this truck is perfect for individuals who demand power and comfort.', 'Truck', 2190000.00,'chevrolet.jpeg',3);
---     ('P0005', 'BMW 3 Series', 'The BMW 3 Series, a luxury car model, exemplifies sophistication and performance.Featuring cutting-edge technology and a refined interior, this car caters to drivers who seek a premium driving experience with a touch of elegance.', 'Car', 2920000.00),
---     ('P0006', 'Dodge Ram', 'The Dodge Ram, a rugged truck model, is built for those who crave adventure and capability. With its aggressive design and off-road prowess, this truck is the ultimate choice for outdoor enthusiasts and thrill-seekers.', 'Truck', 2336000.00), 
---     ('P0007', 'Nissan Altima', 'The Nissan Altima, a stylish car model, offers a perfect balance of affordability and features.Its comfortable interior and advanced technology make it an excellent option for those in search of a well-rounded daily driver.', 'Car', 1606000.00),
---     ('P0008', 'GMC Sierra', 'The GMC Sierra, a dependable truck model, is engineered for heavy lifting and durability.Its spacious cabin and innovative technology cater to those who need a reliable work companion and an elevated driving experience.', 'Truck', 2263000.00),
---     ('P0009', 'Audi A4', 'The Audi A4, a luxury car model, defines opulence and performance.With its premium materials and cutting-edge features, this car caters to discerning drivers who demand the best in both aesthetics and technology.', 'Car', 3066000.00),
---     ('P0010', 'Jeep Wrangler', 'The Jeep Wrangler, an iconic SUV model, is designed for off-road adventures and exploration.With its rugged build and open-air driving experience, this SUV is the top choice for outdoor enthusiasts and nature lovers.', 'SUV', 2117000.00);
-  
-  
+   ('P0004', 'Chevrolet Silverado', 'The Chevrolet Silverado, a versatile truck model, is designed to tackle heavy-duty jobs with finesse.With its strong performance and spacious interior, this truck is perfect for individuals who demand power and comfort.', 'Truck', 2190000.00,'chevrolet.jpeg',3),
+   ('P0005', 'BMW S1000RR', 'The BMW S1000RR is a high-performance sportbike that combines cutting-edge technology with thrilling speed. With its aerodynamic design and powerful engine, its the ultimate choice for motorcycle enthusiasts.', 'Motorcycle', 1500000.00, 'bmw-s1000rr.jpeg', 1),
+   ('P0006', 'Tesla Model 3', 'The Tesla Model 3 is an electric car that redefines sustainability and style. With its sleek design and advanced autopilot features, it offers a futuristic driving experience for eco-conscious individuals.', 'Electric', 4500000.00, 'tesla-model-3.jpeg', 2),
+   ('P0007', 'Yamaha YZF R6', 'The Yamaha YZF R6 is a sporty and agile motorcycle designed for adrenaline junkies. Its compact size and powerful engine make it perfect for both city commuting and track racing.', 'Motorcycle', 900000.00, 'yamaha-yzf-r6.jpeg', 1),
+   ('P0008', 'Honda Accord', 'The Honda Accord is a reliable and stylish sedan known for its fuel efficiency and comfortable ride. With advanced safety features and modern design, its a top choice for those seeking a dependable daily driver.', 'Auto', 2600000.00, 'honda-accord.jpeg', 2),
+   ('P0009', 'Ducati Multistrada V4', 'The Ducati Multistrada V4 is an adventure motorcycle built for versatility and performance. With its powerful engine and rugged design, its the perfect option for riders who enjoy both on and off-road journeys.', 'Auto', 2200000.00, 'ducati-multistrada-v4.jpeg', 1),
+   ('P0010', 'Toyota Prius', 'The Toyota Prius is a hybrid car that sets the standard for fuel efficiency. With its eco-friendly features and practical design, its a great choice for environmentally conscious drivers.', 'Hybrid Car', 2500000.00, 'toyota-prius.jpeg', 2);
+
+
 INSERT INTO PART (Part_id, Part_name, Weight) VALUES
    ('P1', 'Engine', 300.0),
    ('P2', 'Transmission', 150.0),
@@ -166,37 +174,18 @@ VALUES
 
 
 
-
-INSERT INTO SUPPLIER (Supplier_id, Supplier_name, Quantity, Email, Phone_no, Address)
+INSERT INTO SUPPLIER (Supplier_id, Part_id, Supplier_name, Email, Phone_no, Address, Quantity, Price, Restock_time)
 VALUES
-('S0001', 'ABC Supplier Inc.', 100, 'supplier1@email.com', 1234567890, '123 Main Street'),
-('S0002', 'XYZ Supplies', 150, 'supplier2@email.com', 0987654321, '456 Elm Street'),
-('S0003', 'Reliable Parts', 200, 'supplier3@email.com', 3334445555, '789 Oak Street'),
-('S0004', 'Quality Components', 250, 'supplier4@email.com', 2225556666, '1011 Maple Avenue'),
-('S0005', 'Premier Distributors', 300, 'supplier5@email.com', 6667778888, '1213 Pine Street'),
-('S0006', 'Fast Supply', 350, 'supplier6@email.com', 5554443333, '1415 Beach Avenue'),
-('S0007', 'Efficient Logistics', 400, 'supplier7@email.com', 4443332222, '1617 Park Avenue'),
-('S0008', 'Reliable Sourcing', 450, 'supplier8@email.com', 7778881111, '1819 Elm Street'),
-('S0009', 'Global Suppliers', 500, 'supplier9@email.com', 8889990000, '2021 Oak Street'),
-('S0010', 'Trusted Partners', 550, 'supplier10@email.com', 9990001111, '2223 Maple Avenue');
-
-
-
-
-INSERT INTO RESTOCK_DETAILS (Store_Id, Supplier_Id, Restock_time, Price)
-VALUES
-   ('S1', 'S0001', 1, 100.00),
-   ('S2', 'S0002', 2, 150.50),
-   ('S3', 'S0003', 3, 200.75),
-   ('S4', 'S0004', 1, 120.25),
-   ('S5', 'S0005', 3, 180.00),
-   ('S6', 'S0006', 2, 130.50),
-   ('S7', 'S0007', 3, 210.25),
-   ('S8', 'S0008', 5, 300.00),
-   ('S9', 'S0009', 2, 160.75),
-   ('S10', 'S0010', 1, 110.50);
-
-
+('S0001', 'P1', 'ABC Supplier Inc.', 'supplier1@email.com', 1234567890, '123 Main Street', 100, 100.00, 1),
+('S0002', 'P2', 'XYZ Supplies', 'supplier2@email.com', 0987654321, '456 Elm Street', 150, 150.50, 2),
+('S0003', 'P3', 'Reliable Parts', 'supplier3@email.com', 3334445555, '789 Oak Street', 200, 200.75, 3),
+('S0004', 'P4', 'Quality Components', 'supplier4@email.com', 2225556666, '1011 Maple Avenue', 250, 120.25, 1),
+('S0005', 'P5', 'Premier Distributors', 'supplier5@email.com', 6667778888, '1213 Pine Street', 300, 180.00, 3),
+('S0006', 'P6', 'Fast Supply', 'supplier6@email.com', 5554443333, '1415 Beach Avenue', 350, 130.50, 2),
+('S0007', 'P7', 'Efficient Logistics', 'supplier7@email.com', 4443332222, '1617 Park Avenue', 400, 210.25, 3),
+('S0008', 'P8', 'Reliable Sourcing', 'supplier8@email.com', 7778881111, '1819 Elm Street', 450, 300.00, 5),
+('S0009', 'P9', 'Global Suppliers', 'supplier9@email.com', 8889990000, '2021 Oak Street', 500, 160.75, 2),
+('S0010', 'P10', 'Trusted Partners', 'supplier10@email.com', 9990001111, '2223 Maple Avenue', 550, 110.50, 1);
 
 
 INSERT INTO EMPLOYEE (Employee_Id, Employee_Name, Phone_no, Email, Address)
@@ -213,9 +202,6 @@ VALUES
 ('E0010', 'Jackson Patel', 9990001111, 'jackson@example.com', '2223 Maple Avenue');
 
 
-
-
-
 INSERT INTO CLIENT (Client_ID, Client_Name, Email, phone_no, City, PINCODE, Building, Floor_no, password_client)
 VALUES
 ('C0001', 'John Smith', 'john.smith@email.com', 1234567890, 'Bangalore', 560016, 'ABC Apartments', 2, '$2a$10$6fwjJFmzl/M8ZiJchrvUJurlyTbFZBqAeL8ENA5L5DuF79zSCXYMG'),
@@ -229,102 +215,14 @@ VALUES
 ('C0009', 'James Johnson', 'james.johnson@email.com', 8889990000, 'Jaipur', 302001, 'BCA Residency', 1, '$2a$10$M4f0B7sMbZxiUvmV0jcnLuK2dpODR2cXsi/1j9WNcycpCd552C4yK'),
 ('C0010', 'Elizabeth Thomas', 'elizabeth.thomas@email.com', 9990001111, 'Kanpur', 208001, 'ABB Apartments', 3, '$2a$10$74BeC/YXF/trO.Zso2vr9.BEkk7cC81aO9H//K5YWPeAYxDauWYfC');
 
-
-create table cart( user_id varchar(20), product_id varchar(5));
-
-alter table cart add primary key(user_id,product_id);
-
-
-CREATE TABLE SUPPLIER_ORDERS(
-   Store_id VARCHAR(5),
-   Supplier_id VARCHAR(5),
-   date_time timestamp,
-   Status ENUM("In Progress","Shipped", "Complete", "Cancelled")
-);
-
-DELIMITER //
-
-CREATE PROCEDURE ProcessRestock(
-    orderId VARCHAR(50)
-)
-BEGIN
-    DECLARE maxRestockTime INT;
-
-    -- Create temporary table to store aggregated restock times
-    CREATE TEMPORARY TABLE IF NOT EXISTS tmpRestockTime (
-        PartId VARCHAR(5) PRIMARY KEY,
-        AggregatedRestockTime INT
-    );
-
-    -- Insert or update the aggregated restock time in the temporary table
-    INSERT INTO tmpRestockTime (PartId, AggregatedRestockTime)
-    SELECT
-        ab.Part_id,
-        SUM(r.Restock_time) AS AggregatedRestockTime
-    FROM
-        Order_Line ol
-    JOIN
-        Assembled_By ab ON ol.Product_ID = ab.Product_ID
-    JOIN
-        Storage s ON ab.Part_id = s.Part_id
-    JOIN
-        Restock_Details r ON s.Store_id = r.Store_Id
-    WHERE
-        ol.Order_ID = orderId
-    GROUP BY
-        ab.Part_id
-    HAVING
-        SUM(s.Quantity - (ol.quantity * ab.Number_of_Parts)) < MIN(s.Threshold);
-
-    -- Check if the condition is met and insert into SUPPLIER_ORDERS
-    INSERT INTO SUPPLIER_ORDERS (Store_id, Supplier_id, date_time, Status)
-    SELECT
-        s.Store_id,
-        r.Supplier_id,
-        CURRENT_TIMESTAMP() + INTERVAL MAX(t.AggregatedRestockTime) DAY,
-        'In Progress'
-    FROM
-        tmpRestockTime t
-    JOIN
-        Storage s ON t.PartId = s.Part_id
-    JOIN
-        Restock_Details r ON s.Store_id = r.Store_Id
-    GROUP BY
-        s.Store_id, r.Supplier_id;
-
-    -- Update the storage quantities, subtracting no_of_parts * quantity and ensuring it doesn't go below 0
-    UPDATE Storage s
-    JOIN tmpRestockTime t ON s.Part_id = t.PartId
-    JOIN Assembled_By ab ON t.PartId = ab.Part_id
-    JOIN Order_Line ol ON ab.Product_ID = ol.Product_ID
-    SET s.Quantity = s.Quantity - (ab.Number_of_Parts * ol.Quantity);
-
-    -- Drop the temporary table
-    DROP TEMPORARY TABLE IF EXISTS tmpRestockTime;
-END //
-
-DELIMITER ;
-
-INSERT INTO Product (Product_ID, Product_Name, Product_Description, Category, Price, Image, Assembling_time)
+INSERT INTO Admin
 VALUES
-   ('P0005', 'BMW S1000RR', 'The BMW S1000RR is a high-performance sportbike that combines cutting-edge technology with thrilling speed. With its aerodynamic design and powerful engine, its the ultimate choice for motorcycle enthusiasts.', 'Motorcycle', 1500000.00, 'bmw-s1000rr.jpeg', 1),
-   ('P0006', 'Tesla Model 3', 'The Tesla Model 3 is an electric car that redefines sustainability and style. With its sleek design and advanced autopilot features, it offers a futuristic driving experience for eco-conscious individuals.', 'Electric', 4500000.00, 'tesla-model-3.jpeg', 2),
-   ('P0007', 'Yamaha YZF R6', 'The Yamaha YZF R6 is a sporty and agile motorcycle designed for adrenaline junkies. Its compact size and powerful engine make it perfect for both city commuting and track racing.', 'Motorcycle', 900000.00, 'yamaha-yzf-r6.jpeg', 1),
-    ('P0008', 'Honda Accord', 'The Honda Accord is a reliable and stylish sedan known for its fuel efficiency and comfortable ride. With advanced safety features and modern design, its a top choice for those seeking a dependable daily driver.', 'Auto', 2600000.00, 'honda-accord.jpeg', 2),
-   ('P0009', 'Ducati Multistrada V4', 'The Ducati Multistrada V4 is an adventure motorcycle built for versatility and performance. With its powerful engine and rugged design, its the perfect option for riders who enjoy both on and off-road journeys.', 'Auto', 2200000.00, 'ducati-multistrada-v4.jpeg', 1),
-   ('P0010', 'Toyota Prius', 'The Toyota Prius is a hybrid car that sets the standard for fuel efficiency. With its eco-friendly features and practical design, its a great choice for environmentally conscious drivers.', 'Hybrid Car', 2500000.00, 'toyota-prius.jpeg', 2);
-
-
-
-
-CREATE TABLE Admin(Admin_ID VARCHAR(5) PRIMARY KEY, password VARCHAR(100));
-INSERT INTO Admin VALUES('admin', '$2a$10$ajLYr46aHBjWhpcBV/Ng4O/2n/Anx0H2QPH09cPjPCGNqxHOEQanC');
+('admin', '$2a$10$ajLYr46aHBjWhpcBV/Ng4O/2n/Anx0H2QPH09cPjPCGNqxHOEQanC');
 
 -- ALTER TABLE SUPPLIER_ORDERS
 ALTER TABLE SUPPLIER_ORDERS
-ADD CONSTRAINT fk_supplier_orders
-FOREIGN KEY(Store_ID) REFERENCES STORAGE(Store_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_supplier_id FOREIGN KEY(Supplier_ID) REFERENCES SUPPLIER(Supplier_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_supplier_id FOREIGN KEY(Supplier_ID)
+REFERENCES SUPPLIER(Supplier_ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ALTER TABLE cart
 ALTER TABLE cart
@@ -344,16 +242,255 @@ ADD CONSTRAINT fk_ol_product FOREIGN KEY(Product_ID) REFERENCES Product(Product_
 
 -- ALTER TABLE Assembled_By
 ALTER TABLE Assembled_By
--- ADD CONSTRAINT fk_as_emp FOREIGN KEY(Employee_ID) REFERENCES Employee(Employee_ID),
 ADD CONSTRAINT fk_as_product FOREIGN KEY(Product_ID) REFERENCES Product(Product_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT fk_as_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ALTER TABLE Restock_Details
-ALTER TABLE Restock_Details
--- ADD CONSTRAINT fk_re_emp FOREIGN KEY(Employee_ID) REFERENCES Employee(Employee_ID),
-ADD CONSTRAINT fk_re_supplier FOREIGN KEY(Supplier_ID) REFERENCES Supplier(Supplier_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_as_store FOREIGN KEY(Store_ID) REFERENCES Storage(Store_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE Supplier
+ADD CONSTRAINT fk_part_supplier FOREIGN KEY(Part_ID) 
+REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ALTER TABLE Storage
 ALTER TABLE Storage
-ADD CONSTRAINT fk_store_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_store_part FOREIGN KEY(Part_ID) 
+REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE IF NOT EXISTS Order_Parts (
+		 Order_ID VARCHAR(100),
+		 Part_ID VARCHAR(5),
+		 Quantity INT,
+		 Timestamp_ TIMESTAMP,
+		 Status ENUM('0', '1'),
+		 PRIMARY KEY (Order_ID, Part_ID),
+		 FOREIGN KEY (Order_ID) REFERENCES Orders(Order_ID),
+		 FOREIGN KEY (Part_ID) REFERENCES Part(Part_ID)
+	 );
+
+-- to delete from carts when ordered
+DELIMITER //
+CREATE TRIGGER delete_carts_after_insert
+AFTER INSERT ON orders
+FOR EACH ROW
+BEGIN
+  DELETE FROM cart WHERE user_id = NEW.client_id;
+END;
+//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS updateOrderParts;
+DELIMITER //
+CREATE PROCEDURE updateOrderParts(
+    IN given_order_id VARCHAR(100),
+    IN given_product_id VARCHAR(5),
+    IN given_quantity INT
+)
+BEGIN
+    DECLARE Part_ID_var VARCHAR(5);
+    DECLARE Number_of_Parts INT;
+    DECLARE Total_Quantity INT;
+    
+    DECLARE done INT DEFAULT 0;
+    
+    DECLARE cur CURSOR FOR
+        SELECT a.Part_id, a.Number_of_Parts FROM assembled_by AS a WHERE a.Product_ID = given_product_id;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN cur;
+
+    AssembledByLoop: LOOP
+        FETCH cur INTO Part_ID_var, Number_of_Parts;
+        IF done THEN
+            LEAVE AssembledByLoop;
+        END IF;
+
+        SELECT COUNT(*) INTO Total_Quantity FROM Order_Parts 
+        WHERE Order_ID = given_order_id AND Part_ID = Part_ID_var;
+
+        IF Total_Quantity > 0 THEN
+            UPDATE Order_Parts 
+            SET Quantity = (Quantity + (Number_of_Parts*given_quantity))
+            WHERE Order_ID = given_order_id AND Part_ID = Part_ID_var;
+        ELSE
+            INSERT INTO Order_Parts (Order_ID, Part_ID, Quantity, Timestamp_, Status)
+            VALUES (given_order_id, Part_ID_var, Number_of_Parts*given_quantity, NOW(), '0');
+        END IF;
+    END LOOP;
+
+    CLOSE cur;
+    -- CALL checkOrderParts(given_order_id, given_product_id);
+END; //
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE  ProcessOrderPart(
+    IN given_order_id VARCHAR(100),
+    IN given_part_id VARCHAR(5),
+    IN given_quantity INT
+)
+BEGIN
+    DECLARE Storage_Quantity INT;
+    DECLARE Supplier_Quantity INT;
+
+    DECLARE Supplier_Status_var enum('In Progress','Shipped','Complete','Cancelled');
+    DECLARE Supplier_ID_var VARCHAR(5);
+    DECLARE Supplier_Date_Time_var TIMESTAMP;
+
+    -- Check if quantity is present in storage
+    SELECT Quantity INTO Storage_Quantity
+    FROM Storage
+    WHERE Part_ID = given_part_id;
+
+    IF Storage_Quantity >= given_quantity THEN
+        -- Update storage table quantity
+        UPDATE Storage
+        SET Quantity = Quantity - given_quantity
+        WHERE Part_ID = given_part_id;
+
+        -- Update status in Order_Parts
+        UPDATE Order_Parts
+        SET Status = '1' WHERE Order_ID = given_order_id AND Part_ID = given_part_id;
+    ELSE
+        -- Quantity is insufficient, insert entry into supplier_orders table
+        SELECT Supplier_ID, CURRENT_TIMESTAMP(), 'In Progress', given_quantity
+        INTO Supplier_ID_var, Supplier_Date_Time_var, Supplier_Status_var, Supplier_Quantity
+        FROM Supplier
+        WHERE Part_ID = given_part_id;
+
+        -- Insert entry into supplier_orders table
+        INSERT INTO supplier_orders (Supplier_id, date_time, Status, Quantity)
+        VALUES (Supplier_ID_var, Supplier_Date_Time_var, Supplier_Status_var, Supplier_Quantity);
+    END IF;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE ProcessOrderParts(
+    IN given_order_id VARCHAR(100)
+)
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE part_id_var VARCHAR(5);
+    DECLARE quantity_var INT;
+    DECLARE cur CURSOR FOR
+        SELECT Part_id, Quantity
+        FROM Order_Parts
+        WHERE Order_ID = given_order_id
+    ORDER BY Part_ID;
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO part_id_var, quantity_var;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        CALL ProcessOrderPart(given_order_id, part_id_var, quantity_var);
+    END LOOP;
+
+    CLOSE cur;
+END //
+DELIMITER ;
+
+-- Create the trigger
+DROP TRIGGER IF EXISTS checkQuantity;
+DELIMITER //
+CREATE TRIGGER checkQuantity
+AFTER INSERT 
+ON Order_Line
+FOR EACH ROW
+BEGIN
+    CALL updateOrderParts(NEW.Order_ID, NEW.Product_ID, NEW.Quantity);
+    CALL ProcessOrderParts(NEW.Order_ID);
+END //
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS AllRowsComplete;
+DELIMITER //
+CREATE FUNCTION AllRowsComplete(orderID VARCHAR(100)) RETURNS INT
+DETERMINISTIC
+BEGIN
+	DECLARE Not_Complete INT DEFAULT 0;
+	SELECT COUNT(*) INTO Not_Complete FROM Order_Parts WHERE Order_ID = order_ID AND Status = '0';
+	RETURN Not_Complete;
+END //
+DELIMITER ;
+
+SELECT COUNT(*) FROM Order_Parts WHERE Order_ID = 'C0001_2023-11-17T12:19:04.000Z' AND Status = '0';
+
+DROP TRIGGER IF EXISTS checkOrderStatus;
+DELIMITER //
+CREATE TRIGGER checkOrderStatus
+AFTER UPDATE
+ON Order_Parts
+FOR EACH ROW
+BEGIN
+    DECLARE Order_ID_var VARCHAR(100);
+    IF NEW.Status = '1' AND OLD.Status <> '1' THEN
+        SELECT NEW.Order_ID INTO Order_ID_var;
+		
+        IF AllRowsComplete(Order_ID_var) = 0 THEN
+            UPDATE Orders
+            SET Status = 'Complete'
+            WHERE Order_ID = Order_ID_var;
+        END IF;
+    END IF;
+END //
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS checkThreshold;
+DELIMITER //
+CREATE TRIGGER checkThreshold
+AFTER UPDATE
+ON Storage
+FOR EACH ROW
+BEGIN
+    DECLARE Part_ID_var VARCHAR(5);
+    DECLARE Supplier_ID_var VARCHAR(5);
+    DECLARE OrderPartsID_var VARCHAR(100);
+    
+    SELECT NEW.Part_ID INTO Part_ID_var;
+    IF NEW.Quantity < NEW.Threshold THEN
+        SELECT Supplier_ID INTO Supplier_ID_var
+        FROM Supplier
+        WHERE Supplier.Part_ID = Part_ID_var;
+
+        INSERT INTO Supplier_Orders VALUES (Supplier_ID_var, CURRENT_TIMESTAMP(), 
+        'In Progress', NEW.Threshold * 2);
+    END IF;
+END //
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS updateStorageQuantity;
+DELIMITER //
+CREATE TRIGGER updateStorageQuantity
+AFTER UPDATE
+ON Supplier_Orders
+FOR EACH ROW
+BEGIN
+    DECLARE Part_ID_var VARCHAR(5);
+    DECLARE newQuantity INT;
+    DECLARE Part_ID_storage VARCHAR(5);
+    DECLARE OrderPartsID_var VARCHAR(100);
+
+    SELECT Part_ID INTO Part_ID_var FROM Supplier WHERE Supplier_ID = NEW.Supplier_ID;
+    SELECT NEW.Quantity INTO newQuantity;
+
+    IF NEW.Status LIKE 'Complete' THEN
+        UPDATE Storage SET Quantity = Quantity + newQuantity WHERE Part_ID = Part_ID_var;
+
+        SELECT Order_ID INTO OrderPartsID_var FROM Order_Parts op
+        WHERE op.Part_ID = Part_ID_var ORDER BY op.Timestamp_ LIMIT 1;
+
+        IF (SELECT op.Quantity FROM Order_Parts op WHERE op.Order_ID = OrderPartsID_var) <= (SELECT Quantity FROM Storage WHERE Part_ID = Part_ID_var) THEN
+            UPDATE Storage SET Quantity = Quantity - (SELECT op.Quantity FROM Order_Parts op WHERE op.Order_ID = OrderPartsID_var) WHERE Part_ID = Part_ID_var;
+            UPDATE Order_Parts SET Status = '1' WHERE Order_ID = OrderPartsID_var AND Part_ID = Part_ID_var;
+        END IF;
+    END IF;
+
+END //
+DELIMITER ;
