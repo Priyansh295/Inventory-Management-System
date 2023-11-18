@@ -7,23 +7,6 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 
-  h1 {
-    text-align: center;
-    color: #333;
-  }
-
-  input,
-  textarea,
-  button {
-    margin-bottom: 10px;
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-
-  textarea {
-    resize: vertical;
-  }
 
 /*
   button {
