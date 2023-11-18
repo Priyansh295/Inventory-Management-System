@@ -21,6 +21,7 @@
 .modal {
   .modal-content {
     scroll-behavior: auto;
+    min-width: 500px;
     background: whitesmoke;
     padding: 20px;
     display: flex;

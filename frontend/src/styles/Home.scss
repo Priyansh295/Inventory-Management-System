@@ -1,0 +1,145 @@
+/* Home.scss */
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    flex-flow: column;
+    padding: 15px;
+    .info {
+        display: flex;
+        flex-wrap: wrap;
+        margin: auto;
+    }
+    header {
+        text-align: center;
+        background-color: #002347;
+        color: #fff;
+        padding: 20px;
+        width: 98%;
+    }
+
+    header h1 {
+        margin: 0;
+        color: whitesmoke;
+        font-size: xx-large;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-weight: bolder;
+    }
+
+    header p {
+        color: pink;
+        font-size: x-large;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-style: italic;
+    }
+
+    .featured-products, .special-offers {
+        border-radius: 20px;
+        padding: 10px 20px;
+        margin: 30px;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+        border: none;
+        &:hover {
+            transform: scale(1.01);
+        }
+    }
+    .featured-products {
+        background-color: rgb(217, 255, 251);
+        h2 {
+            font-size: x-large;
+            font-weight: bolder;
+            color: rgb(0, 54, 54);
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+    }
+    .special-offers {
+        background-color: rgb(210, 236, 250);
+        h2 {
+            font-size: x-large;
+            font-weight: bolder;
+            color: rgb(0, 54, 54);
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+    }
+
+    .product-list, .offer-list {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        border-radius: 10px;
+    }
+
+    .product, .offer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 250px;
+        margin: 20px;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont,
+         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+          'Open Sans', 'Helvetica Neue', sans-serif;
+        &:hover {
+            transform: scale(1.03);
+        }
+        a {
+            background-color: #004e63;
+            padding: 10px;
+            border-radius: 30px;
+            color: #fff;
+            display: block;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+            text-decoration: none;
+            &:hover {
+                background-color: #003b4b;
+            }
+        }
+        .image {
+            max-height: 200px;
+            width: 100%;
+            height: auto;
+            align-items: center;
+            object-fit: cover;
+            border-radius: 20px;
+            border: none;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0;
+            color: #555555;
+        }
+    }
+
+    .about-us {
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(250, 215, 244);
+        border-radius: 15px;
+        align-items: center;
+        padding: 10px 20px;
+        margin: auto;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        width: 70%;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+        h2 {
+            font-size: xx-large;
+            font-weight: 700;
+        }
+        p {
+            margin:auto;
+            text-align: justify;
+            color: black;
+            padding: 20px;
+            font-size: large;
+        }
+    }
+}

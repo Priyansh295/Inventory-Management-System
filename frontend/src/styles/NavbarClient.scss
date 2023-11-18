@@ -1,0 +1,81 @@
+/* NavbarAdmin.scss */
+
+.navbarclient {
+  background-color: #3498db; /* Calm background color */
+  padding: 30px 0; /* Increase top and bottom padding for more height */
+  position: relative;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow for depth */
+
+  h1 {
+    color: black;
+    font-size: x-large; /* Adjust as needed */
+    text-align: center;
+    align-items: center;
+    width: 300px;
+    margin-left: 80px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+  .container {
+    margin-right: 20px;
+    margin-top: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    .links {
+      display: flex;
+      align-items: center;
+      margin-right: 50px;
+      margin-left: auto; /* Push links to the right */
+      .link{
+        text-decoration: none;
+        color: #fff; /* Text color */
+        padding: 8px 15px; /* Adjust as needed */
+        border-radius: 5px; /* Optional: Add rounded corners */
+        background-color: #13d2eb; /* Button background color */
+        transition: background-color 0.3s ease; /* Smooth transition effect */
+        padding: 13px 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+        &:hover {
+          background-color: #06bfd7; /* Hover background color */
+        }
+      }
+      #home-button {
+        background-color: #1330eb; /* Button background color */
+        &:hover {
+          background-color: #0006b1; /* Hover background color */
+        }
+      }
+    }
+    .session_details {
+      margin-right: 15px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      border-radius: 20px;
+      padding: 10px 20px 10px 20px;
+      margin-top: auto;
+      margin-bottom: auto;
+      span {
+        margin-right: 15px; /* Adjust as needed */
+        color: #fff; /* Text color */
+        font-weight: bold;
+      }
+      .logout {
+        text-decoration: none;
+        color: #fff; /* Text color */
+        padding: 8px 15px; /* Adjust as needed */
+        border-radius: 5px; /* Optional: Add rounded corners */
+        background-color: orange; /* Button background color */
+        transition: background-color 0.3s ease; /* Smooth transition effect */
+        &:hover {
+            background-color: rgb(179, 116, 0); /* Hover background color */
+        }
+      }
+    }
+  }
+}
