@@ -349,20 +349,22 @@ router.post('/products/order_lines', async (req, res) => {
   }
 });
 
-// router.post('/procedure',(req,res)=>{
-//         const{Order_ID}=req.body;
-//         const callStoredProcedureQuery = 'CALL ProcessRestock(?)';
-//         const orderIdParameter = [Order_ID];
-//         console.log(orderIdParameter)
-//         db.query(callStoredProcedureQuery, orderIdParameter, (err, result) => {
-//         console.log("IN procedure")
-//         if (err) {
-//           console.error('Error calling stored procedure:', err);
-//           return res.status(500).json({ error: 'Internal server error' });
-//         }
-//         console.log('Stored procedure called successfully');
-//       })
-// })
+router.post('/procedure',(req,res)=>{
+      const Order_ID = req.body[0];
+      console.log(req.body)
+      console.log(Order_ID);
+      const callStoredProcedureQuery = 'CALL ProcessOrderParts(?)';
+      const orderIdParameter = [Order_ID];
+      console.log(orderIdParameter)
+      db.query(callStoredProcedureQuery, orderIdParameter, (err, result) => {
+        console.log("IN procedure")
+        if (err) {
+          console.error('Error calling stored procedure:', err);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
+        console.log('Stored procedure called successfully');
+    })
+})
 
 router.post('/products/order', (req, res) => {
   const {Order_id,
