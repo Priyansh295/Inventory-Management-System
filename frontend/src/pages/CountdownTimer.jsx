@@ -21,6 +21,7 @@ const CountdownTimer = ({ endTime }) => {
     }, 1000);
 
     return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endTime]);
 
   return <span>{timeRemaining}</span>;

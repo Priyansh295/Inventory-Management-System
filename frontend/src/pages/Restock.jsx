@@ -15,6 +15,7 @@ const Restock = () => {
 
   useEffect(() => {
     fetchRestock();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [err, setError] = useState([])
   const [msg, setMsg] = useState([])

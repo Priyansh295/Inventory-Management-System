@@ -13,6 +13,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchCartContents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchCartContents = async () => {
@@ -63,7 +64,6 @@ const Cart = () => {
       // console.log(cartContents)
       const total_price=calculateTotalPrice()
       console.log(total_price)
-      const currentDate1 = new Date();
       const res = await axios.get('http://localhost:8800/timestamp');
       const OrderDate = res.data;
       console.log(OrderDate)
@@ -94,9 +94,6 @@ const Cart = () => {
         await axios.post('http://localhost:8800/products/order_lines', formData);
         // window.location.href = '/products/order';
       }));
-      const data = {
-        'Order_ID': `${currentUser.Client_ID}_${OrderDate}`,
-      };  
       // axios.post('http://localhost:8800/procedure', data)
       window.location.href = '/products/order';
     } catch (error) {

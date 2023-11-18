@@ -5,7 +5,7 @@ import { AuthContext } from '../context/authContext';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  const [selectedDescription, setSelectedDescription] = useState('');
+  // const [selectedDescription, setSelectedDescription] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const {currentUser} = useContext(AuthContext);
@@ -85,7 +85,7 @@ const Products = () => {
                 />
                 <div className="product-details">
                   <h2>{prod.Product_Name}</h2>
-                  <p>{selectedDescription || prod.Product_Description}</p>
+                  <p>{prod.Product_Description}</p>
                   <p>Category: {prod.Category}</p>
                   <p className="price">Price: ${prod.Price}</p>
                   <button className="cart-button" onClick={() => addToCart(prod.Product_ID)}>
@@ -106,7 +106,7 @@ const Products = () => {
                 />
                 <div className="product-details">
                   <h2>{prod.Product_Name}</h2>
-                  <p>{selectedDescription || prod.Product_Description}</p>
+                  <p>{prod.Product_Description}</p>
                   <p>Category: {prod.Category}</p>
                   <p className="price">Price: ${prod.Price}</p>
                   <button className="cart-button" onClick={() => addToCart(prod.Product_ID)}>

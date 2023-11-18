@@ -5,6 +5,7 @@ export const ViewModal = ({ isOpen, onClose, Order_ID}) => {
     const [Orders, setOrders] = useState([]);
     useEffect(() => {
         fetchOrder_line();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
       const fetchOrder_line = async () => {
         try {
@@ -28,7 +29,6 @@ export const ViewModal = ({ isOpen, onClose, Order_ID}) => {
                         <th>Product ID</th>
                         <th>Status</th>
                         <th>Quantity</th>
-                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -37,11 +37,6 @@ export const ViewModal = ({ isOpen, onClose, Order_ID}) => {
                           <td>{order.Product_ID}</td>
                           <td>{order.Status}</td>
                           <td>{order.Quantity}</td>
-                          <td className='order_line-buttons'>
-                            <button className="status-button">
-                                Accept
-                            </button>
-                            </td>
                         </tr>
                       ))}
                     </tbody>
