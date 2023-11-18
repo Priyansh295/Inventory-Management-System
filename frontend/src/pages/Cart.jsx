@@ -76,6 +76,8 @@ const Cart = () => {
       await axios.post('http://localhost:8800/products/order',formData);
       // window.location.href = '/products/order';
 
+      const Order_ID = `${currentUser.Client_ID}_${OrderDate}`;
+      console.log(Order_ID);
       //Insert into orderLines
 
       const orderLineItems = cartContents.map(product => ({
@@ -94,7 +96,8 @@ const Cart = () => {
         await axios.post('http://localhost:8800/products/order_lines', formData);
         // window.location.href = '/products/order';
       }));
-      // axios.post('http://localhost:8800/procedure', data)
+      // console.log("data: ", data);
+      axios.post('http://localhost:8800/procedure', [Order_ID])
       window.location.href = '/products/order';
     } catch (error) {
       console.error('Error adding item to order:', error);

@@ -416,12 +416,11 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS checkQuantity;
 DELIMITER //
 CREATE TRIGGER checkQuantity
-AFTER INSERT 
+AFTER INSERT
 ON Order_Line
 FOR EACH ROW
 BEGIN
     CALL updateOrderParts(NEW.Order_ID, NEW.Product_ID, NEW.Quantity);
-    CALL ProcessOrderParts(NEW.Order_ID);
 END //
 DELIMITER ;
 
