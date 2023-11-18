@@ -45,7 +45,7 @@ export const fetch_stats_client_product = (req, res) => {
     const query = `
     select client_id,count(product_id) AS total_products
     from orders 
-    join order_line 
+    natural join order_line 
     group by client_id 
     order by count(product_id);
   `;

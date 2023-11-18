@@ -25,7 +25,7 @@ const NavbarAdmin = () => {
             </span>
           </div>
           <div className='session_details'>
-            <span className='admin_name'>{admin.Admin_ID}</span>
+            <span className='admin_name' onClick = {()=> navigate("/admin-details")}>{admin.Admin_ID}</span>
             {admin ? (<span className = "logout" onClick={logout_admin}>Logout</span>
               ) : (
               <Link className="link" to="/login">

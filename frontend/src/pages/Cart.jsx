@@ -135,7 +135,9 @@ const Cart = () => {
       ) : (
         <p className="empty-cart-message">Your cart is empty.</p>
       )}
+      {cartContents.length > 0 && (
       <button className="order-button" onClick={() => OrderFinal()}>Order final</button>
+    )}
     </div>
   );
 };

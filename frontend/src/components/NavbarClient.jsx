@@ -31,9 +31,11 @@ const NavbarClient = () => {
           <span className="link"  onClick = {()=> navigate("/products/order")}>
             <>Orders</>
           </span>
+          <span onClick = {()=> navigate("/client-details")}>
+            <h6>Client</h6>
+          </span>
         </div>
         <div className='session_details'>
-          <span>{currentUser?.Client_ID}</span>
           <span className = "logout" onClick={logout}>Logout</span>
         </div>
       </div>

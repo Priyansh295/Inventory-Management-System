@@ -14,6 +14,7 @@ import {fetch_storage} from './storage_crud.js'
 import { fetch_supplier_orders, update_supplier_order_status } from './supplier_orders.js';
 
 import { fetch_stats_category,fetch_stats_client_order,fetch_stats_client_product,fetch_stats_products_date } from './statistic.js';
+import { fetch_client, update_client,update_password, fetch_admin, update_admin_password,add_admin} from './client_crud.js';
 const router = express.Router();
 
 router.use(fileUpload());
@@ -504,6 +505,14 @@ router.get('/timestamp', (req, res) => {
   });
 });
 
+
+// Client and Admin Details
+router.get('/client/:id',fetch_client);
+router.put('/client/update/:id',update_client);
+router.post('/client/change-password',update_password);
+router.get('/admin/:id',fetch_admin);
+router.post('/admin/change-password',update_admin_password);
+router.post('/admin/add',add_admin);
 
 //Statistic
 router.get('/products/categories',fetch_stats_category);
