@@ -250,6 +250,7 @@ export const ProductPartsViewModal = ({ isOpen, onClose, selectedProduct }) => {
 
   useEffect(() => {
     fetchProductParts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

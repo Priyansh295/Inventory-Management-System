@@ -29,7 +29,27 @@
   .admin-form {
     display: block;
   }
-
+  .form {
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+    .register {
+      /* background-color: #3498db; */
+      align-items: center;
+      padding: 10px;
+      color: #000000;
+      text-align: center;
+      .reg-button {
+        background-color: #ffbb00;
+        padding: 10px;
+        border-radius: 20px;
+        color: #ffffff;
+        text-decoration: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        &:hover {
+          background-color: #ffaa00; /* Hover background color */
+        }
+      }
+    }
+  }
   .admin-form {
     display: none;
   }
@@ -61,7 +81,11 @@
     color: #fff;
     border: none;
     padding: 10px;
-    border-radius: 4px;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     cursor: pointer;
+    &:hover {
+      background-color: #0080ff; /* Hover background color */
+    }
   }
 }

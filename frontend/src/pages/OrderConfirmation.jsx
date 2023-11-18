@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/authContext';
-import '../styles/OrderComponent.css';
+import '../styles/OrderComponent.scss';
 
 const OrdersComponent = () => {
   const [orders, setOrders] = useState([]);
@@ -48,7 +48,7 @@ const OrdersComponent = () => {
       <h1>Your Orders</h1>
       <div className="order-history-buttons">
         <div className="filter-status">
-          <label htmlFor="statusFilter">Filter by Status:</label>
+          <label htmlFor="statusFilter">Filter by Status</label>
           <select
             id="statusFilter"
             onChange={(e) => filterOrders(e.target.value)}

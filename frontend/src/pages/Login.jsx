@@ -25,6 +25,7 @@ const LoginPage = () => {
   useEffect(() => {
     logout_admin()
     logout()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   // console.log(login)
   const {currentUser} = useContext(AuthContext);
@@ -88,7 +89,7 @@ const LoginPage = () => {
               <br/>
               {err && <p> {err}</p>}
               <button type="submit">Login</button>
-              <p>Don't have an account? <Link to = "/register">Register Now.</Link></p>
+              <p className='register'>Don't have an account? <Link to = "/register" className='reg-button'>Register Now.</Link></p>
             </form>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { AuthContext } from '../context/authContext';
 // import { Link } from 'react-router-dom';
-import "./Statistics.scss"
+import "../styles/Statistics.scss"
 import BarChart from '../Charts/BarChartCategory';
 import BarChartClient from '../Charts/BarChartClient';
 import LineChartProduct from '../Charts/LineChartProduct';
@@ -29,7 +29,7 @@ const Statistics = () => {
     if (admin) {
     return (
       <div className='statistic_container'>
-          <h1>Statistic</h1>
+          <h1>Statistics</h1>
           <div className='options'>
             <div className='buttons'>
               <button name = "Category" onClick={handleClick}>Category</button>
