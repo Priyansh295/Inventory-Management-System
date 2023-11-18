@@ -273,9 +273,8 @@ AFTER INSERT ON orders
 FOR EACH ROW
 BEGIN
   DELETE FROM cart WHERE user_id = NEW.client_id;
-END;
-//
-DELIMITER ;
+END //
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS updateOrderParts;
 DELIMITER //

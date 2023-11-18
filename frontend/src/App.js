@@ -27,7 +27,6 @@ import Statistics from "./pages/Statistics";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import ClientUpdate from "./pages/ClientUpdate"
 import AddAdmin from "./pages/AddAdmin";
-import AdminOrders from "./pages/AdminOrders";
 
 const Layout = () => {
   return (
