@@ -3,7 +3,7 @@ import { AuthContext } from '../context/authContext';
 import { Link, useNavigate } from 'react-router-dom';
 import "../styles/NavbarClient.scss"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faHome } from '@fortawesome/free-solid-svg-icons';
 
 
 const NavbarClient = () => {
@@ -25,17 +25,21 @@ const NavbarClient = () => {
           <span className="link" onClick = {()=> navigate("/products")}>
             <>Products</>
           </span>
+          <span className="link" id = "cart-button" onClick = {()=> navigate("/products/cart")}>
+            <span>Cart</span>
+            <FontAwesomeIcon icon={faCartShopping} />
+          </span>
           <span className="link"  onClick = {()=> navigate("/products/order")}>
             <>Orders</>
-          </span>
-          <span className="link" onClick = {()=> navigate("/products/cart")}>
-            <>Cart</>
           </span>
           <span onClick = {()=> navigate("/client-details")}>
             <h6>Client</h6>
           </span>
         </div>
         <div className='session_details'>
+          <span onClick = {()=> navigate("/client-details")}>
+            Client {currentUser?.Client_ID}
+          </span>
           <span className = "logout" onClick={logout}>Logout</span>
         </div>
       </div>

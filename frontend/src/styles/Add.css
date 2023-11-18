@@ -6,12 +6,12 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-  
+
   h1 {
     text-align: center;
     color: #333;
   }
-  
+
   input,
   textarea,
   button {
@@ -20,11 +20,12 @@
     padding: 10px;
     box-sizing: border-box;
   }
-  
+
   textarea {
     resize: vertical;
   }
-  
+
+/*
   button {
     background-color: #4caf50;
     color: #fff;
@@ -47,5 +48,4 @@
   
   Link:hover {
     color: #45a049;
-  }
-  
+  } */

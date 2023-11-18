@@ -215,6 +215,7 @@ export const ChangePasswordModal = ({ isOpen, onClose }) => {
               />
             </label>
             {msg && <p> {msg}</p>}
+            {err && <p>{JSON.stringify(err)}</p>}
             <button type="submit">Submit</button>
           </form>
         </div>

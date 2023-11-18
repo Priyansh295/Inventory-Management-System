@@ -21,12 +21,13 @@ import Order from "./pages/OrderConfirmation"
 import Admin from "./pages/Admin";
 import NavbarAdmin from "./components/NavbarAdmin";
 import NavbarClient from "./components/NavbarClient";
-import "./App.scss"
 import { ProtectedRouteAdmin, ProtectedRouteClient } from "./pages/ProtectedRoute";
 import Statistics from "./pages/Statistics";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import ClientUpdate from "./pages/ClientUpdate"
 import AddAdmin from "./pages/AddAdmin";
+import "./App.scss"
+import "./styles/BodyStyle.css"
 
 const Layout = () => {
   return (
