@@ -25,11 +25,11 @@ const NavbarClient = () => {
           <span className="link" onClick = {()=> navigate("/products")}>
             <>Products</>
           </span>
-          <span className="link" onClick = {()=> navigate("/products/cart")}>
-            <>Cart</>
-          </span>
           <span className="link"  onClick = {()=> navigate("/products/order")}>
             <>Orders</>
+          </span>
+          <span className="link" onClick = {()=> navigate("/products/cart")}>
+            <>Cart</>
           </span>
           <span onClick = {()=> navigate("/client-details")}>
             <h6>Client</h6>
