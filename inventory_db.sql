@@ -405,6 +405,19 @@ ON Order_Line
 FOR EACH ROW
 BEGIN
     CALL updateOrderParts(NEW.Order_ID, NEW.Product_ID, NEW.Quantity);
+END //
+DELIMITER ;
+
+
+
+-- Create the trigger
+DROP TRIGGER IF EXISTS updateOrderPartsOnInsert;
+DELIMITER //
+CREATE TRIGGER updateOrderPartsOnInsert
+AFTER INSERT 
+ON Orders
+FOR EACH ROW
+BEGIN
     CALL ProcessOrderParts(NEW.Order_ID);
 END //
 DELIMITER ;
