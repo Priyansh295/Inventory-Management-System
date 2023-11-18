@@ -1,7 +1,10 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../context/authContext';
 import { Link, useNavigate } from 'react-router-dom';
-import "./NavbarClient.scss"
+import "../styles/NavbarClient.scss"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+
 
 const NavbarClient = () => {
   const { currentUser, logout} = useContext(AuthContext);
@@ -16,17 +19,17 @@ const NavbarClient = () => {
       <h1 onClick={handleClick}> AutoMart </h1>
       <div className="container">
         <div className="links">
-          <span className="link" onClick = {()=> navigate("/client")}>
-            <h6>Home</h6>
+          <span className="link" id = 'home-button' onClick = {()=> navigate("/client")}>
+            <FontAwesomeIcon icon={faHome} />
           </span>
           <span className="link" onClick = {()=> navigate("/products")}>
-            <h6>Products</h6>
+            <>Products</>
           </span>
           <span className="link" onClick = {()=> navigate("/products/cart")}>
-            <h6>Cart</h6>
+            <>Cart</>
           </span>
           <span className="link"  onClick = {()=> navigate("/products/order")}>
-            <h6>Orders</h6>
+            <>Orders</>
           </span>
         </div>
         <div className='session_details'>
