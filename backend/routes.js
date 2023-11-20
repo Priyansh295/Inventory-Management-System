@@ -13,7 +13,7 @@ import {fetch_restock,update_restock,delete_restock,add_restock} from './restock
 import {fetch_storage} from './storage_crud.js'
 import { fetch_supplier_orders, update_supplier_order_status } from './supplier_orders.js';
 
-import { fetch_stats_category,fetch_stats_client_order,fetch_stats_client_product,fetch_stats_products_date } from './statistic.js';
+import { fetch_stats_category,fetch_stats_client_order,fetch_stats_client_product,fetch_stats_products_date, fetch_stats_most_category, fetch_stats_monthly_products,fetch_stats_category_details, fetch_stats_no_orders, fetch_stats_most_products } from './statistic.js';
 import { fetch_client, update_client,update_password, fetch_admin, update_admin_password,add_admin} from './client_crud.js';
 const router = express.Router();
 
@@ -521,6 +521,11 @@ router.get('/products/categories',fetch_stats_category);
 router.get('/orders/clients',fetch_stats_client_order);
 router.get('/products/clients',fetch_stats_client_product);
 router.get('/products/date',fetch_stats_products_date);
+router.get('/clients/most-category',fetch_stats_most_category);
+router.get('/products/monthly',fetch_stats_monthly_products);
+router.get('/categoryDetails',fetch_stats_category_details);
+router.get('/no-orders',fetch_stats_no_orders);
+router.get('/productDetails',fetch_stats_most_products);
 export default router;
 
 

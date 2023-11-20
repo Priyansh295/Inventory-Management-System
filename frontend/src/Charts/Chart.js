@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
-import {ShowModal} from './AddModal'
+import {ShowMostModal} from './AddModal'
 ChartJS.register(CategoryScale, LinearScale, BarElement);
 
 const BarChart = () => {
@@ -13,15 +13,16 @@ const BarChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/products/categories');
+        const response = await axios.get('http://localhost:8800/clients/most-category');
         const categories = response.data;
         setCategory(categories);
+        console.log(categories)
         const chartData = {
-          labels: categories.map((category) => category.Category),
+          labels: categories.map((category) => category.Client_ID),
           datasets: [
             {
               label: 'Products Sold',
-              data: categories.map((category) => category?.ProductsSold || 0),
+              data: categories.map((category) => category.TotalQuantity),
               backgroundColor: [
                 'rgba(255, 99, 132, 0.6)',
                 'rgba(54, 162, 235, 0.6)',
@@ -85,7 +86,7 @@ const BarChart = () => {
 
   return (
     <div>
-      <h1>No of Products Sold For Each Category</h1>
+        <h1>Category which the client has bought the most</h1>
       <div>
         <Bar data={data.chartData} options={data.chartOptions} height={500} width={1000} />
       </div>
@@ -93,7 +94,7 @@ const BarChart = () => {
         Show Details
       </button>
       {isAddModalOpen && (
-            <ShowModal isOpen={isAddModalOpen} onClose={closeModal} categoryDetails={category} />
+            <ShowMostModal isOpen={isAddModalOpen} onClose={closeModal} categoryDetails={category} />
       )}
     </div>
   );

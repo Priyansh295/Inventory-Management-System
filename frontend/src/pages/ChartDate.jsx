@@ -2,10 +2,9 @@ import React, { useContext, useState } from 'react'
 import { AuthContext } from '../context/authContext';
 // import { Link } from 'react-router-dom';
 import "../styles/Statistics.scss"
-import Category from './ChartCategory';
-import Client from "./ChartClient"
-import Date from "./ChartDate"
-
+import LineChartProduct from '../Charts/LineChartProduct';
+import Monthly from '../Charts/MonthlyChart';
+import Product from '../Charts/ChartProduct';
 const Statistics = () => {
     const {admin} = useContext(AuthContext);
     const [selectedOption, setSelectedOption] = useState([])
@@ -15,13 +14,12 @@ const Statistics = () => {
     }
     const renderSelectedComponent = () => {
       switch (selectedOption) {
-        case 'Category':
-          return <Category/>;
-        case 'Client':
-          return <Client/>
         case 'Date':
-          return <Date/>
-        // Add other cases for different components
+          return <LineChartProduct/>
+        case 'Monthly':
+          return <Monthly/>
+        case 'Most':
+          return <Product/>
         default:
           return null;
       }
@@ -29,12 +27,11 @@ const Statistics = () => {
     if (admin) {
     return (
       <div className='statistic_container'>
-          <h1>Statistics</h1>
           <div className='options'>
             <div className='buttons'>
-              <button name = "Category" onClick={handleClick}>Category</button>
-              <button name = "Client" onClick={handleClick}>Client</button>
-              <button name = "Date" onClick={handleClick}>Product</button>
+              <button name = "Date" onClick={handleClick}>Day Sales</button>
+              <button name = "Monthly" onClick={handleClick}>Monthly Sales</button>
+              <button name = "Most" onClick={handleClick}>Ordered Most</button>
             </div>
             <div className='populate'>
             {renderSelectedComponent()}
