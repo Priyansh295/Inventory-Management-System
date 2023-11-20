@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from 'axios';
-import './ClientUpdate.scss'; // Import the CSS file
+import '../styles/ClientUpdate.scss'; // Import the CSS file
 import { ClientModal,ChangePasswordModal } from './ClientModal';
 
 const NavbarClient = () => {
