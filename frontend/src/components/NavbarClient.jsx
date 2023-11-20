@@ -3,7 +3,7 @@ import { AuthContext } from '../context/authContext';
 import { Link, useNavigate } from 'react-router-dom';
 import "../styles/NavbarClient.scss"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faHome, faUser} from '@fortawesome/free-solid-svg-icons';
 
 
 const NavbarClient = () => {
@@ -32,8 +32,8 @@ const NavbarClient = () => {
           <span className="link"  onClick = {()=> navigate("/products/order")}>
             <>Orders</>
           </span>
-          <span onClick = {()=> navigate("/client-details")}>
-            <h6>Client</h6>
+          <span className= "link" onClick = {()=> navigate("/client-details")}>
+            <FontAwesomeIcon icon={faUser} />
           </span>
         </div>
         <div className='session_details'>

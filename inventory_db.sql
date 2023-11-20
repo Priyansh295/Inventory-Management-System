@@ -8,7 +8,7 @@ CREATE TABLE Client(
    Client_ID VARCHAR(5),
    Client_Name VARCHAR(20) NOT NULL,
    Email TEXT NOT NULL,
-   phone_no DECIMAL(10, 0) NOT NULL,
+   phone_no DECIMAL(13, 0) NOT NULL,
    City VARCHAR(20),
    PINCODE DECIMAL(6, 0),
    Building TEXT,

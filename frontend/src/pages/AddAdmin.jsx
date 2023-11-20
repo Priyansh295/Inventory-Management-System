@@ -40,8 +40,9 @@ const NavbarAdmin = () => {
   };
 
   return (
+    <div className='client-update'>
     <div className="client-container">
-      <button className="addAdmin" onClick={openAddAdminModal}>Add Admin</button>
+      
       <h2>Admin Details</h2>
       {admin && clientDetails && clientDetails.length > 0 ? (
         <div>
@@ -49,6 +50,7 @@ const NavbarAdmin = () => {
           <button className="change-password-button" onClick={openChangePasswordModal}>
             Change Password
           </button>
+          <button className="addAdmin" onClick={openAddAdminModal}>Add Admin</button>
           {isChangePasswordModalOpen && (
             <ChangePasswordModal isOpen={isChangePasswordModalOpen} onClose={closeModal} />
           )}
@@ -59,6 +61,7 @@ const NavbarAdmin = () => {
       ) : (
         <p>Loading client details...</p>
       )}
+    </div>
     </div>
   );  
 };

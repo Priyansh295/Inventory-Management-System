@@ -43,8 +43,9 @@ const NavbarClient = () => {
   };
 
   return (
+    <div className='client-update'>
     <div className="client-container">
-      <h2>Client Details</h2>
+      <h2 className='up-h'>Client Details</h2>
       {clientDetails ? (
         <div>
           <p><strong>Client ID:</strong> {clientDetails[0].Client_ID}</p>
@@ -72,6 +73,7 @@ const NavbarClient = () => {
       ) : (
         <p>Loading client details...</p>
       )}
+    </div>
     </div>
   );
 };
