@@ -451,18 +451,21 @@ BEGIN
     DECLARE Part_ID_var VARCHAR(5);
     DECLARE Supplier_ID_var VARCHAR(5);
     DECLARE OrderPartsID_var VARCHAR(100);
-    
-    SELECT NEW.Part_ID INTO Part_ID_var;
-    IF NEW.Quantity < NEW.Threshold THEN
-        SELECT Supplier_ID INTO Supplier_ID_var
-        FROM Supplier
-        WHERE Supplier.Part_ID = Part_ID_var;
 
-        INSERT INTO Supplier_Orders VALUES (Supplier_ID_var, CURRENT_TIMESTAMP(), 
-        'In Progress', NEW.Threshold * 2);
+    SELECT NEW.Part_ID INTO Part_ID_var;
+    IF NEW.Quantity < OLD.Quantity THEN
+        IF NEW.Quantity < NEW.Threshold THEN
+            SELECT Supplier_ID INTO Supplier_ID_var
+            FROM Supplier
+            WHERE Supplier.Part_ID = Part_ID_var;
+
+            INSERT INTO Supplier_Orders VALUES (Supplier_ID_var, CURRENT_TIMESTAMP(), 
+            'In Progress', NEW.Threshold * 2);
+        END IF;
     END IF;
 END //
 DELIMITER ;
+
 
 DROP TRIGGER IF EXISTS updateStorageQuantity;
 DELIMITER //
@@ -475,18 +478,18 @@ BEGIN
     DECLARE newQuantity INT;
     DECLARE Part_ID_storage VARCHAR(5);
     DECLARE OrderPartsID_var VARCHAR(100);
+    DECLARE Part_Quantity INT;
 
     SELECT Part_ID INTO Part_ID_var FROM Supplier WHERE Supplier_ID = NEW.Supplier_ID;
     SELECT NEW.Quantity INTO newQuantity;
 
     IF NEW.Status LIKE 'Complete' THEN
         UPDATE Storage SET Quantity = Quantity + newQuantity WHERE Part_ID = Part_ID_var;
+        SELECT Order_ID, Quantity INTO OrderPartsID_var, Part_Quantity
+        FROM Order_Parts WHERE Part_ID = Part_ID_var ORDER BY Timestamp_ LIMIT 1;
 
-        SELECT Order_ID INTO OrderPartsID_var FROM Order_Parts op
-        WHERE op.Part_ID = Part_ID_var ORDER BY op.Timestamp_ LIMIT 1;
-
-        IF (SELECT op.Quantity FROM Order_Parts op WHERE op.Order_ID = OrderPartsID_var) <= (SELECT Quantity FROM Storage WHERE Part_ID = Part_ID_var) THEN
-            UPDATE Storage SET Quantity = Quantity - (SELECT op.Quantity FROM Order_Parts op WHERE op.Order_ID = OrderPartsID_var) WHERE Part_ID = Part_ID_var;
+        IF (Part_Quantity) <= (SELECT Quantity FROM Storage WHERE Part_ID = Part_ID_var) THEN
+            UPDATE Storage SET Quantity = Quantity - Part_Quantity WHERE Part_ID = Part_ID_var;
             UPDATE Order_Parts SET Status = '1' WHERE Order_ID = OrderPartsID_var AND Part_ID = Part_ID_var;
         END IF;
     END IF;
