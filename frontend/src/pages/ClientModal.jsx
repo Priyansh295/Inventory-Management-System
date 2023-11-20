@@ -37,6 +37,7 @@ export const ClientModal = ({ isOpen, onClose, client }) => {
     try {
       const client_id = client.Client_ID;
       console.log(client_id);
+      console.log("Hello",updatedClient)
       const res = await axios.put("http://localhost:8800/client/update/"+client_id, updatedClient)
       console.log(res)
       setMsg(res.data)
@@ -57,7 +58,7 @@ export const ClientModal = ({ isOpen, onClose, client }) => {
             <input required
               type="text"
               id="clientName"
-              name="client_name"
+              name="Client_name"
               defaultValue={updatedClient.Client_name}
               onChange={handleInputChange}
             />
@@ -87,7 +88,7 @@ export const ClientModal = ({ isOpen, onClose, client }) => {
             <input required
               type="text"
               id="city"
-              name="city"
+              name="City"
               defaultValue={updatedClient.City}
               onChange={handleInputChange}
             />
@@ -97,7 +98,7 @@ export const ClientModal = ({ isOpen, onClose, client }) => {
             <input required
               type="text"
               id="pincode"
-              name="pincode"
+              name="Pincode"
               defaultValue={updatedClient.Pincode}
               onChange={handleInputChange}
             />
@@ -107,7 +108,7 @@ export const ClientModal = ({ isOpen, onClose, client }) => {
             <input required
               type="text"
               id="building"
-              name="building"
+              name="Building"
               defaultValue={updatedClient.Building}
               onChange={handleInputChange}
             />
@@ -117,7 +118,7 @@ export const ClientModal = ({ isOpen, onClose, client }) => {
             <input required
               type="text"
               id="floor"
-              name="floor"
+              name="Floor_no"
               defaultValue={updatedClient.Floor_no}
               onChange={handleInputChange}
             />
