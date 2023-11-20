@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
-
+// import {ShowClientModal} from './AddModal'
 ChartJS.register(CategoryScale, LinearScale, BarElement);
 
 const BarChart = () => {
   const [data, setData] = useState(null);
+  const [product,setProduct] = useState(null);
+  const [order,setOrder] =useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isUpdate,setUpdate] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,6 +18,7 @@ const BarChart = () => {
         // Fetch data for the first bar chart
         const response1 = await axios.get('http://localhost:8800/products/clients');
         const clients_product = response1.data;
+        setProduct(clients_product)
         console.log(clients_product)
         const chartData1 = {
           labels: clients_product.map((client_prod) => client_prod.client_id),
@@ -37,6 +42,7 @@ const BarChart = () => {
         // Fetch data for the second bar chart
         const response2 = await axios.get('http://localhost:8800/orders/clients');
         const clients = response2.data;
+        setOrder(clients)
         const chartData2 = {
           labels: clients.map((client) => client.client_id),
           datasets: [
@@ -64,6 +70,17 @@ const BarChart = () => {
 
     fetchData();
   }, []);
+  const closeModal = () => {
+    setIsAddModalOpen(false);
+  };
+
+  const handleAdd = () => {
+    setIsAddModalOpen(true);
+  };
+
+  const handleUpdate = () => {
+    setUpdate(true);
+  };
 
   if (!data) {
     // Data is still loading
@@ -124,16 +141,29 @@ const BarChart = () => {
 
   return (
     <div>
-  <div style={{ display: 'flex' }}>
-    <div style={{ flex: 1, marginRight: '170px' }}>
-      <Bar data={data.chartData2} options={chartOptions2} height={500} width={500} />
+      <div style={{ display: 'flex' }}>
+        <div style={{ flex: 1, marginRight: '170px' }}>
+          <div>
+          <Bar data={data.chartData2} options={chartOptions2} height={500} width={500} />
+          </div>
+          <button className="add-button" onClick={handleAdd}>
+            Show Details
+          </button>
+          {/* {isAddModalOpen && (
+            <ShowClientModal isOpen={isAddModalOpen} onClose={closeModal} categoryDetails={order} />
+      )} */}
+        </div>
+        
+        <div style={{ flex: 1 }}>
+          <div>
+          <Bar data={data.chartData1} options={chartOptions1} height={500} width={500} />
+          </div>
+          <button className="add-button" onClick={handleUpdate}>
+            Show Details
+          </button>
+        </div>
+      </div>
     </div>
-    <div style={{ flex: 1 }}>
-      <Bar data={data.chartData1} options={chartOptions1} height={500} width={500} />
-    </div>
-  </div>
-</div>
-
   );
 };
 

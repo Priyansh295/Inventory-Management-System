@@ -2,6 +2,8 @@ import React, { useContext } from 'react'
 import { AuthContext } from '../context/authContext';
 import { Link, useNavigate } from 'react-router-dom';
 import "../styles/NavbarAdmin.scss"
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const NavbarAdmin = () => {
   const { admin, logout_admin} = useContext(AuthContext);
@@ -22,6 +24,9 @@ const NavbarAdmin = () => {
             </span>
             <span className="link" onClick={() => navigate('/admin_orders')}>
                 Orders
+            </span>
+            <span className="link" onClick={() => navigate('/admin-details')}>
+              <FontAwesomeIcon icon={faUserPlus} />
             </span>
           </div>
           <div className='session_details'>

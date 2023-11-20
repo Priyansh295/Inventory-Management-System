@@ -8,7 +8,7 @@ CREATE TABLE Client(
    Client_ID VARCHAR(5),
    Client_Name VARCHAR(20) NOT NULL,
    Email TEXT NOT NULL,
-   phone_no DECIMAL(10, 0) NOT NULL,
+   phone_no DECIMAL(13, 0) NOT NULL,
    City VARCHAR(20),
    PINCODE DECIMAL(6, 0),
    Building TEXT,
@@ -156,7 +156,24 @@ VALUES
    ('P0004', 'P7', 4),
    ('P0004', 'P8', 4),
    ('P0004', 'P9', 1),
-   ('P0004', 'P10', 2);
+   ('P0004', 'P10', 2),
+   ('P0005', 'P1', 1),
+   ('P0005', 'P3', 1),
+   ('P0005', 'P5', 1),
+   ('P0006', 'P6', 1),
+   ('P0006', 'P7', 2),
+   ('P0007', 'P1', 1),
+   ('P0007', 'P3', 1),
+   ('P0007', 'P5', 1),
+   ('P0008', 'P1', 1),
+   ('P0008', 'P2', 1),
+   ('P0008', 'P4', 2),
+   ('P0009', 'P1', 1),
+   ('P0009', 'P4', 2),
+   ('P0009', 'P5', 1),
+   ('P0010', 'P1', 3),
+   ('P0010', 'P2', 1),
+   ('P0010', 'P3', 4);
 
 
 INSERT INTO STORAGE (Store_id, Part_id, Quantity, Rack_no, Block_no, Threshold)
@@ -273,9 +290,8 @@ AFTER INSERT ON orders
 FOR EACH ROW
 BEGIN
   DELETE FROM cart WHERE user_id = NEW.client_id;
-END;
-//
-DELIMITER ;
+END //
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS updateOrderParts;
 DELIMITER //
