@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
-// import {ShowClientModal} from './AddModal'
+import {ShowClientModal, ShowClientProductModal} from './AddModal'
 ChartJS.register(CategoryScale, LinearScale, BarElement);
 
 const BarChart = () => {
@@ -72,6 +72,7 @@ const BarChart = () => {
   }, []);
   const closeModal = () => {
     setIsAddModalOpen(false);
+    setUpdate(false);
   };
 
   const handleAdd = () => {
@@ -149,9 +150,9 @@ const BarChart = () => {
           <button className="add-button" onClick={handleAdd}>
             Show Details
           </button>
-          {/* {isAddModalOpen && (
+          {isAddModalOpen && (
             <ShowClientModal isOpen={isAddModalOpen} onClose={closeModal} categoryDetails={order} />
-      )} */}
+      )}
         </div>
         
         <div style={{ flex: 1 }}>
@@ -161,6 +162,9 @@ const BarChart = () => {
           <button className="add-button" onClick={handleUpdate}>
             Show Details
           </button>
+          {isUpdate && (
+            <ShowClientProductModal isOpen={isUpdate} onClose={closeModal} categoryDetails={product} />
+      )}
         </div>
       </div>
     </div>
