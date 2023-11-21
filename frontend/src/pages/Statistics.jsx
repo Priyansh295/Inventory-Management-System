@@ -1,10 +1,12 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/authContext';
 // import { Link } from 'react-router-dom';
 import "../styles/Statistics.scss"
 import Category from './ChartCategory';
 import Client from "./ChartClient"
 import Date from "./ChartDate"
+import "../styles/Chart.scss"
+import Summary from './Summary';
 
 const Statistics = () => {
     const {admin} = useContext(AuthContext);
@@ -13,8 +15,13 @@ const Statistics = () => {
       const buttonName = e.target.name;
       setSelectedOption(buttonName);
     }
+    useEffect(()=> {
+      setSelectedOption('Summary');
+    }, [])
     const renderSelectedComponent = () => {
       switch (selectedOption) {
+        case 'Summary':
+          return <Summary/>
         case 'Category':
           return <Category/>;
         case 'Client':
@@ -29,9 +36,11 @@ const Statistics = () => {
     if (admin) {
     return (
       <div className='statistic_container'>
-          <h1>Statistics</h1>
+          <h1>Dashboard</h1>
+          <span className='division'></span>
           <div className='options'>
             <div className='buttons'>
+              <button name = "Summary" onClick={handleClick}>Summary</button>
               <button name = "Category" onClick={handleClick}>Category</button>
               <button name = "Client" onClick={handleClick}>Client</button>
               <button name = "Date" onClick={handleClick}>Product</button>
