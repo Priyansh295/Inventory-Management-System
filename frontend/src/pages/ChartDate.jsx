@@ -26,7 +26,7 @@ const Statistics = () => {
     }
     if (admin) {
     return (
-      <div className='statistic_container'>
+      <div className='chart-container'>
           <div className='options'>
             <div className='buttons'>
               <button name = "Date" onClick={handleClick}>Day Sales</button>

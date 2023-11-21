@@ -3,6 +3,7 @@ import { AuthContext } from '../context/authContext';
 // import { Link } from 'react-router-dom';
 import BarChart from '../Charts/BarChartCategory';
 import Chart2 from '../Charts/Category_1';
+import "../styles/ChartCategory.scss"
 
 const Statistics = () => {
     const {admin} = useContext(AuthContext);
@@ -24,18 +25,17 @@ const Statistics = () => {
     }
     if (admin) {
     return (
-      <div className='statistic_container'>
+      <div className='chart-container'>
           <div className='options'>
             <div className='buttons'>
               <button name = "Category" onClick={handleClick}>Quantity Sold</button>
               <button name = "Most_category" onClick={handleClick}>Clients</button>
             </div>
-            <div className='populate'>
-            {renderSelectedComponent()}
+            <div className='populate-chart'>
+              {renderSelectedComponent()}
             </div>
           </div>
       </div>
-
     )
     } else {
       return (
