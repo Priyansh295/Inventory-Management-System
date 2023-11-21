@@ -483,6 +483,38 @@ END //
 DELIMITER ;
 
 
+-- DROP TRIGGER IF EXISTS updateStorageQuantity;
+-- DELIMITER //
+-- CREATE TRIGGER updateStorageQuantity
+-- AFTER UPDATE
+-- ON Supplier_Orders
+-- FOR EACH ROW
+-- BEGIN
+--     DECLARE Part_ID_var VARCHAR(5);
+--     DECLARE newQuantity INT;
+--     DECLARE Part_ID_storage VARCHAR(5);
+--     DECLARE OrderPartsID_var VARCHAR(100);
+--     DECLARE Part_Quantity INT;
+
+--     SELECT Part_ID INTO Part_ID_var FROM Supplier WHERE Supplier_ID = NEW.Supplier_ID;
+--     SELECT NEW.Quantity INTO newQuantity;
+
+--     IF NEW.Status LIKE 'Complete' THEN
+--         SELECT Order_ID INTO OrderPartsID_var
+--         FROM Order_Parts WHERE Part_ID = Part_ID_var AND Status = '0' ORDER BY Timestamp_ LIMIT 1;
+--         SELECT Quantity INTO Part_Quantity
+--         FROM Order_Parts WHERE Part_ID = Part_ID_var AND Status = '0' ORDER BY Timestamp_ LIMIT 1;
+
+--         IF (Part_Quantity) <= (SELECT Quantity FROM Storage WHERE Part_ID = Part_ID_var) THEN
+--             UPDATE Order_Parts SET Status = '1' WHERE Order_ID = OrderPartsID_var AND Part_ID = Part_ID_var;
+--             SELECT  (newQuantity - Part_Quantity) INTO newQuantity ;
+--         END IF;
+--         UPDATE Storage SET Quantity = Quantity + newQuantity WHERE Part_ID = Part_ID_var;
+
+--     END IF;
+
+-- END //
+-- DELIMITER ;
 DROP TRIGGER IF EXISTS updateStorageQuantity;
 DELIMITER //
 CREATE TRIGGER updateStorageQuantity
@@ -492,22 +524,24 @@ FOR EACH ROW
 BEGIN
     DECLARE Part_ID_var VARCHAR(5);
     DECLARE newQuantity INT;
-    DECLARE Part_ID_storage VARCHAR(5);
-    DECLARE OrderPartsID_var VARCHAR(100);
+    DECLARE OrderID_var VARCHAR(100);
     DECLARE Part_Quantity INT;
 
     SELECT Part_ID INTO Part_ID_var FROM Supplier WHERE Supplier_ID = NEW.Supplier_ID;
     SELECT NEW.Quantity INTO newQuantity;
 
     IF NEW.Status LIKE 'Complete' THEN
-        UPDATE Storage SET Quantity = Quantity + newQuantity WHERE Part_ID = Part_ID_var;
-        SELECT Order_ID, Quantity INTO OrderPartsID_var, Part_Quantity
-        FROM Order_Parts WHERE Part_ID = Part_ID_var ORDER BY Timestamp_ LIMIT 1;
+        SELECT Order_ID INTO OrderID_var FROM Order_Parts op WHERE Part_ID = Part_ID_var AND op.Status = '0' ORDER BY Timestamp_ LIMIT 1;
+        SELECT Quantity INTO Part_Quantity FROM Order_Parts op WHERE Order_ID = OrderID_var AND Part_ID = Part_ID_var;
+        -- SELECT Quantity INTO Part_Quantity
+        -- FROM Order_Parts WHERE Part_ID = Part_ID_var AND Status = '0' ORDER BY Timestamp_ LIMIT 1;
 
-        IF (Part_Quantity) <= (SELECT Quantity FROM Storage WHERE Part_ID = Part_ID_var) THEN
-            UPDATE Storage SET Quantity = Quantity - Part_Quantity WHERE Part_ID = Part_ID_var;
-            UPDATE Order_Parts SET Status = '1' WHERE Order_ID = OrderPartsID_var AND Part_ID = Part_ID_var;
+        IF (Part_Quantity <= newQuantity) THEN
+            UPDATE Order_Parts SET Status = '1' WHERE Order_ID = OrderID_var AND Part_ID = Part_ID_var;
+            SELECT  (newQuantity - Part_Quantity) INTO newQuantity ;
         END IF;
+        UPDATE Storage SET Quantity = Quantity + newQuantity WHERE Part_ID = Part_ID_var;
+
     END IF;
 
 END //
