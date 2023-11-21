@@ -15,6 +15,7 @@ import { fetch_supplier_orders, update_supplier_order_status } from './supplier_
 
 import { fetch_stats_category,fetch_stats_client_order,fetch_stats_client_product,fetch_stats_products_date, fetch_stats_most_category, fetch_stats_monthly_products,fetch_stats_category_details, fetch_stats_no_orders, fetch_stats_most_products } from './statistic.js';
 import { fetch_client, update_client,update_password, fetch_admin, update_admin_password,add_admin} from './client_crud.js';
+import fetchSummary from './summary_stats.js';
 const router = express.Router();
 
 router.use(fileUpload());
@@ -519,3 +520,4 @@ router.get('/productDetails',fetch_stats_most_products);
 export default router;
 
 
+router.get('/summarystats', fetchSummary);
