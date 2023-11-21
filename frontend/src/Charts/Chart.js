@@ -85,7 +85,7 @@ const BarChart = () => {
   }
 
   return (
-    <div>
+    <div className='chart'>
         <h1>Category which the client has bought the most</h1>
       <div>
         <Bar data={data.chartData} options={data.chartOptions} height={500} width={1000} />

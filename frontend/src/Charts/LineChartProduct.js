@@ -90,7 +90,7 @@ const LineChart = () => {
   };
 
   return (
-    <div>
+    <div className='chart'>
       <div>
         <Line data={data.chartData} options={data.chartOptions} height={500} width={1000}/>
       </div>

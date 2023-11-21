@@ -141,8 +141,8 @@ const BarChart = () => {
   };
 
   return (
-    <div>
-      <div style={{ display: 'flex' }}>
+    <div className='chart'>
+      <div className='charts' style={{ display: 'flex' }}>
         <div style={{ flex: 1, marginRight: '170px' }}>
           <div>
           <Bar data={data.chartData2} options={chartOptions2} height={500} width={500} />
