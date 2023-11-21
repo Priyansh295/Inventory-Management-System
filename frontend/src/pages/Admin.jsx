@@ -37,6 +37,7 @@ const Admin = () => {
     if (admin) {
     return (
       <div className='admin_container'>
+          <span className='division'></span>
           <div className='options'>
             <div className='buttons'>
               <button name = "Products" onClick={handleClick}>Products</button>

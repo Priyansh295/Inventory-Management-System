@@ -23,6 +23,7 @@ const AdminOrdersPage = () => {
     }
     return (
         <div className='admin_orders_container'>
+          <span className='division'></span>
             <div className='options'>
               <div className='buttons'>
                 <button name = "ClientOrders" onClick={handleClick}>Client Orders</button>
