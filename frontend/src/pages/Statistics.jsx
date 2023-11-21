@@ -45,7 +45,7 @@ const Statistics = () => {
               <button name = "Client" onClick={handleClick}>Client</button>
               <button name = "Date" onClick={handleClick}>Product</button>
             </div>
-            <div className='populate'>
+            <div className='populate-stats'>
             {renderSelectedComponent()}
             </div>
           </div>
