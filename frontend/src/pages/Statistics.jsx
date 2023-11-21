@@ -36,8 +36,9 @@ const Statistics = () => {
     if (admin) {
     return (
       <div className='statistic_container'>
-          <h1>Dashboard</h1>
           <span className='division'></span>
+          {/* <h1>Dashboard</h1> */}
+          {/* <span className='division'></span> */}
           <div className='options'>
             <div className='buttons'>
               <button name = "Summary" onClick={handleClick}>Summary</button>
