@@ -507,6 +507,26 @@ router.get('/timestamp', (req, res) => {
   });
 });
 
+router.put('/orders-deliver/:orderId', (req, res) => {
+  const orderId = req.params.orderId;
+  const status = 'Shipped'; // New status
+  console.log('Received orderId:', orderId);
+  const updateQuery = 'UPDATE Orders SET Status = ? WHERE Order_ID = ?';
+  db.query(updateQuery, [status, orderId], (err, result) => {
+    if (err) {
+      console.error('Error updating order status:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    // Check if any rows were affected
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // Send success response
+    res.status(200).json({ message: 'Order status updated successfully' });
+  });
+});
 
 // Client and Admin Details
 router.get('/client/:id',fetch_client);

@@ -56,7 +56,8 @@ const OrdersComponent = () => {
           >
             <option value="">All</option>
             <option value="In Progress">In Progress</option>
-            <option value="Delivered">Delivered</option>
+            <option value="Complete">Complete</option>
+            <option value="Shipped">Shipped</option>
           </select>
         </div>
       </div>

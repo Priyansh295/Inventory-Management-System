@@ -66,7 +66,7 @@ const SupplierOrders = () => {
                   <td className='order-buttons'>
                     <button
                       className="status-button"
-                      disabled={order.Status !== 'Complete' && new Date(order.res_time).getTime() > new Date().getTime()}
+                      // disabled={order.Status !== 'Complete' && new Date(order.res_time).getTime() > new Date().getTime()}
                       onClick={ () => handleClick(order)}
                     >
                       Add To Storage

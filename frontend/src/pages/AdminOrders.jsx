@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from 'axios';
 import '../styles/AdminOrders.scss';
-import {ViewModal} from './AdminOrdersModal';
+import { ViewModal } from './AdminOrdersModal';
 
 const AdminOrders = () => {
   const { admin } = useContext(AuthContext);
@@ -13,6 +13,7 @@ const AdminOrders = () => {
   useEffect(() => {
     fetchOrders();
   }, []);
+
   const fetchOrders = async () => {
     try {
       const res = await axios.get(`http://localhost:8800/orders`);
@@ -22,6 +23,7 @@ const AdminOrders = () => {
       console.error('Error fetching suppliers:', error);
     }
   };
+
   const openViewModal = (Order_ID) => {
     setSelectedOrders(Order_ID);
     setIsViewModalOpen(true);
@@ -30,6 +32,18 @@ const AdminOrders = () => {
   const closeModal = () => {
     setSelectedOrders(null);
     setIsViewModalOpen(false);
+  };
+
+  const deliverOrder = async (orderID) => {
+    try {
+      // Update the order status to 'Delivered' on the server
+      await axios.put(`http://localhost:8800/orders-deliver/${orderID}`);
+      // Update the local state to reflect the changed status
+      console.log('Order Delivered successfully');
+      window.location.reload()
+    } catch (error) {
+      console.error('Error delivering order:', error);
+    }
   };
 
   if (admin) {
@@ -57,15 +71,19 @@ const AdminOrders = () => {
                   <td>{order.Order_Placement_Date}</td>
                   <td>{order.Status}</td>
                   <td className='order-buttons'>
-                    {/* {<button className="update-button" onClick={() => openUpdateModal(supplier)}>
-                      Update
-                    </button> */}
                     <button
                       className="status-button"
                       disabled={order.Status !== 'Complete'}
                       onClick={() => console.log('Accept Clicked')}
                     >
                       Accept
+                    </button>
+                    <button
+                      className="deliver-button"
+                      // disabled={order.Status !== 'Complete'}
+                      onClick={() => deliverOrder(order.Order_ID)}
+                    >
+                      Deliver
                     </button>
                     <button className="view-button" onClick={() => openViewModal(order.Order_ID)}>
                       View Order Lines
