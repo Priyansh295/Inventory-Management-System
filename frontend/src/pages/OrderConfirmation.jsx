@@ -67,6 +67,7 @@ const OrdersComponent = () => {
               <p>Order ID: {order.Order_ID}</p>
               <p>Status: {order.Status}</p>
               <p>Total Price: ${order.Total_Payment}</p>
+              {order.Employee_ID && (<p>Employee ID : {order.Employee_ID}</p>)}
             </div>
             <div className="order-buttons">
               <button onClick={() => showOrderDetails(order.Order_ID)}>Show Details</button>
