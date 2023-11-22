@@ -161,11 +161,6 @@ export const ProductPartsUpdateModal = ({ isOpen, onClose, selectedProduct }) =>
     setProduct((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleImageChange = (e) => {
-    setProduct((prev) => ({ ...prev, Image: e.target.files[0] }));
-  };
-
-
   return (
     <div className={`prod-modal ${isOpen ? 'open' : ''}`}>
       <div className="product-parts-container">

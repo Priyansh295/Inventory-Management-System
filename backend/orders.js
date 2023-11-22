@@ -20,3 +20,15 @@ export const fetch_order_line = (req, res) => {
     res.json(data);
   });
 }
+
+export const addEmployee = (req, res) => {
+    const Employee_ID = req.body[0];
+    const Order_ID = req.params.id;
+    const query = "UPDATE Orders SET Employee_ID = ? WHERE Order_ID = ?";
+    db.query(query, [Employee_ID, Order_ID], (err, data) => {
+      if (err) {
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      return res.json("Update Successful");
+    })
+}

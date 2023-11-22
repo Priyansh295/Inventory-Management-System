@@ -19,11 +19,12 @@ CREATE TABLE Client(
 
 
 CREATE TABLE Orders(
-   Order_ID varchar(100),
+   Order_ID VARCHAR(100),
    Client_ID VARCHAR(5),
    Total_Payment DECIMAL(10, 2),
    Shipment_Date timestamp,
    Order_Placement_Date timestamp default current_timestamp,
+   Employee_ID VARCHAR(5),
    Status ENUM("In Progress", "Shipped", "Complete", "Cancelled"),
    PRIMARY KEY(Order_ID)
 );
@@ -249,7 +250,8 @@ ADD CONSTRAINT fk_client_cart FOREIGN KEY(user_id) REFERENCES client(client_id) 
 -- ALTER TABLE Orders
 ALTER TABLE Orders
 ADD CONSTRAINT fk_order_client
-FOREIGN KEY(Client_ID) REFERENCES Client(Client_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+FOREIGN KEY(Client_ID) REFERENCES Client(Client_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT fk_order_employee FOREIGN KEY(Employee_ID) REFERENCES EMPLOYEE(Employee_ID);
 
 -- ALTER TABLE Order_Line
 ALTER TABLE Order_Line
@@ -264,12 +266,12 @@ ADD CONSTRAINT fk_as_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELET
 
 -- ALTER TABLE Restock_Details
 ALTER TABLE Supplier
-ADD CONSTRAINT fk_part_supplier FOREIGN KEY(Part_ID) 
-REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_part_supplier FOREIGN KEY(Part_ID)
+REFERENCES Part(Part_ID) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- ALTER TABLE Storage
 ALTER TABLE Storage
-ADD CONSTRAINT fk_store_part FOREIGN KEY(Part_ID) 
+ADD CONSTRAINT fk_store_part FOREIGN KEY(Part_ID)
 REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
 CREATE TABLE IF NOT EXISTS Order_Parts (
