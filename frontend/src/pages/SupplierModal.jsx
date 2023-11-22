@@ -1,6 +1,6 @@
 // SupplierModal.jsx
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../styles/SupplierModal.scss"
 import axios from 'axios';
 
@@ -12,6 +12,8 @@ export const SupplierModal = ({ isOpen, onClose, supplier }) => {
     Email: supplier.Email,
     Phone_no: supplier.Phone_no,
     Address: supplier.Address,
+    Price: supplier.Price,
+    Restock_time: supplier.Restock_time,
   });
 
   const [msg, setMsg] = useState([])
@@ -27,7 +29,7 @@ export const SupplierModal = ({ isOpen, onClose, supplier }) => {
       [name]: convertedValue,
     }));
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -102,6 +104,26 @@ export const SupplierModal = ({ isOpen, onClose, supplier }) => {
               onChange={handleInputChange}
             />
           </label>
+          <label className="label">
+            <span>Price:</span>
+            <input required
+              type="number"
+              id="Price"
+              name="Price"
+              defaultValue={updatedSupplier.Price}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label className="label">
+            <span>Restock Time (days):</span>
+            <input required
+              type="number"
+              id="Restock_time"
+              name="Restock_time"
+              defaultValue={updatedSupplier.Restock_time}
+              onChange={handleInputChange}
+            />
+          </label>
           {msg && <p> {msg}</p>}
           {err && <p> {err}</p>}
           <button type="submit">
@@ -116,12 +138,17 @@ export const SupplierModal = ({ isOpen, onClose, supplier }) => {
 export const SupplierAddModal = ({ isOpen, onClose }) => {
   const [newSupplier, setNewSupplier] = useState({
     Supplier_id: '',
+    'Part_id': '',
     Supplier_name: '',
     Quantity: 0,
     Email: '',
     Phone_no: '',
     Address: '',
+    Price: 0,
+    Restock_time: 0,
   });
+
+  const [parts, setParts] = useState([]);
   const [msg, setMsg] = useState([])
   const [err, setError] = useState([])
   const handleInputChange = (e) => {
@@ -131,6 +158,27 @@ export const SupplierAddModal = ({ isOpen, onClose }) => {
     setNewSupplier((prevSupplier) => ({
       ...prevSupplier,
       [name]: convertedValue,
+    }));
+  };
+
+  useEffect(() => {
+    fetchParts();
+  }, []);
+  const fetchParts = async () => {
+    try {
+      const res = await axios.get('http://localhost:8800/parts');
+      console.log(res.data);
+      setParts(res.data);
+    } catch (err) {
+      console.log(err);
+      // setError(err.response.data);
+    }
+  };
+
+  const handlePartSelectChange = (e) => {
+    setNewSupplier((prevSupplier) => ({
+      ...prevSupplier,
+      Part_id: e.target.value,
     }));
   };
 
@@ -145,7 +193,7 @@ export const SupplierAddModal = ({ isOpen, onClose }) => {
       console.log('Added Supplier:', newSupplier);
       setMsg(res.data);
     } catch (err) {
-      setError(err.response.data);
+      setError(err.response?.data);
     }
   };
 
@@ -164,6 +212,25 @@ export const SupplierAddModal = ({ isOpen, onClose }) => {
               defaultValue={newSupplier.Supplier_id}
               onChange={handleInputChange}
             />
+          </label>
+          <label className="label">
+            <span>Part ID:</span>
+            <select
+              required
+              id="partID"
+              name="Part_id"
+              value={newSupplier.Part_id}
+              onChange={handlePartSelectChange}
+            >
+              <option value="" disabled>
+                Select Part ID
+              </option>
+              {parts.map((part) => (
+                <option key={part.Part_id} value={part.Part_id}>
+                  {part.Part_id}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="label" htmlFor="supplierName">
             <span>Supplier Name:</span>
@@ -209,15 +276,35 @@ export const SupplierAddModal = ({ isOpen, onClose }) => {
           <label className="label">
             <span>Address:</span>
             <input required
-              type="tel"
+              type="text"
               id="Address"
               name="Address"
               defaultValue={newSupplier.Address}
               onChange={handleInputChange}
             />
           </label>
+          <label className="label">
+            <span>Price:</span>
+            <input required
+              type="number"
+              id="Price"
+              name="Price"
+              defaultValue={newSupplier.Price}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label className="label">
+            <span>Restock Time (days):</span>
+            <input required
+              type="number"
+              id="Restock_time"
+              name="Restock_time"
+              defaultValue={newSupplier.Restock_time}
+              onChange={handleInputChange}
+            />
+          </label>
           {msg && <p> {msg}</p>}
-          {err && <p> {err}</p>}
+          {err && <p> {JSON.stringify(err)}</p>}
           <button type="submit">
             Submit
           </button>

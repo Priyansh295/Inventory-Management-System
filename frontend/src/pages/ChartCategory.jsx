@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/authContext';
 // import { Link } from 'react-router-dom';
 import BarChart from '../Charts/BarChartCategory';
@@ -23,6 +23,9 @@ const Statistics = () => {
           return null;
       }
     }
+    useEffect( () => {
+      setSelectedOption('Category');
+    })
     if (admin) {
     return (
       <div className='chart-container'>

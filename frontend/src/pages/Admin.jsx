@@ -30,9 +30,6 @@ const Admin = () => {
           return <Storage/>;
         case 'Parts':
           return <Parts/>;
-        case 'Restock':
-            return <Restock/>;
-        // Add other cases for different components
         default:
           return null;
       }
@@ -40,6 +37,7 @@ const Admin = () => {
     if (admin) {
     return (
       <div className='admin_container'>
+          <span className='division'></span>
           <div className='options'>
             <div className='buttons'>
               <button name = "Products" onClick={handleClick}>Products</button>
@@ -47,7 +45,6 @@ const Admin = () => {
               <button name = "Storage" onClick={handleClick}>Storage</button>
               <button name = "Suppliers" onClick={handleClick}>Suppliers</button>
               <button name = "Employees" onClick={handleClick}>Employees</button>
-              <button name = "Restock" onClick={handleClick}>Restock</button>
             </div>
             <div className='populate'>
             {renderSelectedComponent()}

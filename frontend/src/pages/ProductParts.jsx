@@ -120,14 +120,13 @@ export const ProductPartsModal = ({ isOpen, onClose }) => {
 };
 
 export const ProductPartsUpdateModal = ({ isOpen, onClose, selectedProduct }) => {
-  const [selectedParts, setSelectedParts] = useState([]);
   const [product, setProduct] = useState({
-    Product_ID: '',
-    Product_name: '',
-    Product_description: '',
-    Category: '',
-    Price: '',
-    Image: null,
+    Product_ID: selectedProduct.Product_ID,
+    Product_Name: selectedProduct.Product_Name,
+    Product_description: selectedProduct.Product_Description,
+    Category: selectedProduct.Category,
+    Price: selectedProduct.Price,
+    Image: selectedProduct.Image,
   });
   const [msg, setMsg] = useState([])
   const [err, setError] = useState([])
@@ -143,8 +142,6 @@ export const ProductPartsUpdateModal = ({ isOpen, onClose, selectedProduct }) =>
       formData.append('Product_Description', product.Product_description);
       formData.append('Category', product.Category);
       formData.append('Price', product.Price);
-      formData.append('Image', product.Image);
-      formData.append('parts_str', JSON.stringify(selectedParts))
       console.log(formData)
       const res = await axios.put('http://localhost:8800/products/'+product.Product_ID, formData, {
         headers: {
@@ -164,19 +161,10 @@ export const ProductPartsUpdateModal = ({ isOpen, onClose, selectedProduct }) =>
     setProduct((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSelectedPartsChange = (newSelectedOption) => {
-    setSelectedParts((prev) => [...prev, newSelectedOption]);
-  };
-
   const handleImageChange = (e) => {
     setProduct((prev) => ({ ...prev, Image: e.target.files[0] }));
   };
 
-  const handleRemovePart = (index) => {
-    const updatedParts = [...selectedParts];
-    updatedParts.splice(index, 1);
-    setSelectedParts(updatedParts);
-  };
 
   return (
     <div className={`prod-modal ${isOpen ? 'open' : ''}`}>
@@ -186,42 +174,37 @@ export const ProductPartsUpdateModal = ({ isOpen, onClose, selectedProduct }) =>
         <form className="product-parts-form" onSubmit={handleSubmit}>
           <label className="product-label">
             <span>Product ID:</span>
-            <input type="text" name="Product_ID" onChange={handleChange} />
+            <input disabled type="text" name="Product_ID" 
+            onChange={handleChange} 
+              defaultValue={product.Product_ID}
+            />
           </label>
           <label className="product-label">
               <span>Product Name:</span>
-              <input type="text" name="Product_name" onChange={handleChange} />
+              <input type="text" name="Product_Name"
+              defaultValue={product.Product_Name}
+               onChange={handleChange} />
           </label>
           <label className="product-label">
             <span>Product Description:</span>
-            <input type="text" name="Product_description" onChange={handleChange} />
+            <input type="text" name="Product_description"
+              defaultValue={product.Product_description}
+             onChange={handleChange} />
           </label>
           <label className="product-label">
             <span>Product Category:</span>
-            <input type="text" name="Category" onChange={handleChange} />
-          </label>
-          <label className="product-label">
-            <span>Product Image:</span>
-            <input type="file" accept=".jpeg, .jpg" name="Image" onChange={handleImageChange}/>
+            <input type="text" name="Category" 
+            onChange={handleChange}
+            defaultValue={product.Category}
+             />
           </label>
           <label className="product-label">
             <span>Price:</span>
-            <input type="number" name="Price" onChange={handleChange} />
+            <input type="number" name="Price" onChange={handleChange}
+              defaultValue={product.Price}
+             />
           </label>
-          <div className='select_div'>
-              <SelectParts className = "select_parts" onSelectedPartsChange={handleSelectedPartsChange} />
-          </div>
-          <ul className="selected-parts-list">
-              {selectedParts.map((selectedOption, index) => (
-              <li key={index} className="selected-part-item">
-                  {selectedOption.label} - Quantity: {selectedOption.quantity}
-                  <button type="button" className="rem-button" onClick={() => handleRemovePart(index)}>
-                    Remove
-                  </button>
-              </li>
-              ))}
-          </ul>
-          {msg && <p> {msg}</p>}
+          {msg && <p> {JSON.stringify(msg)}</p>}
           {err && <p> {err}</p>}
           <button type="submit" className="submit-button">
             Submit

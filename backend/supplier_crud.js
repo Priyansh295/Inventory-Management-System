@@ -9,7 +9,7 @@ export const update_supplier = (req, res) => {
     }
     const query = `
     UPDATE Supplier
-    SET Supplier_name=?, Quantity=?, Email=?, Phone_no=?, Address=?
+    SET Supplier_name=?, Quantity=?, Email=?, Phone_no=?, Address=?, Price=?, Restock_time=?
     WHERE Supplier_id=?;
     `;
     const v = [
@@ -18,6 +18,8 @@ export const update_supplier = (req, res) => {
       req.body.Email,
       req.body.Phone_no,
       req.body.Address,
+      req.body.Price,
+      req.body.Restock_time,
       supplier_id,
     ]
     console.log(supplier_id, v);
@@ -44,11 +46,14 @@ export const add_supplier = (req, res) => {
       const q = "INSERT INTO Supplier VALUES (?)"
       const v = [
           req.body.Supplier_id,
+          req.body.Part_id,
           req.body.Supplier_name,
-          req.body.Quantity,
           req.body.Email,
           req.body.Phone_no,
           req.body.Address,
+          req.body.Quantity,
+          req.body.Price,
+          req.body.Restock_time
       ]
       console.log(v)
       db.query(q, [v], (err, data) => {

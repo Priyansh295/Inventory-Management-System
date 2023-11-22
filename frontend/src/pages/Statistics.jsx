@@ -36,8 +36,9 @@ const Statistics = () => {
     if (admin) {
     return (
       <div className='statistic_container'>
-          <h1>Dashboard</h1>
           <span className='division'></span>
+          {/* <h1>Dashboard</h1> */}
+          {/* <span className='division'></span> */}
           <div className='options'>
             <div className='buttons'>
               <button name = "Summary" onClick={handleClick}>Summary</button>
@@ -45,7 +46,7 @@ const Statistics = () => {
               <button name = "Client" onClick={handleClick}>Client</button>
               <button name = "Date" onClick={handleClick}>Product</button>
             </div>
-            <div className='populate'>
+            <div className='populate-stats'>
             {renderSelectedComponent()}
             </div>
           </div>

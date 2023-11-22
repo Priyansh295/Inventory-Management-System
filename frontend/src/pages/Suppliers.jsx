@@ -73,11 +73,14 @@ const Suppliers = () => {
             <thead>
               <tr>
                 <th>Supplier ID</th>
+                <th>Part ID</th>
                 <th>Supplier Name</th>
                 <th>Quantity</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Address</th>
+                <th>Price</th>
+                <th>Restock Time</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -85,11 +88,14 @@ const Suppliers = () => {
               {suppliers.map((supplier) => (
                 <tr className="supplier_row" key={supplier.Supplier_id}>
                   <td>{supplier.Supplier_id}</td>
+                  <td>{supplier.Part_id}</td>
                   <td>{supplier.Supplier_name}</td>
                   <td>{supplier.Quantity}</td>
                   <td>{supplier.Email}</td>
                   <td>{supplier.Phone_no}</td>
                   <td>{supplier.Address}</td>
+                  <td>{supplier.Price}</td>
+                  <td>{supplier.Restock_time}</td>
                   <td className='supplier-buttons'>
                     <button className="update-button" onClick={() => openUpdateModal(supplier)}>
                       Update

@@ -15,6 +15,7 @@ import { fetch_supplier_orders, update_supplier_order_status } from './supplier_
 
 import { fetch_stats_category,fetch_stats_client_order,fetch_stats_client_product,fetch_stats_products_date, fetch_stats_most_category, fetch_stats_monthly_products,fetch_stats_category_details, fetch_stats_no_orders, fetch_stats_most_products } from './statistic.js';
 import { fetch_client, update_client,update_password, fetch_admin, update_admin_password,add_admin} from './client_crud.js';
+import fetchSummary from './summary_stats.js';
 const router = express.Router();
 
 router.use(fileUpload());
@@ -125,35 +126,25 @@ router.post('/products/add', add_product);
 // Update a product
 router.put('/products/:id', (req, res) => {
     const productId = req.params.id;
-    const { Product_Name, Product_Description, Category, Price} = req.body;
-    const image = req.files && req.files.Image;
-    if (!Product_ID || !Product_Name || !Product_Description || !Category || !Price || !image) {
+    const { Product_Name, Product_Description, Category, Price, Product_ID} = req.body;
+    console.log("here")
+    if (!Product_ID || !Product_Name || !Product_Description || !Category || !Price) {
         return res.status(400).json({ error: 'Invalid input data' });
       }
     const query = `
       UPDATE Product
-      SET Product_Name=?, Product_Description=?, Category=?, Price=?, Image=?
+      SET Product_Name=?, Product_Description=?, Category=?, Price=?
       WHERE Product_ID=?
     `;
-    const values = [Product_Name, Product_Description, Category, Price, image.name, productId];
+    const values = [Product_Name, Product_Description, Category, Price, productId];
 
     db.query(query, values, (err, result) => {
         if (err) {
           console.error('Error adding product to the database:', err);
           return res.status(500).json({ error: 'Internal server error' });
         }
-        const __filename = new URL(import.meta.url).pathname;
-        const __dirname = path.dirname(__filename);
-        const frontendPublicPath = path.join(__dirname, '..', 'frontend', 'public');
-        const uploadPath = path.join(frontendPublicPath, 'images', image.name);
-        image.mv(uploadPath, (err) => {
-          if (err) {
-            console.error('Error saving image:', err);
-            return res.status(500).json({ error: 'Internal server error' });
-          }
-          console.log('Product Updated successfully with image');
-          res.status(200).json({ success: true });
-        });
+        console.log('Product Updated successfully with image');
+        return res.status(200).json({ success: true });
       });
   });
 
@@ -549,3 +540,4 @@ router.get('/productDetails',fetch_stats_most_products);
 export default router;
 
 
+router.get('/summarystats', fetchSummary);
