@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/authContext';
 // import { Link } from 'react-router-dom';
 import "../styles/Admin.scss"
-import Restock from './Restock';
 import Suppliers from './Suppliers';
 import Employees from './Employees';
 import Storage from './Storage';
