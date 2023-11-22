@@ -19,7 +19,7 @@ const BarChart = () => {
         const response1 = await axios.get('http://localhost:8800/products/clients');
         const clients_product = response1.data;
         setProduct(clients_product)
-        console.log(clients_product)
+        console.log("bye",clients_product)
         const chartData1 = {
           labels: clients_product.map((client_prod) => client_prod.client_id),
           datasets: [

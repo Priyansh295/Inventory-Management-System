@@ -28,7 +28,7 @@ const Statistics = () => {
     }
     useEffect( () => {
       setSelectedOption('Orders');
-    })
+    },[])
     if (admin) {
     return (
       <div className='chart-container'>

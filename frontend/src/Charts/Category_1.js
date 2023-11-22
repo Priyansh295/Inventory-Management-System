@@ -10,7 +10,7 @@ const BarChart = () => {
         const response = await axios.get('http://localhost:8800/categoryDetails');
         const categories = response.data;
         setCategory(categories);
-        console.log(categories);
+        console.log("hello",categories);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

@@ -27,7 +27,6 @@ export const update_supplier_order_status = (req, res) => {
     console.log(localDateTime);
     console.log(date_time, formattedDate)
     const q = "UPDATE Supplier_Orders SET Status = ? WHERE Supplier_ID = ? AND date_time = CONVERT_TZ(?, '+00:00', '+05:30') ";
-
     db.query(q, [status, Supplier_ID, formattedDate], (err, data) => {
         if(err) {
             console.error('Error fetching Supplier Orders:', err);

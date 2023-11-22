@@ -26,7 +26,7 @@ const Statistics = () => {
     }
     useEffect( () => {
       setSelectedOption('Date');
-    })
+    },[])
     if (admin) {
     return (
       <div className='chart-container'>

@@ -40,7 +40,8 @@ const AdminOrders = () => {
       await axios.put(`http://localhost:8800/orders-deliver/${orderID}`);
       // Update the local state to reflect the changed status
       console.log('Order Delivered successfully');
-      window.location.reload()
+      // window.location.reload()
+      fetchOrders();
     } catch (error) {
       console.error('Error delivering order:', error);
     }
@@ -71,16 +72,16 @@ const AdminOrders = () => {
                   <td>{order.Order_Placement_Date}</td>
                   <td>{order.Status}</td>
                   <td className='order-buttons'>
-                    <button
+                    {/* <button
                       className="status-button"
                       disabled={order.Status !== 'Complete'}
                       onClick={() => console.log('Accept Clicked')}
                     >
                       Accept
-                    </button>
+                    </button> */}
                     <button
-                      className="deliver-button"
-                      // disabled={order.Status !== 'Complete'}
+                      className="status-button"
+                      disabled={order.Status !== 'Complete'}
                       onClick={() => deliverOrder(order.Order_ID)}
                     >
                       Deliver
