@@ -22,14 +22,15 @@ const AdminOrders = () => {
       console.error('Error fetching suppliers:', error);
     }
   };
-  const openViewModal = (Order_ID) => {
-    setSelectedOrders(Order_ID);
+  const openViewModal = (order) => {
+    setSelectedOrders(order);
     setIsViewModalOpen(true);
   };
 
   const closeModal = () => {
     setSelectedOrders(null);
     setIsViewModalOpen(false);
+    fetchOrders();
   };
 
   if (admin) {
@@ -67,7 +68,7 @@ const AdminOrders = () => {
                     >
                       Accept
                     </button>
-                    <button className="view-button" onClick={() => openViewModal(order.Order_ID)}>
+                    <button className="view-button" onClick={() => openViewModal(order)}>
                       View Order Lines
                     </button>
                   </td>
@@ -78,7 +79,7 @@ const AdminOrders = () => {
 
           {/* Conditionally render the modals */}
           {isViewModalOpen && (
-            <ViewModal isOpen={isViewModalOpen} onClose={closeModal} Order_ID={selectedOrder} />
+            <ViewModal isOpen={isViewModalOpen} onClose={closeModal} Order={selectedOrder} />
           )}
         </div>
       </div>
