@@ -8,7 +8,7 @@ import { add_supplier, delete_supplier, fetch_suppliers, update_supplier } from 
 import { add_employee, delete_employee, fetch_employees, update_employee } from './employees_crud.js';
 import { add_product, delete_product, get_product_parts } from './products_crud.js';
 import { add_store, delete_store, fetch_stores, update_store} from './storage_crud.js';
-import { fetch_orders,fetch_order_line } from './orders.js';
+import { fetch_orders,fetch_order_line, addEmployee } from './orders.js';
 import {fetch_restock,update_restock,delete_restock,add_restock} from './restock.js'
 import {fetch_storage} from './storage_crud.js'
 import { fetch_supplier_orders, update_supplier_order_status } from './supplier_orders.js';
@@ -521,3 +521,5 @@ export default router;
 
 
 router.get('/summarystats', fetchSummary);
+
+router.put('/orders/employee/:id', addEmployee);
