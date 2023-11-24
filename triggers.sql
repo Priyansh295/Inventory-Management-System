@@ -1,12 +1,19 @@
+-- Script Overview:
+-- This script defines triggers, procedures, and functions to handle order processing,
+-- inventory management, and supplier interactions in a database system.
+
+-- Trigger: Delete cart items after order confirmation
 DELIMITER //
 CREATE TRIGGER delete_carts_after_insert
 AFTER INSERT ON orders
 FOR EACH ROW
 BEGIN
+  -- Delete items from the cart for the user whose order is confirmed
   DELETE FROM cart WHERE user_id = NEW.client_id;
 END //
 DELIMITER ;
 
+-- Procedure: Update OrderParts Table
 DROP PROCEDURE IF EXISTS updateOrderParts;
 DELIMITER //
 CREATE PROCEDURE updateOrderParts(
@@ -15,12 +22,14 @@ CREATE PROCEDURE updateOrderParts(
     IN given_quantity INT
 )
 BEGIN
+    -- Variables for cursor operation
     DECLARE Part_ID_var VARCHAR(5);
     DECLARE Number_of_Parts INT;
     DECLARE Total_Quantity INT;
-    
+
     DECLARE done INT DEFAULT 0;
-    
+
+    -- Cursor to fetch parts associated with the given product
     DECLARE cur CURSOR FOR
         SELECT a.Part_id, a.Number_of_Parts FROM assembled_by AS a WHERE a.Product_ID = given_product_id;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
@@ -33,9 +42,11 @@ BEGIN
             LEAVE AssembledByLoop;
         END IF;
 
+        -- Check if the part is already in the Order_Parts table
         SELECT COUNT(*) INTO Total_Quantity FROM Order_Parts 
         WHERE Order_ID = given_order_id AND Part_ID = Part_ID_var;
 
+        -- Update or insert into Order_Parts based on existence
         IF Total_Quantity > 0 THEN
             UPDATE Order_Parts
             SET Quantity = (Quantity + (Number_of_Parts*given_quantity))
@@ -47,19 +58,18 @@ BEGIN
     END LOOP;
 
     CLOSE cur;
-    -- CALL checkOrderParts(given_order_id, given_product_id);
 END; //
 DELIMITER ;
 
-
+-- Procedure: Check Storage for Availability or Place Supplier Order
 DELIMITER //
-
 CREATE PROCEDURE  ProcessOrderPart(
     IN given_order_id VARCHAR(100),
     IN given_part_id VARCHAR(5),
     IN given_quantity INT
 )
 BEGIN
+    -- Variables for storage and supplier information
     DECLARE Storage_Quantity INT;
     DECLARE Supplier_Quantity INT;
 
@@ -73,16 +83,15 @@ BEGIN
     WHERE Part_ID = given_part_id;
 
     IF Storage_Quantity >= given_quantity THEN
-        -- Update storage table quantity
+        -- Sufficient quantity in storage, update storage and order_parts
         UPDATE Storage
         SET Quantity = Quantity - given_quantity
         WHERE Part_ID = given_part_id;
 
-        -- Update status in Order_Parts
         UPDATE Order_Parts
         SET Status = '1' WHERE Order_ID = given_order_id AND Part_ID = given_part_id;
     ELSE
-        -- Quantity is insufficient, insert entry into supplier_orders table
+        -- Insufficient quantity, place order with the supplier
         SELECT Supplier_ID, CURRENT_TIMESTAMP(), 'In Progress', given_quantity
         INTO Supplier_ID_var, Supplier_Date_Time_var, Supplier_Status_var, Supplier_Quantity
         FROM Supplier
@@ -93,9 +102,9 @@ BEGIN
         VALUES (Supplier_ID_var, Supplier_Date_Time_var, Supplier_Status_var, Supplier_Quantity);
     END IF;
 END //
-
 DELIMITER ;
 
+-- Procedure: Process all rows in OrderParts table
 DELIMITER //
 CREATE PROCEDURE ProcessOrderParts(
     IN given_order_id VARCHAR(100)
@@ -119,6 +128,7 @@ BEGIN
         IF done THEN
             LEAVE read_loop;
         END IF;
+        -- Call ProcessOrderPart for each row in OrderParts table
         CALL ProcessOrderPart(given_order_id, part_id_var, quantity_var);
     END LOOP;
 
@@ -126,31 +136,33 @@ BEGIN
 END //
 DELIMITER ;
 
--- Create the trigger
-DROP TRIGGER IF EXISTS checkQuantity;
+-- Trigger: Process Order_Line after insertion
+DROP TRIGGER IF EXISTS Process_Order_Line;
 DELIMITER //
-CREATE TRIGGER checkQuantity
+CREATE TRIGGER Process_Order_Line
 AFTER INSERT
 ON Order_Line
 FOR EACH ROW
 BEGIN
+    -- Call updateOrderParts when a new order line is inserted
     CALL updateOrderParts(NEW.Order_ID, NEW.Product_ID, NEW.Quantity);
 END //
 DELIMITER ;
 
+-- Function: Check if all Order_Parts associated with an order are ready
 DROP FUNCTION IF EXISTS AllRowsComplete;
 DELIMITER //
 CREATE FUNCTION AllRowsComplete(orderID VARCHAR(100)) RETURNS INT
 DETERMINISTIC
 BEGIN
-	DECLARE Not_Complete INT DEFAULT 0;
-	SELECT COUNT(*) INTO Not_Complete FROM Order_Parts WHERE Order_ID = order_ID AND Status = '0';
-	RETURN Not_Complete;
+    -- Check if there are any incomplete rows in Order_Parts
+    DECLARE Not_Complete INT DEFAULT 0;
+    SELECT COUNT(*) INTO Not_Complete FROM Order_Parts WHERE Order_ID = order_ID AND Status = '0';
+    RETURN Not_Complete;
 END //
 DELIMITER ;
 
-SELECT COUNT(*) FROM Order_Parts WHERE Order_ID = 'C0001_2023-11-17T12:19:04.000Z' AND Status = '0';
-
+-- Trigger: Check if all order lines in an order are ready and update order status
 DROP TRIGGER IF EXISTS checkOrderStatus;
 DELIMITER //
 CREATE TRIGGER checkOrderStatus
@@ -159,9 +171,9 @@ ON Order_Parts
 FOR EACH ROW
 BEGIN
     DECLARE Order_ID_var VARCHAR(100);
+    -- If a row is marked as ready and the order is not complete, update order status
     IF NEW.Status = '1' AND OLD.Status <> '1' THEN
         SELECT NEW.Order_ID INTO Order_ID_var;
-
         IF AllRowsComplete(Order_ID_var) = 0 THEN
             UPDATE Orders
             SET Status = 'Complete'
@@ -171,6 +183,7 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Trigger: Check if storage quantity falls below threshold and place a supplier order
 DROP TRIGGER IF EXISTS checkThreshold;
 DELIMITER //
 CREATE TRIGGER checkThreshold
@@ -183,12 +196,14 @@ BEGIN
     DECLARE OrderPartsID_var VARCHAR(100);
 
     SELECT NEW.Part_ID INTO Part_ID_var;
+    -- If storage quantity falls below the threshold, place a supplier order
     IF NEW.Quantity < OLD.Quantity THEN
         IF NEW.Quantity < NEW.Threshold THEN
             SELECT Supplier_ID INTO Supplier_ID_var
             FROM Supplier
             WHERE Supplier.Part_ID = Part_ID_var;
 
+            -- Insert an entry into Supplier_Orders
             INSERT INTO Supplier_Orders VALUES (Supplier_ID_var, CURRENT_TIMESTAMP(), 
             'In Progress', NEW.Threshold * 2);
         END IF;
@@ -196,7 +211,7 @@ BEGIN
 END //
 DELIMITER ;
 
-
+-- Trigger: Update storage quantity when a supplier order is complete
 DROP TRIGGER IF EXISTS updateStorageQuantity;
 DELIMITER //
 CREATE TRIGGER updateStorageQuantity
@@ -209,22 +224,22 @@ BEGIN
     DECLARE OrderID_var VARCHAR(100);
     DECLARE Part_Quantity INT;
 
+    -- Fetch relevant information from the Supplier table
     SELECT Part_ID INTO Part_ID_var FROM Supplier WHERE Supplier_ID = NEW.Supplier_ID;
     SELECT NEW.Quantity INTO newQuantity;
 
+    -- If the supplier order is complete, update Order_Parts and Storage
     IF NEW.Status LIKE 'Complete' THEN
+        -- Find the associated order and quantity in Order_Parts
         SELECT Order_ID INTO OrderID_var FROM Order_Parts op WHERE Part_ID = Part_ID_var AND op.Status = '0' ORDER BY Timestamp_ LIMIT 1;
         SELECT Quantity INTO Part_Quantity FROM Order_Parts op WHERE Order_ID = OrderID_var AND Part_ID = Part_ID_var;
-        -- SELECT Quantity INTO Part_Quantity
-        -- FROM Order_Parts WHERE Part_ID = Part_ID_var AND Status = '0' ORDER BY Timestamp_ LIMIT 1;
 
+        -- If order quantity is met, mark Order_Parts as ready and update Storage
         IF (Part_Quantity <= newQuantity) THEN
             UPDATE Order_Parts SET Status = '1' WHERE Order_ID = OrderID_var AND Part_ID = Part_ID_var;
             SELECT  (newQuantity - Part_Quantity) INTO newQuantity ;
         END IF;
         UPDATE Storage SET Quantity = Quantity + newQuantity WHERE Part_ID = Part_ID_var;
-
     END IF;
-
 END //
 DELIMITER ;
