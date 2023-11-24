@@ -1,7 +1,6 @@
 import express from 'express';
 import db from './db.js';
 import fileUpload from 'express-fileupload';
-import path from 'path';
 import { login_admin, login_client, logout_admin, logout_client, register } from "./auth_controller.js";
 import { add_part, delete_part, fetch_parts, update_part } from './parts_crud.js';
 import { add_supplier, delete_supplier, fetch_suppliers, update_supplier } from './supplier_crud.js';
@@ -9,7 +8,6 @@ import { add_employee, delete_employee, fetch_employees, update_employee } from 
 import { add_product, delete_product, get_product_parts } from './products_crud.js';
 import { add_store, delete_store, fetch_stores, update_store} from './storage_crud.js';
 import { fetch_orders,fetch_order_line, addEmployee } from './orders.js';
-import {fetch_restock,update_restock,delete_restock,add_restock} from './restock.js'
 import {fetch_storage} from './storage_crud.js'
 import { fetch_supplier_orders, update_supplier_order_status } from './supplier_orders.js';
 
@@ -64,62 +62,6 @@ router.post('/products', (req, res) => {
     return res.json(data);
   });
 });
-
-//Add a product
-// router.post('/products/add', (req, res) => {
-//     console.log(req.body.product)
-//     console.log(req.body.parts)
-//     console.log(req.body)
-//     const {Product_ID, Product_Name, Product_Description, Category, Price, parts} = req.body;
-//     console.log({Product_ID, Product_Name, Product_Description, Category, Price})
-//     const image = req.files && req.files.Image;
-
-//     if (!Product_ID || !Product_Name || !Product_Description || !Category || !Price || !image) {
-//       return res.status(400).json({ error: 'Invalid input data' });
-//     }
-
-//     const sql = `
-//       INSERT INTO Product (Product_ID, Product_Name, Product_Description, Category, Price, Image)
-//       VALUES (?, ?, ?, ?, ?, ?)
-//     `;
-//     const values = [Product_ID, Product_Name, Product_Description, Category, Price, image.name];
-
-//     db.query(sql, values, (err, result) => {
-//       if (err) {
-//         console.error('Error adding product to the database:', err);
-//         return res.status(500).json({ error: 'Internal server error' });
-//       }
-//       const __filename = new URL(import.meta.url).pathname;
-//       const __dirname = path.dirname(__filename);
-//       const frontendPublicPath = path.join(__dirname, '..', 'frontend', 'public');
-//       const uploadPath = path.join(frontendPublicPath, 'images', image.name);
-//       image.mv(uploadPath, (err) => {
-//         if (err) {
-//           console.error('Error saving image:', err);
-//           return res.status(500).json({ error: 'Internal server error' });
-//         }
-//         console.log('Product added successfully with image');
-//         // res.status(200).json({ success: true });
-//       });
-//     });
-//     console.log("here")
-//     const sqlPart = `
-//       INSERT INTO assembled_by (Product_ID, Part_id, Number_of_Parts)
-//       VALUES (?, ?, ?)
-//     `;
-
-//     parts.forEach((part) => {
-//       const valuesPart = [Product_ID, part.Part_id, part.Quantity];
-
-//       db.query(sqlPart, valuesPart, (err, result) => {
-//         if (err) {
-//           console.error('Error adding part to the database:', err);
-//           return res.status(500).json({ error: 'Internal server error' });
-//         }
-//       });
-//     });
-//     return res.json("Product Added Successfully");
-// });
 
 router.post('/products/add', add_product);
 
@@ -456,10 +398,6 @@ router.get('/order-history/:orderId', (req, res) => {
 //Fetch Orders
 router.get('/orders',fetch_orders);
 router.get('/order_line/:id',fetch_order_line);
-router.get('/restock',fetch_restock);
-router.put('/restock/:id/:s_id',update_restock);
-router.delete('/restock/:id/:s_id',delete_restock);
-router.post('/restock',add_restock);
 router.get('/storage',fetch_storage);
 
 router.get('/supplier-orders', fetch_supplier_orders);
@@ -537,9 +475,9 @@ router.get('/products/monthly',fetch_stats_monthly_products);
 router.get('/categoryDetails',fetch_stats_category_details);
 router.get('/no-orders',fetch_stats_no_orders);
 router.get('/productDetails',fetch_stats_most_products);
-export default router;
 
 
 router.get('/summarystats', fetchSummary);
-
 router.put('/orders/employee/:id', addEmployee);
+
+export default router;
