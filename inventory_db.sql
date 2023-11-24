@@ -1,124 +1,201 @@
+-- DDL Commands
+
+-- Show existing databases
 SHOW DATABASES;
+
+-- Drop the database if it exists
 DROP DATABASE IF EXISTS Inventory_DB;
+
+-- Creating Database Inventory_DB
 CREATE DATABASE IF NOT EXISTS Inventory_DB;
 USE Inventory_DB;
 
+-- -----------------------------------------------------------------------------------------------------------------
+-- CREATE STATEMENTS
+-- -----------------------------------------------------------------------------------------------------------------
 
+-- CREATE TABLE Client
 CREATE TABLE Client(
-   Client_ID VARCHAR(5),
-   Client_Name VARCHAR(20) NOT NULL,
-   Email TEXT NOT NULL,
-   phone_no DECIMAL(13, 0) NOT NULL,
-   City VARCHAR(20),
-   PINCODE DECIMAL(6, 0),
-   Building TEXT,
-   Floor_no INT,
-   Password_client TEXT,
-   PRIMARY KEY(Client_ID)
+   Client_ID VARCHAR(5),                -- Unique identifier for clients
+   Client_Name VARCHAR(20) NOT NULL,    -- Client's name (not null)
+   Email TEXT NOT NULL,                 -- Client's email (not null)
+   phone_no DECIMAL(13, 0) NOT NULL,    -- Client's phone number (not null)
+   City VARCHAR(20),                    -- Client's city
+   PINCODE DECIMAL(6, 0),               -- Client's PIN code
+   Building TEXT,                       -- Client's building
+   Floor_no INT,                        -- Client's floor number
+   Password_client TEXT,                -- Client's password
+   PRIMARY KEY(Client_ID)               -- Primary key is Client_ID
 );
 
-
+-- CREATE TABLE Orders
 CREATE TABLE Orders(
-   Order_ID VARCHAR(100),
-   Client_ID VARCHAR(5),
-   Total_Payment DECIMAL(10, 2),
-   Shipment_Date timestamp,
-   Order_Placement_Date timestamp default current_timestamp,
-   Employee_ID VARCHAR(5),
-   Status ENUM("In Progress", "Shipped", "Complete", "Cancelled"),
-   PRIMARY KEY(Order_ID)
+   Order_ID VARCHAR(100),               -- Unique identifier for orders
+   Client_ID VARCHAR(5),                -- Client associated with the order
+   Total_Payment DECIMAL(10, 2),        -- Total payment for the order
+   Shipment_Date timestamp,             -- Shipment date
+   Order_Placement_Date timestamp default
+   current_timestamp,                   -- Order placement date with default value
+   Employee_ID VARCHAR(5),              -- Employee associated with the order
+   Status ENUM("In Progress", "Shipped",
+    "Complete", "Cancelled"),           -- Order status
+   PRIMARY KEY(Order_ID)                -- Primary key is Order_ID
 );
 
-
+-- CREATE TABLE Order_Line
 CREATE TABLE Order_Line(
-   Order_ID VARCHAR(100),
-   Product_ID VARCHAR(5),
-   Status ENUM("In progress", "Done"),
-   Quantity INT,
-   PRIMARY KEY(Order_ID, Product_ID)
+   Order_ID VARCHAR(100),               -- Order associated with the line
+   Product_ID VARCHAR(5),               -- Product associated with the line
+   Status ENUM("In progress", "Done"),  -- Status of the order line
+   Quantity INT,                        -- Quantity of the product in the order line
+   PRIMARY KEY(Order_ID, Product_ID)    -- Composite primary key
 );
 
-
+-- CREATE TABLE Product
 CREATE TABLE Product(
-   Product_ID VARCHAR(5),
-   Product_Name TEXT,
-   Product_Description TEXT,
-   Category VARCHAR(10),
-   Price Decimal(10, 2),
-   Image TEXT,
-   Assembling_time INT,
-   PRIMARY KEY (Product_ID)
+   Product_ID VARCHAR(5),               -- Unique identifier for products
+   Product_Name TEXT,                   -- Name of the product
+   Product_Description TEXT,            -- Description of the product
+   Category VARCHAR(10),                -- Category of the product
+   Price Decimal(10, 2),                -- Price of the product
+   Image TEXT,                          -- Image URL of the product
+   Assembling_time INT,                 -- Time required for assembling the product
+   PRIMARY KEY (Product_ID)             -- Primary key is Product_ID
 );
 
-
+-- CREATE TABLE EMPLOYEE
 CREATE TABLE EMPLOYEE(
-   Employee_id VARCHAR(5),
-   Employee_name VARCHAR(25),
-   Phone_no DECIMAL(10,0),
-   Email Text,
-   Address  VARCHAR(50),
-   PRIMARY KEY(Employee_Id)
+   Employee_id VARCHAR(5),              -- Unique identifier for employees
+   Employee_name VARCHAR(25),           -- Name of the employee
+   Phone_no DECIMAL(10,0),              -- Employee's phone number
+   Email Text,                          -- Employee's email
+   Address  VARCHAR(50),                -- Employee's address
+   PRIMARY KEY(Employee_Id)             -- Primary key is Employee_Id
 );
 
-
+-- CREATE TABLE ASSEMBLED_BY
 CREATE TABLE ASSEMBLED_BY(
-   Product_Id VARCHAR(5),
-   Part_id VARCHAR(5),
-   Number_of_Parts INT,
-   PRIMARY KEY(Product_Id,Part_id)
+   Product_Id VARCHAR(5),               -- Product associated with the assembly
+   Part_id VARCHAR(5),                  -- Part associated with the assembly
+   Number_of_Parts INT,                 -- Number of specific part required for assembling the product
+   PRIMARY KEY(Product_Id,Part_id)      -- Composite primary key
 );
 
+-- CREATE TABLE PART
 CREATE TABLE PART(
-   Part_id VARCHAR(5),
-   Part_name VARCHAR(25),
-   Weight DECIMAL(12,2),
-   PRIMARY KEY(Part_id)
+   Part_id VARCHAR(5),                  -- Unique identifier for parts
+   Part_name VARCHAR(25),               -- Name of the part
+   Weight DECIMAL(12,2),                -- Weight of the part
+   PRIMARY KEY(Part_id)                 -- Primary key is Part_id
 );
 
+-- CREATE TABLE SUPPLIER
 CREATE TABLE SUPPLIER(
-   Supplier_id VARCHAR(5),
-   Part_id VARCHAR(5),
-   Supplier_name VARCHAR(25),
-   Email TEXT,
-   Phone_no DECIMAL(10,0),
-   Address VARCHAR(50),
-   Quantity INT,
-   Price decimal(10,2),
-   Restock_time INT,
-   PRIMARY KEY(Supplier_id)
+   Supplier_id VARCHAR(5),              -- Unique identifier for suppliers
+   Part_id VARCHAR(5),                  -- Part supplied by the supplier
+   Supplier_name VARCHAR(25),           -- Name of the supplier
+   Email TEXT,                          -- Supplier's email
+   Phone_no DECIMAL(10,0),              -- Supplier's phone number
+   Address VARCHAR(50),                 -- Supplier's address
+   Quantity INT,                        -- Quantity of parts supplied for 1 restock_time
+   Price decimal(10,2),                 -- Price of the supplied part (for 1 multiple of Quantity)
+   Restock_time INT,                    -- Time for restocking
+   PRIMARY KEY(Supplier_id)             -- Primary key is Supplier_id
 );
 
+-- CREATE TABLE STORAGE
 CREATE TABLE STORAGE(
-   Store_id VARCHAR(5),
-   Part_id VARCHAR(5),
-   Quantity INT,
-   Rack_no INT,
-   Block_no VARCHAR(3),
-   Threshold INT,
-   PRIMARY KEY(Store_id)
+   Store_id VARCHAR(5),                 -- Unique identifier for storage
+   Part_id VARCHAR(5),                  -- Part stored in the storage
+   Quantity INT,                        -- Quantity of parts in storage
+   Rack_no INT,                         -- Rack number in the storage
+   Block_no VARCHAR(3),                 -- Block number in the storage
+   Threshold INT,                       -- Threshold quantity for restocking
+   PRIMARY KEY(Store_id)                -- Primary key is Store_id
 );
 
+-- CREATE TABLE Admin
 CREATE TABLE Admin (
-    Admin_ID VARCHAR(5) PRIMARY KEY,
-    password VARCHAR(100)
+    Admin_ID VARCHAR(5) PRIMARY KEY,    -- Unique identifier for admins (primary key)
+    password VARCHAR(100)               -- Admin's password
 );
 
+-- CREATE TABLE cart
 CREATE TABLE cart (
-    user_id VARCHAR(20),
-    product_id VARCHAR(5),
-    PRIMARY KEY(user_id,product_id)
+    user_id VARCHAR(20),                -- User associated with the cart
+    product_id VARCHAR(5),              -- Product in the cart
+    PRIMARY KEY(user_id,product_id)     -- Composite primary key
 );
 
-
+-- CREATE TABLE SUPPLIER_ORDERS
 CREATE TABLE SUPPLIER_ORDERS(
-   Supplier_id VARCHAR(5),
-   date_time timestamp,
-   Status ENUM("In Progress","Shipped", "Complete", "Cancelled"),
-   Quantity INT,
-   PRIMARY KEY (Supplier_id, date_time)
+   Supplier_id VARCHAR(5),              -- Supplier associated with the order
+   date_time timestamp,                 -- Date and time of the order
+   Status ENUM("In Progress","Shipped",
+   "Complete", "Cancelled"),            -- Status of the order
+   Quantity INT,                        -- Quantity of parts required from the supplier
+   PRIMARY KEY (Supplier_id, date_time) -- Composite primary key
 );
 
--- Insert 10 rows into the Product table with car brand names and prices in INR
+-- -------------------------------------------------------------------------------------------------------------------
+-- ADDING CONSTRAINTS
+-- -------------------------------------------------------------------------------------------------------------------
+
+-- ALTER TABLE SUPPLIER_ORDERS
+ALTER TABLE SUPPLIER_ORDERS
+ADD CONSTRAINT fk_supplier_id FOREIGN KEY(Supplier_ID)
+REFERENCES SUPPLIER(Supplier_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ALTER TABLE cart
+ALTER TABLE cart
+ADD CONSTRAINT fk_product_cart FOREIGN KEY(product_id) REFERENCES product(product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT fk_client_cart FOREIGN KEY(user_id) REFERENCES client(client_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ALTER TABLE Orders
+ALTER TABLE Orders
+ADD CONSTRAINT fk_order_client
+FOREIGN KEY(Client_ID) REFERENCES Client(Client_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT fk_order_employee FOREIGN KEY(Employee_ID) REFERENCES EMPLOYEE(Employee_ID);
+
+-- ALTER TABLE Order_Line
+ALTER TABLE Order_Line
+ADD CONSTRAINT fk_ol_order
+FOREIGN KEY(Order_ID) REFERENCES Orders(Order_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT fk_ol_product FOREIGN KEY(Product_ID) REFERENCES Product(Product_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ALTER TABLE Assembled_By
+ALTER TABLE Assembled_By
+ADD CONSTRAINT fk_as_product FOREIGN KEY(Product_ID) REFERENCES Product(Product_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT fk_as_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ALTER TABLE Restock_Details
+ALTER TABLE Supplier
+ADD CONSTRAINT fk_part_supplier FOREIGN KEY(Part_ID)
+REFERENCES Part(Part_ID) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- ALTER TABLE Storage
+ALTER TABLE Storage
+ADD CONSTRAINT fk_store_part FOREIGN KEY(Part_ID)
+REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+-- Create JOIN Table Order_Parts To Track Aggregate quantity of each Part In an Order
+CREATE TABLE IF NOT EXISTS Order_Parts (
+    Order_ID VARCHAR(100),
+    Part_ID VARCHAR(5),
+    Quantity INT,
+    Timestamp_ TIMESTAMP,
+    Status ENUM('0', '1'),
+    PRIMARY KEY (Order_ID, Part_ID),
+    FOREIGN KEY (Order_ID) REFERENCES Orders(Order_ID),
+    FOREIGN KEY (Part_ID) REFERENCES Part(Part_ID)
+);
+
+-- -------------------------------------------------------------------------------------------------------------------
+-- INSERT Statements
+-- -------------------------------------------------------------------------------------------------------------------
+
+-- Insert 10 rows into the Product table with car brand names and prices
 INSERT INTO Product (Product_ID, Product_Name, Product_Description, Category, Price,Image,Assembling_time)
 VALUES
    ('P0001', 'Toyota Camry', 'The Toyota Camry, a renowned car model, is the perfect blend of style and performance. This car offers a comfortable and efficient driving experience for those seeking both luxury and reliability.', 'Car', 1825000.00,'toyota-camry.jpeg',2),
@@ -237,64 +314,28 @@ INSERT INTO Admin
 VALUES
 ('admin', '$2a$10$ajLYr46aHBjWhpcBV/Ng4O/2n/Anx0H2QPH09cPjPCGNqxHOEQanC');
 
--- ALTER TABLE SUPPLIER_ORDERS
-ALTER TABLE SUPPLIER_ORDERS
-ADD CONSTRAINT fk_supplier_id FOREIGN KEY(Supplier_ID)
-REFERENCES SUPPLIER(Supplier_ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- ALTER TABLE cart
-ALTER TABLE cart
-ADD CONSTRAINT fk_product_cart FOREIGN KEY(product_id) REFERENCES product(product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_client_cart FOREIGN KEY(user_id) REFERENCES client(client_id) ON DELETE CASCADE ON UPDATE CASCADE;
+-- -------------------------------------------------------------------------------------------------------------------
+-- TRIGGERS PROCEDURES AND FUNCTIONS
+-- -------------------------------------------------------------------------------------------------------------------
 
--- ALTER TABLE Orders
-ALTER TABLE Orders
-ADD CONSTRAINT fk_order_client
-FOREIGN KEY(Client_ID) REFERENCES Client(Client_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_order_employee FOREIGN KEY(Employee_ID) REFERENCES EMPLOYEE(Employee_ID);
-
--- ALTER TABLE Order_Line
-ALTER TABLE Order_Line
-ADD CONSTRAINT fk_ol_order
-FOREIGN KEY(Order_ID) REFERENCES Orders(Order_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_ol_product FOREIGN KEY(Product_ID) REFERENCES Product(Product_ID) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ALTER TABLE Assembled_By
-ALTER TABLE Assembled_By
-ADD CONSTRAINT fk_as_product FOREIGN KEY(Product_ID) REFERENCES Product(Product_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_as_part FOREIGN KEY(Part_ID) REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ALTER TABLE Restock_Details
-ALTER TABLE Supplier
-ADD CONSTRAINT fk_part_supplier FOREIGN KEY(Part_ID)
-REFERENCES Part(Part_ID) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- ALTER TABLE Storage
-ALTER TABLE Storage
-ADD CONSTRAINT fk_store_part FOREIGN KEY(Part_ID)
-REFERENCES Part(Part_ID) ON DELETE CASCADE ON UPDATE CASCADE;
-
-CREATE TABLE IF NOT EXISTS Order_Parts (
-		 Order_ID VARCHAR(100),
-		 Part_ID VARCHAR(5),
-		 Quantity INT,
-		 Timestamp_ TIMESTAMP,
-		 Status ENUM('0', '1'),
-		 PRIMARY KEY (Order_ID, Part_ID),
-		 FOREIGN KEY (Order_ID) REFERENCES Orders(Order_ID),
-		 FOREIGN KEY (Part_ID) REFERENCES Part(Part_ID)
-	 );
-
--- to delete from carts when ordered
+-- FUNCTION
+-- Function: Check if all Order_Parts associated with an order are ready
+DROP FUNCTION IF EXISTS AllRowsComplete;
 DELIMITER //
-CREATE TRIGGER delete_carts_after_insert
-AFTER INSERT ON orders
-FOR EACH ROW
+CREATE FUNCTION AllRowsComplete(orderID VARCHAR(100)) RETURNS INT
+DETERMINISTIC
 BEGIN
-  DELETE FROM cart WHERE user_id = NEW.client_id;
+    -- Check if there are any incomplete rows in Order_Parts
+    DECLARE Not_Complete INT DEFAULT 0;
+    SELECT COUNT(*) INTO Not_Complete FROM Order_Parts WHERE Order_ID = order_ID AND Status = '0';
+    RETURN Not_Complete;
 END //
 DELIMITER ;
 
+-- PROCEDURES
+
+-- Procedure: Update OrderParts Table
 DROP PROCEDURE IF EXISTS updateOrderParts;
 DELIMITER //
 CREATE PROCEDURE updateOrderParts(
@@ -303,12 +344,14 @@ CREATE PROCEDURE updateOrderParts(
     IN given_quantity INT
 )
 BEGIN
+    -- Variables for cursor operation
     DECLARE Part_ID_var VARCHAR(5);
     DECLARE Number_of_Parts INT;
     DECLARE Total_Quantity INT;
-    
+
     DECLARE done INT DEFAULT 0;
-    
+
+    -- Cursor to fetch parts associated with the given product
     DECLARE cur CURSOR FOR
         SELECT a.Part_id, a.Number_of_Parts FROM assembled_by AS a WHERE a.Product_ID = given_product_id;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
@@ -321,11 +364,13 @@ BEGIN
             LEAVE AssembledByLoop;
         END IF;
 
+        -- Check if the part is already in the Order_Parts table
         SELECT COUNT(*) INTO Total_Quantity FROM Order_Parts 
         WHERE Order_ID = given_order_id AND Part_ID = Part_ID_var;
 
+        -- Update or insert into Order_Parts based on existence
         IF Total_Quantity > 0 THEN
-            UPDATE Order_Parts 
+            UPDATE Order_Parts
             SET Quantity = (Quantity + (Number_of_Parts*given_quantity))
             WHERE Order_ID = given_order_id AND Part_ID = Part_ID_var;
         ELSE
@@ -335,19 +380,18 @@ BEGIN
     END LOOP;
 
     CLOSE cur;
-    -- CALL checkOrderParts(given_order_id, given_product_id);
 END; //
 DELIMITER ;
 
-
+-- Procedure: Check Storage for Availability or Place Supplier Order
 DELIMITER //
-
 CREATE PROCEDURE  ProcessOrderPart(
     IN given_order_id VARCHAR(100),
     IN given_part_id VARCHAR(5),
     IN given_quantity INT
 )
 BEGIN
+    -- Variables for storage and supplier information
     DECLARE Storage_Quantity INT;
     DECLARE Supplier_Quantity INT;
 
@@ -361,16 +405,15 @@ BEGIN
     WHERE Part_ID = given_part_id;
 
     IF Storage_Quantity >= given_quantity THEN
-        -- Update storage table quantity
+        -- Sufficient quantity in storage, update storage and order_parts
         UPDATE Storage
         SET Quantity = Quantity - given_quantity
         WHERE Part_ID = given_part_id;
 
-        -- Update status in Order_Parts
         UPDATE Order_Parts
         SET Status = '1' WHERE Order_ID = given_order_id AND Part_ID = given_part_id;
     ELSE
-        -- Quantity is insufficient, insert entry into supplier_orders table
+        -- Insufficient quantity, place order with the supplier
         SELECT Supplier_ID, CURRENT_TIMESTAMP(), 'In Progress', given_quantity
         INTO Supplier_ID_var, Supplier_Date_Time_var, Supplier_Status_var, Supplier_Quantity
         FROM Supplier
@@ -381,9 +424,9 @@ BEGIN
         VALUES (Supplier_ID_var, Supplier_Date_Time_var, Supplier_Status_var, Supplier_Quantity);
     END IF;
 END //
-
 DELIMITER ;
 
+-- Procedure: Process all rows in OrderParts table
 DELIMITER //
 CREATE PROCEDURE ProcessOrderParts(
     IN given_order_id VARCHAR(100)
@@ -397,7 +440,7 @@ BEGIN
         FROM Order_Parts
         WHERE Order_ID = given_order_id
     ORDER BY Part_ID;
-    
+
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
     OPEN cur;
@@ -407,6 +450,7 @@ BEGIN
         IF done THEN
             LEAVE read_loop;
         END IF;
+        -- Call ProcessOrderPart for each row in OrderParts table
         CALL ProcessOrderPart(given_order_id, part_id_var, quantity_var);
     END LOOP;
 
@@ -414,31 +458,32 @@ BEGIN
 END //
 DELIMITER ;
 
--- Create the trigger
-DROP TRIGGER IF EXISTS checkQuantity;
+-- TRIGGERS
+-- Trigger: Delete cart items after order confirmation
 DELIMITER //
-CREATE TRIGGER checkQuantity
+CREATE TRIGGER delete_carts_after_insert
+AFTER INSERT ON orders
+FOR EACH ROW
+BEGIN
+  -- Delete items from the cart for the user whose order is confirmed
+  DELETE FROM cart WHERE user_id = NEW.client_id;
+END //
+DELIMITER ;
+
+-- Trigger: Process Order_Line after insertion
+DROP TRIGGER IF EXISTS Process_Order_Line;
+DELIMITER //
+CREATE TRIGGER Process_Order_Line
 AFTER INSERT
 ON Order_Line
 FOR EACH ROW
 BEGIN
+    -- Call updateOrderParts when a new order line is inserted
     CALL updateOrderParts(NEW.Order_ID, NEW.Product_ID, NEW.Quantity);
 END //
 DELIMITER ;
 
-DROP FUNCTION IF EXISTS AllRowsComplete;
-DELIMITER //
-CREATE FUNCTION AllRowsComplete(orderID VARCHAR(100)) RETURNS INT
-DETERMINISTIC
-BEGIN
-	DECLARE Not_Complete INT DEFAULT 0;
-	SELECT COUNT(*) INTO Not_Complete FROM Order_Parts WHERE Order_ID = order_ID AND Status = '0';
-	RETURN Not_Complete;
-END //
-DELIMITER ;
-
-SELECT COUNT(*) FROM Order_Parts WHERE Order_ID = 'C0001_2023-11-17T12:19:04.000Z' AND Status = '0';
-
+-- Trigger: Check if all order lines in an order are ready and update order status
 DROP TRIGGER IF EXISTS checkOrderStatus;
 DELIMITER //
 CREATE TRIGGER checkOrderStatus
@@ -447,9 +492,9 @@ ON Order_Parts
 FOR EACH ROW
 BEGIN
     DECLARE Order_ID_var VARCHAR(100);
+    -- If a row is marked as ready and the order is not complete, update order status
     IF NEW.Status = '1' AND OLD.Status <> '1' THEN
         SELECT NEW.Order_ID INTO Order_ID_var;
-		
         IF AllRowsComplete(Order_ID_var) = 0 THEN
             UPDATE Orders
             SET Status = 'Complete'
@@ -459,6 +504,7 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Trigger: Check if storage quantity falls below threshold and place a supplier order
 DROP TRIGGER IF EXISTS checkThreshold;
 DELIMITER //
 CREATE TRIGGER checkThreshold
@@ -471,12 +517,14 @@ BEGIN
     DECLARE OrderPartsID_var VARCHAR(100);
 
     SELECT NEW.Part_ID INTO Part_ID_var;
+    -- If storage quantity falls below the threshold, place a supplier order
     IF NEW.Quantity < OLD.Quantity THEN
         IF NEW.Quantity < NEW.Threshold THEN
             SELECT Supplier_ID INTO Supplier_ID_var
             FROM Supplier
             WHERE Supplier.Part_ID = Part_ID_var;
 
+            -- Insert an entry into Supplier_Orders
             INSERT INTO Supplier_Orders VALUES (Supplier_ID_var, CURRENT_TIMESTAMP(), 
             'In Progress', NEW.Threshold * 2);
         END IF;
@@ -484,39 +532,7 @@ BEGIN
 END //
 DELIMITER ;
 
-
--- DROP TRIGGER IF EXISTS updateStorageQuantity;
--- DELIMITER //
--- CREATE TRIGGER updateStorageQuantity
--- AFTER UPDATE
--- ON Supplier_Orders
--- FOR EACH ROW
--- BEGIN
---     DECLARE Part_ID_var VARCHAR(5);
---     DECLARE newQuantity INT;
---     DECLARE Part_ID_storage VARCHAR(5);
---     DECLARE OrderPartsID_var VARCHAR(100);
---     DECLARE Part_Quantity INT;
-
---     SELECT Part_ID INTO Part_ID_var FROM Supplier WHERE Supplier_ID = NEW.Supplier_ID;
---     SELECT NEW.Quantity INTO newQuantity;
-
---     IF NEW.Status LIKE 'Complete' THEN
---         SELECT Order_ID INTO OrderPartsID_var
---         FROM Order_Parts WHERE Part_ID = Part_ID_var AND Status = '0' ORDER BY Timestamp_ LIMIT 1;
---         SELECT Quantity INTO Part_Quantity
---         FROM Order_Parts WHERE Part_ID = Part_ID_var AND Status = '0' ORDER BY Timestamp_ LIMIT 1;
-
---         IF (Part_Quantity) <= (SELECT Quantity FROM Storage WHERE Part_ID = Part_ID_var) THEN
---             UPDATE Order_Parts SET Status = '1' WHERE Order_ID = OrderPartsID_var AND Part_ID = Part_ID_var;
---             SELECT  (newQuantity - Part_Quantity) INTO newQuantity ;
---         END IF;
---         UPDATE Storage SET Quantity = Quantity + newQuantity WHERE Part_ID = Part_ID_var;
-
---     END IF;
-
--- END //
--- DELIMITER ;
+-- Trigger: Update storage quantity when a supplier order is complete
 DROP TRIGGER IF EXISTS updateStorageQuantity;
 DELIMITER //
 CREATE TRIGGER updateStorageQuantity
@@ -529,25 +545,30 @@ BEGIN
     DECLARE OrderID_var VARCHAR(100);
     DECLARE Part_Quantity INT;
 
+    -- Fetch relevant information from the Supplier table
     SELECT Part_ID INTO Part_ID_var FROM Supplier WHERE Supplier_ID = NEW.Supplier_ID;
     SELECT NEW.Quantity INTO newQuantity;
 
+    -- If the supplier order is complete, update Order_Parts and Storage
     IF NEW.Status LIKE 'Complete' THEN
+        -- Find the associated order and quantity in Order_Parts
         SELECT Order_ID INTO OrderID_var FROM Order_Parts op WHERE Part_ID = Part_ID_var AND op.Status = '0' ORDER BY Timestamp_ LIMIT 1;
         SELECT Quantity INTO Part_Quantity FROM Order_Parts op WHERE Order_ID = OrderID_var AND Part_ID = Part_ID_var;
-        -- SELECT Quantity INTO Part_Quantity
-        -- FROM Order_Parts WHERE Part_ID = Part_ID_var AND Status = '0' ORDER BY Timestamp_ LIMIT 1;
 
+        -- If order quantity is met, mark Order_Parts as ready and update Storage
         IF (Part_Quantity <= newQuantity) THEN
             UPDATE Order_Parts SET Status = '1' WHERE Order_ID = OrderID_var AND Part_ID = Part_ID_var;
             SELECT  (newQuantity - Part_Quantity) INTO newQuantity ;
         END IF;
         UPDATE Storage SET Quantity = Quantity + newQuantity WHERE Part_ID = Part_ID_var;
-
     END IF;
-
 END //
 DELIMITER ;
+
+
+-- -------------------------------------------------------------------------------------------------------------------
+-- NESTED Queries
+-- -------------------------------------------------------------------------------------------------------------------
 
 SELECT
     c.Client_ID,
