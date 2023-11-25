@@ -8,7 +8,8 @@ const fetchSummary = (req, res) => {
     const query5 = "SELECT COUNT(Order_ID) FROM Orders";
     const query6 = "SELECT COUNT(*) FROM Supplier";
     const query7 = "SELECT COUNT(*) FROM Supplier_Orders WHERE Status = 'In Progress'";
-    const query8 = "SELECT SUM(Quantity) FROM Order_Line JOIN Orders WHERE Orders.Order_ID = Order_Line.Order_ID AND Orders.Status = 'Complete' OR Orders.Status = 'Shipped'";
+    const query8 = "SELECT SUM(Quantity) FROM Order_Line JOIN Orders WHERE Orders.Order_ID = Order_Line.Order_ID \
+    AND (Orders.Status = 'Complete' OR Orders.Status = 'Shipped')";
     const query9 = "SELECT COUNT(*) FROM Employee";
 
     const executeQuery = (query) => {
