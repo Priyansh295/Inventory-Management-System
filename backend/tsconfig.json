@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",                                  // Modern enough for most Node.js features
+    "module": "commonjs",                                // Suitable for Node.js
+    "esModuleInterop": true,                             // Facilitate using default imports
+    "forceConsistentCasingInFileNames": true,            // Avoid casing issues
+    "strict": true,                                      // Enable all strict type-checking options
+    "skipLibCheck": true,                                // Skip type checking of default library declaration files
+    "outDir": "./",                                      // Compile JS to the same directory as TS files
+    "rootDir": "./",                                     // Root directory is the current directory
+    "moduleResolution": "node",                          // Use Node.js style module resolution
+    "noUnusedLocals": true,                              // Report errors on unused locals
+    "noUnusedParameters": true,                          // Report errors on unused parameters
+    "noImplicitReturns": true,                           // Report error when not all code paths in function return a value
+    "noFallthroughCasesInSwitch": true                   // Report errors for fallthrough cases in switch statement
+  },
+  "include": [
+    "*.ts"                                               // Include all TypeScript files in the current directory
+  ],
+  "exclude": [
+    "node_modules"                                       // Exclude the node_modules directory
+  ]
+}
